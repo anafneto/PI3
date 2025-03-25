@@ -3,6 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import logo from "./assets/logo.png";
 import Hero from "./components/Hero";
+import BlowUp from "./components/BestComp";
+import { useState } from "react";
 
 const heroContent =
   "Bem-vindo à Plataforma de Emprego ESTGV, que conecta alunos e ex-alunos a oportunidades de trabalho/estágio. Cria o teu perfil, destaca as tuas competências e recebe recomendações de emprego adequadas às tuas metas profissionais. As empresas podem facilmente publicar ofertas, ajudando-te a encontrar a combinação perfeita para a tua carreira.";
@@ -17,9 +19,11 @@ const info3content = "2000+";
 const info3title = "Estudantes";
 
 function App() {
+  const [test, setTest] = useState(false);
+
   return (
     <>
-      <Navbar logo={logo}></Navbar>
+      <Navbar onClickLogin={() => setTest(true)} logo={logo}></Navbar>
       <Hero
         title="Plataforma de Emprego e Oportunidades"
         info1content={info1content}
@@ -31,7 +35,7 @@ function App() {
       >
         {heroContent}
       </Hero>
-      ;
+      {test && <BlowUp />};
     </>
   );
 }
