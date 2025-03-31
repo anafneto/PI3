@@ -1,8 +1,5 @@
-interface Props {
-  logo: string; // Path to image
-}
 
-const Logo = ({ logo }: Props) => {
+const Logo = ({ logo }) => {
   return (
     <>
       <nav className="navbar navbar-light bg-light">

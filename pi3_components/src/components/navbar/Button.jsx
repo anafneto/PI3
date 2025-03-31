@@ -1,13 +1,5 @@
-import { ReactNode } from "react";
 
-interface Props {
-  children: ReactNode;
-  outlined: boolean;
-  onClick?: () => void;
-  noColor?: boolean;
-}
-
-const Button = ({ noColor, onClick, outlined, children }: Props) => {
+const Button = ({ noColor, onClick, outlined, children }) => {
   return (
     <>
       {noColor ? (

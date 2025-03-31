@@ -1,19 +1,7 @@
 import Button from "./Button";
 import Logo from "./Logo";
 
-interface Props {
-  logo: string; // Path to image
-  onClickNews?: () => void;
-  onClickCredentials?: () => void;
-  onClickLogin?: () => void;
-}
-
-const Navbar = ({
-  onClickNews,
-  onClickCredentials,
-  onClickLogin,
-  logo,
-}: Props) => {
+const Navbar = ({ onClickNews, onClickCredentials, onClickLogin, logo }) => {
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">

@@ -1,15 +1,4 @@
-import { ReactNode } from "react";
-
-interface Props {
-  title: string;
-  children: ReactNode;
-  info1title?: string;
-  info1content?: string;
-  info2title?: string;
-  info2content?: string;
-  info3title?: string;
-  info3content?: string;
-}
+import React from "react";
 
 const Hero = ({
   info1content,
@@ -20,7 +9,7 @@ const Hero = ({
   info3title,
   title,
   children,
-}: Props) => {
+}) => {
   return (
     <div className="hero-container">
       <h1>{title}</h1>
