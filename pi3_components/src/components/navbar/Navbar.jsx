@@ -11,7 +11,7 @@ const Navbar = ({ onClickNews, onClickCredentials, onClickLogin, logo }) => {
             <ul className="navbar-nav ms-auto">
               <li className="nav-item me-3">
                 <Button outlined={false} noColor={true} onClick={onClickNews}>
-                  Notícias
+                  Notícias  
                 </Button>
               </li>
               <li className="nav-item me-3">

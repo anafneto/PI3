@@ -1,3 +1,4 @@
+
 .btn-color-inverted {
   background-color: #191b19;
   color: #f1f1f1;
@@ -58,4 +59,22 @@
   width: 2px;
   height: 38px;
   background: #fff;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-wrap {
+  flex: 1; 
+}
+
+.footer-gap{
+  gap: 400px;
+}
+
+.footer-bgcolor {
+  background-color: #444644;
 }
