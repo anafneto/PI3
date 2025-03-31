@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import logo from "./assets/logo.png";
 import Hero from "./components/Hero";
+import CardNews from "./components/CardNews";
+import { Container } from "react-bootstrap"; // Import Container from react-bootstrap
 
 const heroContent =
   "Bem-vindo à Plataforma de Emprego ESTGV, que conecta alunos e ex-alunos a oportunidades de trabalho/estágio. Cria o teu perfil, destaca as tuas competências e recebe recomendações de emprego adequadas às tuas metas profissionais. As empresas podem facilmente publicar ofertas, ajudando-te a encontrar a combinação perfeita para a tua carreira.";
@@ -47,6 +49,9 @@ function App() {
           >
             {heroContent}
           </Hero>
+      <Container>
+        <CardNews />
+      </Container>
         </div>
       </div>
       <Footer contactInfo={contactInfo} socialLinks={socialLinks} />

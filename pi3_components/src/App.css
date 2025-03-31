@@ -78,3 +78,37 @@
 .footer-bgcolor {
   background-color: #444644;
 }
+
+.card-img-top {
+  max-height: 200px;
+  object-fit: cover;
+  width: 100%; 
+}
+
+.card-scroll-container {
+  display: flex;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  gap: 16px; /* Add spacing between cards */
+  padding: 16px; /* Optional: Add padding around the container */
+  scroll-behavior: smooth; /* Optional: Smooth scrolling */
+}
+
+.card-scroll-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Customize scrollbar track color */
+}
+
+.single-card {
+  width: 200px;
+}
+
+.me-3 {
+  border-radius: 4px;
+}
+
+.card-img, .card-img-top {
+  border-radius: 3px;
+}
+
+.container, .container-md, .container-sm {
+  max-width: 100%;
+}
