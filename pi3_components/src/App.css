@@ -112,3 +112,48 @@
 .container, .container-md, .container-sm {
   max-width: 100%;
 }
+
+/*CARTÕES OPORTUNIDADES*/
+.cardop-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .cardop-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.cardop {
+  background-color: #3d3d3d;
+  color: white;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 16px;
+  text-align: left;
+}
+
+.cardop-small {
+  grid-column: span 1; /* Ocupa uma coluna */
+  padding: 16px; /* Reduz o padding para torná-lo menor */
+}
+
+.cardop-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.cardop-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+.cardop-description {
+  font-size: 14px;
+  color: #d1d1d1;
+}
