@@ -32,7 +32,7 @@ export const cardData = [ // Export cardData here
 const CardNews = () => {
   return (
     <div className="w-100 mt-4"> {/* Full-width container */}
-      <div className="d-flex overflow-auto" style={{ gap: "8px" }}> {}
+      <div className="d-flex overflow-auto" style={{ gap: "8px", padding: "0 48px" }}> {}
         {cardData.map((card, index) => (
           <div className="card" style={{ minWidth: "330px", minHeight: "428px" }} key={index}>
             <img
