@@ -5,6 +5,8 @@ import "./App.css";
 import logo from "./assets/logo.png";
 import Hero from "./components/Hero";
 import CardNews from "./components/CardNews";
+import HomeOportunidades from "./components/features/HomeOportunidades";
+import Opurtunidades from "./components/features/Oportunidades";
 import { Container } from "react-bootstrap"; // Import Container from react-bootstrap
 
 const heroContent =
@@ -49,9 +51,10 @@ function App() {
           >
             {heroContent}
           </Hero>
-      <Container>
-        <CardNews />
-      </Container>
+          <Container>
+            <CardNews />
+          </Container>
+          <HomeOportunidades />
         </div>
       </div>
       <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
