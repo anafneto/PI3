@@ -50,10 +50,7 @@ function App() {
           >
             {heroContent}
           </Hero>
-          <Container>
-            <CardNews />
-          </Container>
-
+          <CardNews />
           <HomeOportunidades></HomeOportunidades>
         </div>
       </div>

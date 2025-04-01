@@ -94,8 +94,13 @@
   scroll-behavior: smooth; /* Optional: Smooth scrolling */
 }
 
+.card-scroll-container::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+
 .card-scroll-container::-webkit-scrollbar-track {
-  background-color: #f1f1f1; /* Customize scrollbar track color */
+  background-color: #f1f1f100; /* Customize scrollbar track color */
 }
 
 .single-card {
@@ -157,4 +162,8 @@
 .cardop-description {
   font-size: 14px;
   color: #d1d1d1;
+}
+
+.d-flex {
+  scrollbar-width: none;
 }
