@@ -21,9 +21,7 @@ const Navbar = ({ logo }) => {
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <a onClick={handleLogoClick}>
-            <Logo logo={logo} />
-          </a>
+          <Logo logo={logo} onClick={handleLogoClick} />
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item me-3">
