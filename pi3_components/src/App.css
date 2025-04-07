@@ -132,25 +132,27 @@
   }
 }
 
+
 .cardop {
   background-color: #3d3d3d;
   color: white;
   padding: 24px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
+  flex-direction: column; 
   gap: 16px;
-  text-align: left;
+  text-align: left; 
+  height: 260px;
 }
-
 .cardop-small {
   grid-column: span 1; /* Ocupa uma coluna */
-  padding: 16px; /* Reduz o padding para torná-lo menor */
+  padding: 16px; 
 }
 
 .cardop-icon {
-  font-size: 24px;
+  font-size: 36px; 
   flex-shrink: 0;
-  align-self: flex-start;
+  align-self: left; 
 }
 
 .cardop-title {
@@ -162,7 +164,14 @@
 .cardop-description {
   font-size: 14px;
   color: #d1d1d1;
+  
 }
+.cardop-small {
+  font-size: 0.85rem;
+  padding: 1rem;
+}
+/*-----------------------------------------------------------------------------------*/
+
 
 .d-flex {
   scrollbar-width: none;

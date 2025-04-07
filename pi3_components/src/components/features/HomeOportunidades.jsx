@@ -7,18 +7,21 @@ const HomeOportunidades = () => {
       icon: "🔔",
       title: "Alertas de Novas Oportunidades",
       description: "Recebe notificações sempre que uma nova oferta de emprego ou estágio adequada ao teu perfil for publicada."
+      
     },
     {
       icon: "✨",
       title: "Ofertas Exclusivas ESTGV",
-      description: "Consulta ofertas de emprego e estágio exclusivas para alunos e ex-alunos da escola."
+      description: "Consulta ofertas de emprego e estágio exclusivas para alunos e ex-alunos da escola.",
+      size: "small",
     },
     {
       icon: "💼",
       title: "Empresas a Recrutar",
-      description: "Acede a uma rede de empresas que procuram talento da ESTGV, prontas para recrutar."
+      description: "Acede a uma rede de empresas que procuram talento da ESTGV, prontas para recrutar.",
+      size: "small",
     },
-    {
+   {
       icon: "🔍",
       title: "Pesquisa Inteligente de Ofertas",
       description: "Procura e filtra facilmente as melhores oportunidades de trabalho ou estágio de acordo com o teu perfil e preferências."
