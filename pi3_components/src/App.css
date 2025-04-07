@@ -145,15 +145,13 @@ body {
 /*CARTÕES OPORTUNIDADES*/
 .cardop-container {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  gap: 8px;
 }
 
-@media (min-width: 768px) {
-  .cardop-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 
 .cardop {
   background-color: #3d3d3d;
@@ -161,19 +159,34 @@ body {
   padding: 24px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
+  flex-direction: column; 
   gap: 16px;
-  text-align: left;
+  text-align: left; 
+  width: 100%;
+  height: 260px;
 }
 
-.cardop-small {
-  grid-column: span 1; /* Ocupa uma coluna */
-  padding: 16px; /* Reduz o padding para torná-lo menor */
+.cardop-big1 {
+  grid-area: 1 / 1 / 2 / 3; 
+}
+.cardop-big2 {
+  grid-area: 2 / 1 / 3 / 3;
+}
+.cardop-big3 {
+  grid-area: 2 / 3 / 3 / 5; 
+}
+
+.cardop-small1 {
+  grid-area: 1 / 3 / 2 / 4;
+}
+.cardop-small2 {
+  grid-area: 1 / 4 / 2 / 5;
 }
 
 .cardop-icon {
-  font-size: 24px;
+  font-size: 36px; 
   flex-shrink: 0;
-  align-self: flex-start;
+  align-self: left; 
 }
 
 .cardop-title {
@@ -185,7 +198,11 @@ body {
 .cardop-description {
   font-size: 14px;
   color: #d1d1d1;
+  
 }
+
+/*-----------------------------------------------------------------------------------*/
+
 
 .d-flex {
   scrollbar-width: none;
