@@ -34,15 +34,10 @@ const socialLinks = {
 };
 
 function App() {
-  const navigate = useNavigate();
-  const handleIniciarSessao = () => {
-    navigate("/login");
-  };
   return (
     <>
       <div className="page-container">
         <div className="content-wrap">
-          <Navbar onClickLogin={handleIniciarSessao} logo={logo}></Navbar>
           <Hero
             title="Plataforma de Emprego e Oportunidades"
             info1content={info1content}
