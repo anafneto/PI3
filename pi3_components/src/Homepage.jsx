@@ -6,7 +6,7 @@ import logo from "./assets/logo.png";
 import Hero from "./components/Hero";
 import CardNews from "./components/CardNews";
 import HomeOportunidades from "./components/features/HomeOportunidades";
-import { Container } from "react-bootstrap"; // Import Container from react-bootstrap
+import { useNavigate } from "react-router-dom";
 
 const heroContent =
   "Bem-vindo à Plataforma de Emprego ESTGV, que conecta alunos e ex-alunos a oportunidades de trabalho/estágio. Cria o teu perfil, destaca as tuas competências e recebe recomendações de emprego adequadas às tuas metas profissionais. As empresas podem facilmente publicar ofertas, ajudando-te a encontrar a combinação perfeita para a tua carreira.";
@@ -34,11 +34,15 @@ const socialLinks = {
 };
 
 function App() {
+  const navigate = useNavigate();
+  const handleIniciarSessao = () => {
+    navigate("/login");
+  };
   return (
     <>
       <div className="page-container">
         <div className="content-wrap">
-          <Navbar onClickLogin={() => setTest(true)} logo={logo}></Navbar>
+          <Navbar onClickLogin={handleIniciarSessao} logo={logo}></Navbar>
           <Hero
             title="Plataforma de Emprego e Oportunidades"
             info1content={info1content}
