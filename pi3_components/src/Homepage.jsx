@@ -20,19 +20,6 @@ const info2title = "Empresas";
 const info3content = "2000+";
 const info3title = "Estudantes";
 
-const contactInfo = {
-  address:
-    "Av. Cor. José Maria Vale de Andrade, Campus Politécnico, 3504-510 Viseu",
-  phone: "+351 232 480 700 (Chamadas para a rede fixa nacional)",
-  email: "ipv@sc.ipv.pt",
-};
-
-const socialLinks = {
-  instagram: "#",
-  facebook: "#",
-  youtube: "#",
-};
-
 function App() {
   return (
     <>
@@ -53,7 +40,6 @@ function App() {
           <HomeOportunidades></HomeOportunidades>
         </div>
       </div>
-      <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
     </>
   );
 }
