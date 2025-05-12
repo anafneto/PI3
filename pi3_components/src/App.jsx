@@ -25,12 +25,10 @@ function App() {
     <div className="app">
       <Router>
         <Navbar logo={logo} />
-        <main className="main-content">
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<Login />} />
           </Routes>
-        </main>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>
     </div>
