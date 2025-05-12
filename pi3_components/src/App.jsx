@@ -4,6 +4,7 @@ import Login from "./Login";
 import News from "./News";
 import DashboardAdmin from "./DashboardAdmin";
 import NewsDetails from "./NewsDetails";
+import PedirCredenciais from "./components//Credenciais/PedirCredenciais"
 import Navbar from "./components/navbar/Navbar";
 import logo from "./assets/logo.png";
 import Footer from "./components/Footer";
@@ -34,6 +35,7 @@ function App() {
             <Route path="/news" element={<News />} />
             <Route path="/news/:id" element={<NewsDetails />} />
             <Route path="/admin" element={<DashboardAdmin/>} />
+            <Route path="/credentials" element={<PedirCredenciais />} />
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>
