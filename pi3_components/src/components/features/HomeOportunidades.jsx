@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CardList from "./oportunidades";
+import CardListMobile from "./OportunidadesMobile"; // Importe o componente alternativo
 
 const HomeOportunidades = () => {
+  const [isWide, setIsWide] = useState(window.innerWidth > 900);
+  useEffect(() => {
+    const handleResize = () => setIsWide(window.innerWidth > 900);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const cardData = [
     {
       icon: "🔔",
@@ -21,7 +29,7 @@ const HomeOportunidades = () => {
       description: "Acede a uma rede de empresas que procuram talento da ESTGV, prontas para recrutar.",
       size: "small2"
     },
-   {
+    {
       icon: "🔍",
       title: "Pesquisa Inteligente de Ofertas",
       description: "Procura e filtra facilmente as melhores oportunidades de trabalho ou estágio de acordo com o teu perfil e preferências.",
@@ -37,7 +45,11 @@ const HomeOportunidades = () => {
 
   return (
     <div className="p-5">
-      <CardList cards={cardData} />
+      {isWide ? (
+        <CardList cards={cardData} />
+      ) : (
+        <CardListMobile cards={cardData} />
+      )}
     </div>
   );
 };

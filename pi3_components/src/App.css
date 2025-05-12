@@ -91,13 +91,70 @@ body {
   flex: 1;
 }
 
-.footer-gap {
-  gap: 400px;
-  padding-left: 150px;
+/* Footer styles */
+.footer-bgcolor {
+    background-color: #444644;
+    width: 100%;
+    padding: 2rem 0 1rem 0;
 }
 
-.footer-bgcolor {
-  background-color: #444644;
+.footer-bgcolor .container {
+    max-width: 100%;
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
+
+.footer-bgcolor .row {
+    display: flex;
+    flex-wrap: nowrap;    /* Nunca quebra linha */
+    min-width: 0;
+}
+
+.footer-bgcolor h5 {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+}
+
+.footer-bgcolor p,
+.footer-bgcolor a {
+    font-size: clamp(0.8rem, 1.2vw, 1rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
+}
+
+.footer-bgcolor .col-6 {
+    min-width: 0;
+    flex: 1 1 0;
+}
+
+.footer-bgcolor a:hover {
+    color: #9a8c98;
+    text-decoration: underline;
+}
+
+.footer-bgcolor img {
+    width: clamp(16px, 2vw, 20px);
+    height: clamp(16px, 2vw, 20px);
+}
+
+@media (max-width: 767px) {
+    .footer-bgcolor {
+        padding: 1.2rem 0 0.5rem 0;
+    }
+    .footer-bgcolor .container {
+        padding-left: 3vw;
+        padding-right: 3vw;
+    }
+    /* Remova a linha abaixo para não empilhar as colunas! */
+    /* .footer-bgcolor .row { flex-direction: column; } */
+    .footer-bgcolor h5 {
+        font-size: 1.1rem;
+    }
+    .footer-bgcolor p,
+    .footer-bgcolor a {
+        font-size: 0.97rem;
+    }
 }
 
 .card-img-top {
@@ -164,6 +221,19 @@ body {
   text-align: left; 
   width: 100%;
   height: 260px;
+}
+
+.cardop-containerMobile {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Optional: space between cards */
+}
+
+.cardopMobile {
+  width: 100%;
+  background-color: #3d3d3d;
+  box-sizing: border-box;
+   padding: 24px;
 }
 
 .cardop-big1 {
