@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "./Homepage";
 import Login from "./Login";
+import News from "./News";
+import NewsDetails from "./NewsDetails";
+import PedirCredenciais from "./components//Credenciais/PedirCredenciais"
 import Navbar from "./components/navbar/Navbar";
 import logo from "./assets/logo.png";
 import Footer from "./components/Footer";
@@ -28,6 +31,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/news/:id" element={<NewsDetails />} />
+            <Route path="/credentials" element={<PedirCredenciais />} />
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>
