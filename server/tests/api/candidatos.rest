@@ -1,0 +1,47 @@
+### Variables
+@baseUrl = http://localhost:3000/api
+@candidatosEndpoint = {{baseUrl}}/candidatos
+
+### Get all candidatos
+GET {{candidatosEndpoint}}
+
+### Get a specific candidato by ID
+GET {{candidatosEndpoint}}/1
+
+### Create a new candidato
+POST {{candidatosEndpoint}}
+Content-Type: application/json
+
+{
+  "NR_MECANOGRAFICO": "1793473",
+  "PASSWORD_CANDIDATO": "123456",
+  "DIPLOMADO": true,
+    "competencias": [
+        { "ID_COMPETENCIA": 2}
+    ]
+}
+
+### Update a candidato
+PUT {{candidatosEndpoint}}/17901
+Content-Type: application/json
+
+{
+  "DIPLOMADO": false,
+  "competencias": [
+    { "ID_COMPETENCIA": 3 }
+  ]
+}
+
+### Delete a candidato
+DELETE {{candidatosEndpoint}}/1
+
+### Add a competencia to a candidato
+POST {{candidatosEndpoint}}/17901/competencias
+Content-Type: application/json
+
+{
+  "ID_COMPETENCIA": 3
+}
+
+### Remove a competencia from a candidato
+DELETE {{candidatosEndpoint}}/17901/competencias/3

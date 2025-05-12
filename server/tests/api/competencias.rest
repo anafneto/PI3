@@ -1,0 +1,31 @@
+### Variables
+@baseUrl = http://localhost:3000/api
+@competenciasEndpoint = {{baseUrl}}/competencias
+
+### Get all competencias
+GET {{competenciasEndpoint}}
+
+### Get a specific competencia by ID
+GET {{competenciasEndpoint}}/2
+
+### Create a new competencia
+POST {{competenciasEndpoint}}
+Content-Type: application/json
+
+{
+  "NOME_COMPETENCIA": "JavaScripts"
+}
+
+### Update a competencia
+PUT {{competenciasEndpoint}}/2
+Content-Type: application/json
+
+{
+  "NOME_COMPETENCIA": "JavaScript Advanced"
+}
+
+### Delete a competencia
+DELETE {{competenciasEndpoint}}/1
+
+### Get all candidatos with a specific competencia
+GET {{competenciasEndpoint}}/1/candidatos
