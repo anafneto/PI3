@@ -410,3 +410,54 @@ body {
 .mt-4{
   padding: 1.5rem !important;
 }
+
+/*Admin SideBar*/
+ .sidebar {
+    width: 220px;
+    height: 130vh;
+    background-color: #4a4a48 !important; /* cinza escuro consistente */
+    color: #fff;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .nav-link {
+    color: #fff;
+    padding: 10px 0;
+    text-decoration: none;
+    background: transparent; /* remove fundo branco padrão */
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: #383837 !important; /* apenas um pouco mais escuro */
+    color: #fff;
+    text-decoration: none;
+}
+
+.sidebar .logo {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+.sidebar .search-box {
+    background-color: #646463;
+    border: none;
+    color: #fff;
+}
+
+.sidebar .search-box::placeholder {
+    color: #bcbcbc;
+}
+
+.sidebar .search-box:focus {
+    background-color: #646463 !important;
+    color: #fff !important;
+    box-shadow: none;
+    outline: none !important;
+}
