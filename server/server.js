@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const { sequelize } = require("./src/config/db");
 const routes = require("./src/routes");
+const tipoPropostaController = require("./src/controllers/tipoPropostaController");
 
 // Load environment variables
 dotenv.config();
@@ -49,4 +50,6 @@ app.use((err, req, res, next) => {
 app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
   await testConnection();
+  // Ensure proposal types exist when server starts
+  await tipoPropostaController.ensureTypesExist();
 });

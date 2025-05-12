@@ -1,0 +1,10 @@
+@baseUrl = http://localhost:3000/api
+
+### Get all tipos propostas
+GET {{baseUrl}}/tipos-proposta
+
+### Get tipo proposta by ID
+GET {{baseUrl}}/tipos-proposta/1
+
+### Initialize default tipos propostas
+POST {{baseUrl}}/tipos-proposta/initialize
