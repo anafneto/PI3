@@ -223,6 +223,19 @@ body {
   height: 260px;
 }
 
+.cardop-containerMobile {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Optional: space between cards */
+}
+
+.cardopMobile {
+  width: 100%;
+  background-color: #3d3d3d;
+  box-sizing: border-box;
+   padding: 24px;
+}
+
 .cardop-big1 {
   grid-area: 1 / 1 / 2 / 3; 
 }
