@@ -1,0 +1,32 @@
+@baseUrl = http://localhost:3000/api
+
+### Get all departamentos
+GET {{baseUrl}}/departamentos
+
+### Get departamento by ID
+GET {{baseUrl}}/departamentos/1
+
+### Create new departamento
+POST {{baseUrl}}/departamentos
+Content-Type: application/json
+
+{
+  "NOME_DEPARTAMENTO": "Recursos Humanos"
+}
+
+### Update departamento
+PUT {{baseUrl}}/departamentos/1
+Content-Type: application/json
+
+{
+  "NOME_DEPARTAMENTO": "Recursos Humanos 2.0"
+}
+
+### Delete departamento
+DELETE {{baseUrl}}/departamentos/1
+
+### Get gestores by departamento
+GET {{baseUrl}}/departamentos/1/gestores
+
+### Get propostas by departamento
+GET {{baseUrl}}/departamentos/1/propostas

@@ -1,0 +1,52 @@
+@baseUrl = http://localhost:3000/api
+
+### Get all propostas
+GET {{baseUrl}}/propostas
+
+### Get proposta by ID
+GET {{baseUrl}}/propostas/1
+
+### Create new proposta
+POST {{baseUrl}}/propostas
+Content-Type: application/json
+
+{
+  "ID_DEPARTAMENTO": 2,
+  "ID_TIPO_PROPOSTA": 1,
+  "ID_EMPRESA": 1,
+  "DESCRICAO_PROPOSTA": "Desenvolvimento de aplicações web usando React e Node.js",
+  "NOME_PROPOSTA": "Desenvolvedor Fullstack",
+  "competencias": [
+    { "ID_COMPETENCIA": 2 },
+    { "ID_COMPETENCIA": 3 }
+  ]
+}
+
+### Update proposta
+PUT {{baseUrl}}/propostas/1
+Content-Type: application/json
+
+{
+  "DESCRICAO_PROPOSTA": "Desenvolvimento de aplicações web usando React, Node.js, e MongoDB",
+  "competencias": [
+    { "ID_COMPETENCIA": 2 },
+    { "ID_COMPETENCIA": 3 }
+  ]
+}
+
+### Delete proposta
+DELETE {{baseUrl}}/propostas/1
+
+### Add competencia to proposta
+POST {{baseUrl}}/propostas/1/competencias
+Content-Type: application/json
+
+{
+  "ID_COMPETENCIA": 2
+}
+
+### Remove competencia from proposta
+DELETE {{baseUrl}}/propostas/2/competencias/2
+
+### Get propostas by competencia
+GET {{baseUrl}}/propostas/competencias/3
