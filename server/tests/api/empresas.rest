@@ -1,0 +1,31 @@
+@baseUrl = http://localhost:3000/api
+
+### Get all empresas
+GET {{baseUrl}}/empresas
+
+### Get empresa by ID
+GET {{baseUrl}}/empresas/1
+
+### Create new empresa
+POST {{baseUrl}}/empresas
+Content-Type: application/json
+
+{
+  "NIF_EMPRESA": "500123456",
+  "PASSWORD_EMPRESA": "securepassword",
+  "EMAIL_EMPRESA": "empresa@example.com"
+}
+
+### Update empresa
+PUT {{baseUrl}}/empresas/1
+Content-Type: application/json
+
+{
+  "EMAIL_EMPRESA": "updated@example.com"
+}
+
+### Delete empresa
+DELETE {{baseUrl}}/empresas/1
+
+### Get empresa propostas
+GET {{baseUrl}}/empresas/1/propostas

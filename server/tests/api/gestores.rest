@@ -1,0 +1,41 @@
+@baseUrl = http://localhost:3000/api
+
+### Get all gestores
+GET {{baseUrl}}/gestores
+
+### Get gestor by ID
+GET {{baseUrl}}/gestores/1
+
+### Create new gestor
+POST {{baseUrl}}/gestores
+Content-Type: application/json
+
+{
+  "ID_DEPARTAMENTO": 2,
+  "USERNAME_GESTOR": "manager1",
+  "PASSWORD_GESTOR": "secure123"
+}
+
+### Update gestor
+PUT {{baseUrl}}/gestores/1
+Content-Type: application/json
+
+{
+  "USERNAME_GESTOR": "manager_updated",
+  "PASSWORD_GESTOR": "newsecure123"
+}
+
+### Delete gestor
+DELETE {{baseUrl}}/gestores/1
+
+### Get gestores by department
+GET {{baseUrl}}/gestores/departamento/1
+
+### Login gestor
+POST {{baseUrl}}/gestores/login
+Content-Type: application/json
+
+{
+  "USERNAME_GESTOR": "manager1",
+  "PASSWORD_GESTOR": "secure123"
+}

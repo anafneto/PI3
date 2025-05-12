@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "./Homepage";
 import Login from "./Login";
 import News from "./News";
+import DashboardAdmin from "./DashboardAdmin";
 import NewsDetails from "./NewsDetails";
 import PedirCredenciais from "./PedirCredenciais";
 import Navbar from "./components/navbar/Navbar";
@@ -33,6 +34,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/news" element={<News />} />
             <Route path="/news/:id" element={<NewsDetails />} />
+            <Route path="/admin" element={<DashboardAdmin/>} />
             <Route path="/credentials" element={<PedirCredenciais />} />
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
