@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Breadcrumb from "../Breadcrumb";
+import Breadcrumb from "./components/Breadcrumb";
 
 const PedirCredenciais = () => {
   return (

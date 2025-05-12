@@ -3,7 +3,7 @@ import Homepage from "./Homepage";
 import Login from "./Login";
 import News from "./News";
 import NewsDetails from "./NewsDetails";
-import PedirCredenciais from "./components//Credenciais/PedirCredenciais"
+import PedirCredenciais from "./PedirCredenciais";
 import Navbar from "./components/navbar/Navbar";
 import logo from "./assets/logo.png";
 import Footer from "./components/Footer";
