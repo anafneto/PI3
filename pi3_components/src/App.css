@@ -350,9 +350,9 @@ body {
 
 .small-box-row {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
-  gap: 24px;
+  gap: 80px;
   flex-wrap: wrap;
 }
 .small-box {
@@ -361,6 +361,8 @@ body {
   position: relative;
   display: block;
   margin-bottom: 1.25rem;
+  width: 300px;
+  
 }
 .small-box > .inner { padding: 10px; }
 .small-box > .small-box-footer {
