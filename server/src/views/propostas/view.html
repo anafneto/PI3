@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes da Proposta - Job Platform</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container">
+      <a class="navbar-brand" href="/admin">Admin Dashboard</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="/admin/propostas">Propostas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/candidatos">Candidatos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/empresas">Empresas</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin/propostas">Propostas</a></li>
+            <li class="breadcrumb-item active" id="proposta-title">Carregando...</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="col-auto">
+        <div class="btn-group" role="group">
+          <a href="#" id="edit-btn" class="btn btn-outline-primary">Editar</a>
+          <button type="button" class="btn btn-outline-danger" id="delete-btn">Excluir</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h3 id="proposta-nome" class="mb-0">Carregando...</h3>
+        <span class="badge bg-primary" id="proposta-tipo">Carregando...</span>
+      </div>
+      <div class="card-body">
+        <div class="mb-4">
+          <h5>Empresa</h5>
+          <p id="proposta-empresa">Carregando...</p>
+        </div>
+        
+        <div class="mb-4">
+          <h5>Departamento</h5>
+          <p id="proposta-departamento">Carregando...</p>
+        </div>
+        
+        <div class="mb-4">
+          <h5>Descrição</h5>
+          <p id="proposta-descricao">Carregando...</p>
+        </div>
+        
+        <div class="mb-4">
+          <h5>Competências Necessárias</h5>
+          <div id="proposta-competencias">
+            <span class="badge bg-secondary me-1">Carregando...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h4>Adicionar Competência</h4>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <select class="form-select" id="competencia-select">
+              <option value="">Selecione uma competência</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <button id="add-competencia-btn" class="btn btn-primary">Adicionar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      // Get proposta ID from URL
+      const propostaId = window.location.pathname.split('/').pop();
+      
+      // Set edit button link
+      $('#edit-btn').attr('href', `/admin/propostas/${propostaId}/edit`);
+      
+      // Load proposta details
+      loadPropostaDetails(propostaId);
+      
+      // Load available competencias
+      loadCompetencias(propostaId);
+      
+      // Handle delete button
+      $('#delete-btn').click(function() {
+        if (confirm('Tem certeza que deseja excluir esta proposta?')) {
+          $.ajax({
+            url: `/api/propostas/${propostaId}`,
+            type: 'DELETE',
+            success: function() {
+              window.location.href = '/admin/propostas';
+            },
+            error: function(xhr) {
+              alert('Erro ao excluir proposta: ' + xhr.responseText);
+            }
+          });
+        }
+      });
+      
+      // Handle add competencia
+      $('#add-competencia-btn').click(function() {
+        const competenciaId = $('#competencia-select').val();
+        if (!competenciaId) {
+          alert('Por favor, selecione uma competência.');
+          return;
+        }
+        
+        $.ajax({
+          url: `/api/propostas/${propostaId}/competencias`,
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ ID_COMPETENCIA: parseInt(competenciaId) }),
+          success: function() {
+            loadPropostaDetails(propostaId);
+            loadCompetencias(propostaId);
+          },
+          error: function(xhr) {
+            alert('Erro ao adicionar competência: ' + xhr.responseText);
+          }
+        });
+      });
+    });
+    
+    function loadPropostaDetails(propostaId) {
+      $.ajax({
+        url: `/api/propostas/${propostaId}`,
+        type: 'GET',
+        success: function(proposta) {
+          // Set page title
+          document.title = `${proposta.nome_proposta} - Job Platform`;
+          
+          // Populate proposta details
+          $('#proposta-title').text(proposta.nome_proposta);
+          $('#proposta-nome').text(proposta.nome_proposta);
+          
+          const tipoPropostaNome = proposta.id_tipo_proposta_tipo_propostum ? 
+            proposta.id_tipo_proposta_tipo_propostum.nome_tipo : 'N/A';
+          $('#proposta-tipo').text(tipoPropostaNome);
+          
+          const empresaNome = proposta.id_empresa_empresa ? 
+            (proposta.id_empresa_empresa.nome_empresa || `Empresa ${proposta.id_empresa}`) : 'N/A';
+          $('#proposta-empresa').text(empresaNome);
+          
+          const departamentoNome = proposta.id_departamento_departamento ? 
+            proposta.id_departamento_departamento.nome_departamento : 'N/A';
+          $('#proposta-departamento').text(departamentoNome);
+          
+          $('#proposta-descricao').text(proposta.descricao_proposta);
+          
+          // Render competencias
+          const competenciasContainer = $('#proposta-competencias');
+          competenciasContainer.empty();
+          
+          if (proposta.id_competencia_competencias_proposta_competencia && 
+              proposta.id_competencia_competencias_proposta_competencia.length > 0) {
+            proposta.id_competencia_competencias_proposta_competencia.forEach(function(comp) {
+              competenciasContainer.append(`
+                <span class="badge bg-secondary me-1 mb-1 p-2">
+                  ${comp.nome_competencia} 
+                  <button class="btn-close btn-close-white ms-2" 
+                    onclick="removeCompetencia(${propostaId}, ${comp.id_competencia})" 
+                    style="font-size: 0.5rem;"></button>
+                </span>
+              `);
+            });
+          } else {
+            competenciasContainer.html('<p class="text-muted">Nenhuma competência associada.</p>');
+          }
+        },
+        error: function(xhr) {
+          alert('Erro ao carregar detalhes da proposta: ' + xhr.responseText);
+        }
+      });
+    }
+    
+    function loadCompetencias(propostaId) {
+      $.ajax({
+        url: '/api/competencias',
+        type: 'GET',
+        success: function(competencias) {
+          // Get current competencias for this proposta
+          $.ajax({
+            url: `/api/propostas/${propostaId}`,
+            type: 'GET',
+            success: function(proposta) {
+              const currentCompIds = proposta.id_competencia_competencias_proposta_competencia ?
+                proposta.id_competencia_competencias_proposta_competencia.map(c => c.id_competencia) : [];
+              
+              // Filter out competencias already associated with this proposta
+              const availableCompetencias = competencias.filter(c => 
+                !currentCompIds.includes(c.id_competencia)
+              );
+              
+              // Populate select dropdown
+              const select = $('#competencia-select');
+              select.html('<option value="">Selecione uma competência</option>');
+              
+              if (availableCompetencias.length === 0) {
+                select.append('<option disabled>Todas as competências já foram adicionadas</option>');
+              } else {
+                availableCompetencias.forEach(comp => {
+                  select.append(`<option value="${comp.id_competencia}">${comp.nome_competencia}</option>`);
+                });
+              }
+            }
+          });
+        }
+      });
+    }
+    
+    function removeCompetencia(propostaId, competenciaId) {
+      if (confirm('Tem certeza que deseja remover esta competência da proposta?')) {
+        $.ajax({
+          url: `/api/propostas/${propostaId}/competencias/${competenciaId}`,
+          type: 'DELETE',
+          success: function() {
+            loadPropostaDetails(propostaId);
+            loadCompetencias(propostaId);
+          },
+          error: function(xhr) {
+            alert('Erro ao remover competência: ' + xhr.responseText);
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>

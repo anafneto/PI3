@@ -2,8 +2,11 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const { sequelize } = require("./src/config/db");
-const routes = require("./src/routes");
 const tipoPropostaController = require("./src/controllers/tipoPropostaController");
+
+// Import route files
+const apiRoutes = require("./src/routes/index");
+const adminRoutes = require("./src/routes/adminRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -35,8 +38,16 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "API is working!" });
 });
 
-// Use API routes
-app.use("/api", routes);
+// API Routes
+app.use("/api", apiRoutes);
+
+// Admin Routes
+app.use("/admin", adminRoutes);
+
+// Default route
+app.get("/", (req, res) => {
+  res.redirect("/admin");
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

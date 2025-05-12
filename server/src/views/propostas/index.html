@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propostas - Job Platform</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container">
+      <a class="navbar-brand" href="/admin">Admin Dashboard</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="/admin/propostas">Propostas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/candidatos">Candidatos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/empresas">Empresas</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col">
+        <h2>Propostas de Trabalho</h2>
+      </div>
+      <div class="col-auto">
+        <a href="/admin/propostas/new" class="btn btn-primary">Nova Proposta</a>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <div class="input-group">
+          <input type="text" id="search-input" class="form-control" placeholder="Pesquisar propostas...">
+          <button class="btn btn-outline-secondary" type="button" id="search-button">Pesquisar</button>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <select class="form-select" id="filter-tipo">
+          <option value="">Todos os Tipos</option>
+          <!-- Will be populated with tipos -->
+        </select>
+      </div>
+    </div>
+
+    <div class="row" id="propostas-container">
+      <!-- Propostas will be loaded here dynamically -->
+      <div class="col-12">
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregando...</span>
+          </div>
+          <p class="mt-2">Carregando propostas...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      // Load proposal types
+      $.ajax({
+        url: '/api/tipos-proposta',
+        type: 'GET',
+        success: function(data) {
+          const tiposSelect = $('#filter-tipo');
+          data.forEach(tipo => {
+            tiposSelect.append(`<option value="${tipo.id_tipo_proposta}">${tipo.nome_tipo}</option>`);
+          });
+        }
+      });
+      
+      // Load propostas
+      loadPropostas();
+
+      // Search and filter handlers
+      $('#search-button').click(function() {
+        loadPropostas($('#search-input').val(), $('#filter-tipo').val());
+      });
+
+      $('#filter-tipo').change(function() {
+        loadPropostas($('#search-input').val(), $(this).val());
+      });
+    });
+
+    function loadPropostas(search = '', tipoId = '') {
+      const container = $('#propostas-container');
+      
+      // Show loading
+      container.html(`
+        <div class="col-12">
+          <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Carregando...</span>
+            </div>
+            <p class="mt-2">Carregando propostas...</p>
+          </div>
+        </div>
+      `);
+      
+      // Construct URL with query parameters
+      let url = '/api/propostas';
+      const params = [];
+      if (search) params.push(`search=${encodeURIComponent(search)}`);
+      if (tipoId) params.push(`tipo=${encodeURIComponent(tipoId)}`);
+      if (params.length > 0) {
+        url += '?' + params.join('&');
+      }
+      
+      // Fetch data
+      $.ajax({
+        url: url,
+        type: 'GET',
+        success: function(data) {
+          if (data.length === 0) {
+            container.html('<div class="col-12"><p class="text-center py-5">Nenhuma proposta encontrada.</p></div>');
+            return;
+          }
+          
+          container.empty();
+          data.forEach(proposta => {
+            container.append(`
+              <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <span class="badge bg-primary float-end">${proposta.id_tipo_proposta_tipo_propostum ? proposta.id_tipo_proposta_tipo_propostum.nome_tipo : 'N/A'}</span>
+                    <h5 class="card-title">${proposta.nome_proposta}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                      ${proposta.id_empresa_empresa ? proposta.id_empresa_empresa.nome_empresa || 'Empresa ' + proposta.id_empresa : 'N/A'}
+                    </h6>
+                    <p class="card-text">${proposta.descricao_proposta.substring(0, 100)}${proposta.descricao_proposta.length > 100 ? '...' : ''}</p>
+                    
+                    <div class="mb-2">
+                      ${proposta.id_competencia_competencias_proposta_competencia && 
+                        proposta.id_competencia_competencias_proposta_competencia.map(comp => 
+                          `<span class="badge bg-secondary me-1">${comp.nome_competencia}</span>`
+                        ).join('') || ''}
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-3">
+                      <a href="/admin/propostas/${proposta.id_proposta}" class="btn btn-outline-primary btn-sm">Ver Detalhes</a>
+                      <div>
+                        <a href="/admin/propostas/${proposta.id_proposta}/edit" class="btn btn-outline-secondary btn-sm">
+                          <i class="bi bi-pencil"></i>
+                        </a>
+                        <button class="btn btn-outline-danger btn-sm delete-btn" data-id="${proposta.id_proposta}">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `);
+          });
+          
+          // Add delete button handlers
+          $('.delete-btn').click(function() {
+            const id = $(this).data('id');
+            if (confirm('Tem certeza que deseja excluir esta proposta?')) {
+              $.ajax({
+                url: `/api/propostas/${id}`,
+                type: 'DELETE',
+                success: function() {
+                  loadPropostas(search, tipoId);
+                },
+                error: function(xhr) {
+                  alert('Erro ao excluir proposta: ' + xhr.responseText);
+                }
+              });
+            }
+          });
+        },
+        error: function(xhr) {
+          container.html(`<div class="col-12"><p class="text-center py-5">Erro ao carregar propostas: ${xhr.responseText}</p></div>`);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova Proposta - Job Platform</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container">
+      <a class="navbar-brand" href="/admin">Admin Dashboard</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="/admin/propostas">Propostas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/candidatos">Candidatos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/empresas">Empresas</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin/propostas">Propostas</a></li>
+            <li class="breadcrumb-item active" id="form-title">Nova Proposta</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <form id="proposta-form">
+          <div class="mb-3">
+            <label for="nome-proposta" class="form-label">Nome da Proposta</label>
+            <input type="text" class="form-control" id="nome-proposta" required>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="empresa-select" class="form-label">Empresa</label>
+              <select class="form-select" id="empresa-select" required>
+                <option value="">Selecione uma empresa</option>
+              </select>
+            </div>
+            
+            <div class="col-md-4">
+              <label for="departamento-select" class="form-label">Departamento</label>
+              <select class="form-select" id="departamento-select" required>
+                <option value="">Selecione um departamento</option>
+              </select>
+            </div>
+            
+            <div class="col-md-4">
+              <label for="tipo-proposta-select" class="form-label">Tipo de Proposta</label>
+              <select class="form-select" id="tipo-proposta-select" required>
+                <option value="">Selecione um tipo</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="descricao-proposta" class="form-label">Descrição</label>
+            <textarea class="form-control" id="descricao-proposta" rows="5" required></textarea>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Competências</label>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <select class="form-select" id="competencia-select">
+                  <option value="">Selecione uma competência</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <button type="button" id="add-competencia-btn" class="btn btn-outline-primary">
+                  <i class="bi bi-plus"></i> Adicionar
+                </button>
+              </div>
+            </div>
+            
+            <div id="selected-competencias" class="mt-3">
+              <!-- Selected competencias will appear here -->
+            </div>
+          </div>
+          
+          <div class="d-flex justify-content-end gap-2">
+            <a href="/admin/propostas" class="btn btn-outline-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    const selectedCompetencias = [];
+    let isEditMode = false;
+    let propostaId = null;
+    
+    $(document).ready(function() {
+      // Check if we're in edit mode
+      const pathSegments = window.location.pathname.split('/');
+      if (pathSegments.includes('edit')) {
+        isEditMode = true;
+        propostaId = pathSegments[pathSegments.indexOf('edit') - 1];
+        $('#form-title').text('Editar Proposta');
+        document.title = 'Editar Proposta - Job Platform';
+        
+        // Load existing proposta data
+        loadPropostaForEdit(propostaId);
+      }
+      
+      // Load select options
+      loadEmpresas();
+      loadDepartamentos();
+      loadTiposPropostas();
+      loadCompetencias();
+      
+      // Add competencia button handler
+      $('#add-competencia-btn').click(function() {
+        const competenciaId = $('#competencia-select').val();
+        if (!competenciaId) return;
+        
+        const competenciaText = $('#competencia-select option:selected').text();
+        
+        // Check if already added
+        if (selectedCompetencias.some(c => c.id == competenciaId)) {
+          alert('Esta competência já foi adicionada.');
+          return;
+        }
+        
+        // Add to selected list
+        selectedCompetencias.push({
+          id: competenciaId,
+          name: competenciaText
+        });
+        
+        // Update UI
+        renderSelectedCompetencias();
+        
+        // Reset select
+        $('#competencia-select').val('');
+      });
+      
+      // Form submission handler
+      $('#proposta-form').submit(function(e) {
+        e.preventDefault();
+        submitForm();
+      });
+    });
+    
+    function loadPropostaForEdit(propostaId) {
+      $.ajax({
+        url: `/api/propostas/${propostaId}`,
+        type: 'GET',
+        success: function(proposta) {
+          $('#nome-proposta').val(proposta.nome_proposta);
+          $('#descricao-proposta').val(proposta.descricao_proposta);
+          
+          // We'll set these once the dropdowns are loaded
+          setTimeout(() => {
+            $('#empresa-select').val(proposta.id_empresa);
+            $('#departamento-select').val(proposta.id_departamento);
+            $('#tipo-proposta-select').val(proposta.id_tipo_proposta);
+          }, 500);
+          
+          // Add competencias
+          if (proposta.id_competencia_competencias_proposta_competencia) {
+            proposta.id_competencia_competencias_proposta_competencia.forEach(comp => {
+              selectedCompetencias.push({
+                id: comp.id_competencia,
+                name: comp.nome_competencia
+              });
+            });
+            renderSelectedCompetencias();
+          }
+        },
+        error: function(xhr) {
+          alert('Erro ao carregar dados da proposta: ' + xhr.responseText);
+        }
+      });
+    }
+    
+    function loadEmpresas() {
+      $.ajax({
+        url: '/api/empresas',
+        type: 'GET',
+        success: function(data) {
+          const select = $('#empresa-select');
+          data.forEach(empresa => {
+            const nome = empresa.nome_empresa || `Empresa ${empresa.id_empresa}`;
+            select.append(`<option value="${empresa.id_empresa}">${nome}</option>`);
+          });
+        }
+      });
+    }
+    
+    function loadDepartamentos() {
+      $.ajax({
+        url: '/api/departamentos',
+        type: 'GET',
+        success: function(data) {
+          const select = $('#departamento-select');
+          data.forEach(dept => {
+            select.append(`<option value="${dept.id_departamento}">${dept.nome_departamento}</option>`);
+          });
+        }
+      });
+    }
+    
+    function loadTiposPropostas() {
+      $.ajax({
+        url: '/api/tipos-proposta',
+        type: 'GET',
+        success: function(data) {
+          const select = $('#tipo-proposta-select');
+          data.forEach(tipo => {
+            select.append(`<option value="${tipo.id_tipo_proposta}">${tipo.nome_tipo}</option>`);
+          });
+        }
+      });
+    }
+    
+    function loadCompetencias() {
+      $.ajax({
+        url: '/api/competencias',
+        type: 'GET',
+        success: function(data) {
+          const select = $('#competencia-select');
+          data.forEach(comp => {
+            select.append(`<option value="${comp.id_competencia}">${comp.nome_competencia}</option>`);
+          });
+        }
+      });
+    }
+    
+    function renderSelectedCompetencias() {
+      const container = $('#selected-competencias');
+      container.empty();
+      
+      if (selectedCompetencias.length === 0) {
+        container.html('<p class="text-muted">Nenhuma competência selecionada.</p>');
+        return;
+      }
+      
+      selectedCompetencias.forEach((comp, index) => {
+        container.append(`
+          <div class="badge bg-secondary p-2 me-2 mb-2">
+            ${comp.name}
+            <button type="button" class="btn-close btn-close-white ms-2" 
+              onclick="removeCompetencia(${index})" 
+              style="font-size: 0.5rem;"></button>
+          </div>
+        `);
+      });
+    }
+    
+    function removeCompetencia(index) {
+      selectedCompetencias.splice(index, 1);
+      renderSelectedCompetencias();
+    }
+    
+    function submitForm() {
+      const formData = {
+        NOME_PROPOSTA: $('#nome-proposta').val(),
+        ID_EMPRESA: parseInt($('#empresa-select').val()),
+        ID_DEPARTAMENTO: parseInt($('#departamento-select').val()),
+        ID_TIPO_PROPOSTA: parseInt($('#tipo-proposta-select').val()),
+        DESCRICAO_PROPOSTA: $('#descricao-proposta').val(),
+        competencias: selectedCompetencias.map(comp => ({
+          ID_COMPETENCIA: parseInt(comp.id)
+        }))
+      };
+      
+      const url = isEditMode ? `/api/propostas/${propostaId}` : '/api/propostas';
+      const method = isEditMode ? 'PUT' : 'POST';
+      
+      $.ajax({
+        url: url,
+        type: method,
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function() {
+          window.location.href = '/admin/propostas';
+        },
+        error: function(xhr) {
+          alert('Erro ao salvar proposta: ' + xhr.responseText);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
