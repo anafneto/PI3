@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notícias - Job Platform</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container">
+      <a class="navbar-brand" href="/admin">Admin Dashboard</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/propostas">Propostas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/candidatos">Candidatos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/empresas">Empresas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/admin/noticias">Notícias</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col">
+        <h2>Gestão de Notícias</h2>
+      </div>
+      <div class="col-auto">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNoticiaModal">
+          Nova Notícia
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Data</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="noticias-table-body">
+              <!-- Noticias will be loaded here -->
+              <tr>
+                <td colspan="4" class="text-center">Carregando...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Noticia Modal -->
+  <div class="modal fade" id="createNoticiaModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Nova Notícia</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="create-noticia-form">
+            <div class="mb-3">
+              <label for="titulo-noticia" class="form-label">Título</label>
+              <input type="text" class="form-control" id="titulo-noticia" required>
+            </div>
+            <div class="mb-3">
+              <label for="corpo-noticia" class="form-label">Conteúdo</label>
+              <textarea class="form-control" id="corpo-noticia" rows="6" required></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="save-noticia-btn">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Noticia Modal -->
+  <div class="modal fade" id="editNoticiaModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Notícia</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="edit-noticia-form">
+            <input type="hidden" id="edit-noticia-id">
+            <div class="mb-3">
+              <label for="edit-titulo-noticia" class="form-label">Título</label>
+              <input type="text" class="form-control" id="edit-titulo-noticia" required>
+            </div>
+            <div class="mb-3">
+              <label for="edit-corpo-noticia" class="form-label">Conteúdo</label>
+              <textarea class="form-control" id="edit-corpo-noticia" rows="6" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="edit-data-noticia" class="form-label">Data</label>
+              <input type="date" class="form-control" id="edit-data-noticia" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="update-noticia-btn">Atualizar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Noticia Modal -->
+  <div class="modal fade" id="viewNoticiaModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="view-titulo-noticia">Título da Notícia</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted" id="view-data-noticia">Data: 2023-05-13</p>
+          <div id="view-corpo-noticia">
+            Conteúdo da notícia...
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    // Bootstrap modals
+    const createModal = new bootstrap.Modal(document.getElementById('createNoticiaModal'));
+    const editModal = new bootstrap.Modal(document.getElementById('editNoticiaModal'));
+    const viewModal = new bootstrap.Modal(document.getElementById('viewNoticiaModal'));
+
+    $(document).ready(function() {
+      // Load noticias when page loads
+      loadNoticias();
+
+      // Create noticia handler
+      $('#save-noticia-btn').click(function() {
+        const titulo = $('#titulo-noticia').val();
+        const corpo = $('#corpo-noticia').val();
+        
+        if (!titulo || !corpo) {
+          alert('Por favor, preencha todos os campos.');
+          return;
+        }
+        
+        $.ajax({
+          url: '/api/noticias',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            TITULO_NOTICIA: titulo,
+            CORPO_NOTICIA: corpo
+          }),
+          success: function() {
+            createModal.hide();
+            $('#create-noticia-form')[0].reset();
+            loadNoticias();
+          },
+          error: function(xhr) {
+            alert('Erro ao criar notícia: ' + xhr.responseText);
+          }
+        });
+      });
+
+      // Update noticia handler
+      $('#update-noticia-btn').click(function() {
+        const id = $('#edit-noticia-id').val();
+        const titulo = $('#edit-titulo-noticia').val();
+        const corpo = $('#edit-corpo-noticia').val();
+        const data = $('#edit-data-noticia').val();
+        
+        if (!titulo || !corpo || !data) {
+          alert('Por favor, preencha todos os campos.');
+          return;
+        }
+        
+        $.ajax({
+          url: `/api/noticias/${id}`,
+          type: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            TITULO_NOTICIA: titulo,
+            CORPO_NOTICIA: corpo,
+            DATA_NOTICIA: data
+          }),
+          success: function() {
+            editModal.hide();
+            loadNoticias();
+          },
+          error: function(xhr) {
+            alert('Erro ao atualizar notícia: ' + xhr.responseText);
+          }
+        });
+      });
+    });
+
+    function loadNoticias() {
+      $.ajax({
+        url: '/api/noticias',
+        type: 'GET',
+        success: function(data) {
+          const tableBody = $('#noticias-table-body');
+          tableBody.empty();
+          
+          if (data.length === 0) {
+            tableBody.html('<tr><td colspan="4" class="text-center">Nenhuma notícia encontrada.</td></tr>');
+            return;
+          }
+          
+          data.forEach(noticia => {
+            tableBody.append(`
+              <tr>
+                <td>${noticia.id_noticia}</td>
+                <td>${noticia.titulo_noticia}</td>
+                <td>${formatDate(noticia.data_noticia)}</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary me-1" onclick="viewNoticia(${noticia.id_noticia})">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-secondary me-1" onclick="editNoticia(${noticia.id_noticia})">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" onclick="deleteNoticia(${noticia.id_noticia})">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            `);
+          });
+        },
+        error: function(xhr) {
+          $('#noticias-table-body').html(
+            '<tr><td colspan="4" class="text-center">Erro ao carregar notícias: ' + xhr.responseText + '</td></tr>'
+          );
+        }
+      });
+    }
+
+    function viewNoticia(id) {
+      $.ajax({
+        url: `/api/noticias/${id}`,
+        type: 'GET',
+        success: function(noticia) {
+          $('#view-titulo-noticia').text(noticia.titulo_noticia);
+          $('#view-data-noticia').text('Data: ' + formatDate(noticia.data_noticia));
+          $('#view-corpo-noticia').html(formatContent(noticia.corpo_noticia));
+          viewModal.show();
+        },
+        error: function(xhr) {
+          alert('Erro ao carregar notícia: ' + xhr.responseText);
+        }
+      });
+    }
+
+    function editNoticia(id) {
+      $.ajax({
+        url: `/api/noticias/${id}`,
+        type: 'GET',
+        success: function(noticia) {
+          $('#edit-noticia-id').val(noticia.id_noticia);
+          $('#edit-titulo-noticia').val(noticia.titulo_noticia);
+          $('#edit-corpo-noticia').val(noticia.corpo_noticia);
+          $('#edit-data-noticia').val(noticia.data_noticia);
+          editModal.show();
+        },
+        error: function(xhr) {
+          alert('Erro ao carregar notícia: ' + xhr.responseText);
+        }
+      });
+    }
+
+    function deleteNoticia(id) {
+      if (confirm('Tem certeza que deseja excluir esta notícia?')) {
+        $.ajax({
+          url: `/api/noticias/${id}`,
+          type: 'DELETE',
+          success: function() {
+            loadNoticias();
+          },
+          error: function(xhr) {
+            alert('Erro ao excluir notícia: ' + xhr.responseText);
+          }
+        });
+      }
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return 'N/A';
+      
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString('pt-BR', options);
+    }
+
+    function formatContent(content) {
+      if (!content) return '';
+      
+      // Replace newlines with <br> tags
+      return content.replace(/\n/g, '<br>');
+    }
+  </script>
+</body>
+</html>

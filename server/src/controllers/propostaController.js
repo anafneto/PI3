@@ -1,4 +1,5 @@
 const { models } = require("../config/db");
+const notificacoesController = require("./notificacoesPersonalizadasController");
 
 const propostasController = {
   getAllPropostas: async (req, res) => {
@@ -142,6 +143,10 @@ const propostasController = {
         });
 
         await Promise.all(competenciasPromises);
+
+        // Process notifications for matching candidates
+        // This runs asynchronously without waiting for completion
+        notificacoesController.processNewProposal(newProposta.id_proposta);
       }
 
       // Fetch the created proposta with all its associations

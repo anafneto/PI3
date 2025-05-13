@@ -1,0 +1,120 @@
+@baseUrl = http://localhost:3000/api
+@candidatoMecanografico = 12345
+
+### 1. Create a proposal with competencies to trigger notifications
+POST {{baseUrl}}/propostas
+Content-Type: application/json
+
+{
+  "ID_DEPARTAMENTO": 2,
+  "ID_TIPO_PROPOSTA": 1,
+  "ID_EMPRESA": 1,
+  "NOME_PROPOSTA": "Desenvolvedor Full Stack com especialização em React e Node.js",
+  "DESCRICAO_PROPOSTA": "Procuramos um desenvolvedor Full Stack para trabalhar em projetos inovadores. O candidato ideal deve ter experiência com React, Node.js, e bases de dados SQL.",
+  "competencias": [
+    { "ID_COMPETENCIA": 5 },
+    { "ID_COMPETENCIA": 2 },
+    { "ID_COMPETENCIA": 3 },
+    { "ID_COMPETENCIA": 4 }
+  ]
+}
+
+### 2. Get all notifications for a specific candidate
+GET {{baseUrl}}/notificacoes-personalizadas/candidato/{{candidatoMecanografico}}
+
+### 3. Mark a notification as read
+# Replace {notificationId} with an actual notification ID
+PUT {{baseUrl}}/notificacoes-personalizadas/candidato/{{candidatoMecanografico}}/read/1
+
+### 4. Create another proposal to test notification logic
+POST {{baseUrl}}/propostas
+Content-Type: application/json
+
+{
+  "ID_DEPARTAMENTO": 2,
+  "ID_TIPO_PROPOSTA": 2,
+  "ID_EMPRESA": 2,
+  "NOME_PROPOSTA": "Especialista em Frontend React",
+  "DESCRICAO_PROPOSTA": "Estamos à procura de um especialista em React para desenvolver interfaces de utilizador inovadoras e responsivas.",
+  "competencias": [
+    { "ID_COMPETENCIA": 1 },
+    { "ID_COMPETENCIA": 3 },
+    { "ID_COMPETENCIA": 5 }
+  ]
+}
+
+### 5. Create a proposal with different competencies
+POST {{baseUrl}}/propostas
+Content-Type: application/json
+
+{
+  "ID_DEPARTAMENTO": 1,
+  "ID_TIPO_PROPOSTA": 3,
+  "ID_EMPRESA": 3,
+  "NOME_PROPOSTA": "Desenvolvedor Backend Java",
+  "DESCRICAO_PROPOSTA": "Procuramos um desenvolvedor backend com experiência em Java, Spring Boot e bases de dados.",
+  "competencias": [
+    { "ID_COMPETENCIA": 6 },
+    { "ID_COMPETENCIA": 7 },
+    { "ID_COMPETENCIA": 8 }
+  ]
+}
+
+### 6. Get recent notifications for a candidate (last 5)
+GET {{baseUrl}}/notificacoes-personalizadas/candidato/{{candidatoMecanografico}}?limit=5
+
+### 7. Check unread notifications count
+GET {{baseUrl}}/notificacoes-personalizadas/candidato/{{candidatoMecanografico}}/unread/count
+
+### 8. Create a new candidate with competencies to test matching
+POST {{baseUrl}}/candidatos
+Content-Type: application/json
+
+{
+  "NR_MECANOGRAFICO": 12345,
+  "NOME_CANDIDATO": "Ana Silva",
+  "EMAIL_CANDIDATO": "ana.silva@example.com",
+  "DIPLOMADO": true,
+  "PASSWORD_CANDIDATO": "password123",
+  "competencias": [
+    { "ID_COMPETENCIA": 2 },
+    { "ID_COMPETENCIA": 3 },
+    { "ID_COMPETENCIA": 4 },
+    { "ID_COMPETENCIA": 5 }
+  ]
+}
+
+### 9. Create another proposal that should match the new candidate
+POST {{baseUrl}}/propostas
+Content-Type: application/json
+
+{
+  "ID_DEPARTAMENTO": 2,
+  "ID_TIPO_PROPOSTA": 4,
+  "ID_EMPRESA": 1,
+  "NOME_PROPOSTA": "Desenvolvedor Web Frontend",
+  "DESCRICAO_PROPOSTA": "Estamos à procura de um desenvolvedor frontend para trabalhar em projetos web usando tecnologias modernas.",
+  "competencias": [
+    { "ID_COMPETENCIA": 2 },
+    { "ID_COMPETENCIA": 3 },
+    { "ID_COMPETENCIA": 4 },
+    { "ID_COMPETENCIA": 5 }
+  ]
+}
+
+### 10. Get notifications for the new candidate
+GET {{baseUrl}}/notificacoes-personalizadas/candidato/54322
+
+### 12. Debug: Get all candidates with their competencies
+GET {{baseUrl}}/candidatos?includeCompetencias=true
+
+### 13. Debug: Get all competencies
+GET {{baseUrl}}/competencias
+
+### 14. Debug: Test notification matching logic directly
+POST {{baseUrl}}/notificacoes-personalizadas/test-matching
+Content-Type: application/json
+
+{
+  "propostaId": 2
+}

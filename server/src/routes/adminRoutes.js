@@ -63,4 +63,10 @@ router.get("/empresas/:id/edit", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../views/empresas/form.html"));
 });
 
+// Noticias routes
+
+router.get("/noticias", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../views/noticias/index.html"));
+});
+
 module.exports = router;

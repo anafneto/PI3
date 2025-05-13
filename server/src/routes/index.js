@@ -7,7 +7,8 @@ const departamentoRoutes = require("./departamentoRoutes");
 const gestorRoutes = require("./gestorRoutes");
 const tipoPropostaRoutes = require("./tipoPropostaRoutes");
 const propostaRoutes = require("./propostaRoutes");
-
+const noticiaRoutes = require("./noticiaRoutes");
+const notificacoesPersonalizadasRoutes = require("./notificacoesPersonalizadasRoutes");
 // Route groups
 router.use("/candidatos", candidatoRoutes);
 router.use("/empresas", empresaRoutes);
@@ -16,6 +17,8 @@ router.use("/departamentos", departamentoRoutes);
 router.use("/gestores", gestorRoutes);
 router.use("/tipos-proposta", tipoPropostaRoutes);
 router.use("/propostas", propostaRoutes);
+router.use("/noticias", noticiaRoutes);
+router.use("/notificacoes-personalizadas", notificacoesPersonalizadasRoutes);
 
 // Test route
 router.get("/test", (req, res) => {

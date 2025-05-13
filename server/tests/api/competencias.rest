@@ -13,7 +13,7 @@ POST {{competenciasEndpoint}}
 Content-Type: application/json
 
 {
-  "NOME_COMPETENCIA": "JavaScripts"
+  "NOME_COMPETENCIA": "CSS"
 }
 
 ### Update a competencia
