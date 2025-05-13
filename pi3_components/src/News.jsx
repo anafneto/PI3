@@ -1,7 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { useNavigate } from "react-router-dom";
-import BigCardNews from "./components/BigCardNews"; // Importando o componente
+import BigCardNews from "./components/BigCardNews"; 
+import Breadcrumb from "./components/Breadcrumb";
 
 function News() {
   const navigate = useNavigate();
@@ -11,10 +12,13 @@ function News() {
   };
   
   return (
-    <div className="container mt-5">
+    <div className="container-sm mt-3 pb-5 px-5">
+      <Breadcrumb />
+      <div className="row justify-content-center">
       <div onClick={() => handleCardClick(1)} style={{ cursor: "pointer" }}>
         <BigCardNews />
       </div>
+    </div>
     </div>
   );
 }

@@ -57,11 +57,11 @@ const Navbar = ({ logo }) => {
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
-        <div className="container-fluid">
+        <div className="container-fluid mx-4">
           <Logo logo={logo} onClick={handleLogoClick} />
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto">
-              <li className="nav-item me-3">
+              <li className="nav-item me-1">
                 <Button
                   outlined={false}
                   noColor={true}
@@ -70,7 +70,7 @@ const Navbar = ({ logo }) => {
                   Notícias
                 </Button>
               </li>
-              <li className="nav-item me-3">
+              <li className="nav-item me-1">
                 <Button outlined={true} onClick={handleCredentialsClick}>
                   Pedir Credenciais
                 </Button>

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import Breadcrumb from "./components/Breadcrumb";
 
 function NewsDetails() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [newsData, setNewsData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-        //isto é uma simulação de um fetch à base de dados, dps troquem por um fetch real
+      //isto é uma simulação de um fetch à base de dados, dps troquem por um fetch real
       const mockData = {
         title: "Projeto Sustentável em Parceria com Empresas Locais",
         date: "20/03/2025",
@@ -30,22 +32,26 @@ function NewsDetails() {
   }
 
   return (
-    <div className="container mt-5">
-      <h1 className="mb-3">{newsData.title}</h1>
-      <p className="text-muted">
-        {newsData.date} {newsData.time}
-      </p>
-      <p>{newsData.description}</p>
-      <div className="row mt-4">
-        {newsData.images.map((image, index) => (
-          <div className="col-md-6" key={index}>
-            <img
-              src={image}
-              alt={`Imagem ${index + 1}`}
-              className="img-fluid rounded"
-            />
-          </div>
-        ))}
+    <div className="container-sm mt-3 pb-5 px-5">
+      <Breadcrumb />
+      <div className="row justify-content-center">
+        <h1 className="mb-3">{newsData.title}</h1>
+
+        <p className="text-muted">
+          {newsData.date} {newsData.time}
+        </p>
+        <p>{newsData.description}</p>
+        <div className="row mt-4">
+          {newsData.images.map((image, index) => (
+            <div className="col-md-6" key={index}>
+              <img
+                src={image}
+                alt={`Imagem ${index + 1}`}
+                className="img-fluid rounded"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

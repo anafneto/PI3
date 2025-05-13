@@ -7,7 +7,7 @@ import journalTextSvg from "../../assets/svg/journal-text.svg";
 const LoginFeatures = ({ onClick }) => {
   return (
     <>
-      <div className="col-4 offset-1">
+      <div className="col-4 px-0">
         <div className="d-flex align-items-center mb-2">
           <div className="border rounded p-2 me-3">
             <img src={avatarSvg} alt="Avatar" />

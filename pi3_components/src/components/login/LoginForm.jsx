@@ -3,7 +3,7 @@ import React from "react";
 const LoginForm = ({ onClick }) => {
   return (
     <>
-      <div className="col-4 offset-2">
+      <div className="col-5 d-flex align-items-center px-0">
         <div className="card-body">
           <form>
             <div className="mb-3">
