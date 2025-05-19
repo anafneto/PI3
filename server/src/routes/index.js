@@ -9,6 +9,8 @@ const tipoPropostaRoutes = require("./tipoPropostaRoutes");
 const propostaRoutes = require("./propostaRoutes");
 const noticiaRoutes = require("./noticiaRoutes");
 const notificacoesPersonalizadasRoutes = require("./notificacoesPersonalizadasRoutes");
+const notificacoesGeraisRoutes = require("./notificacoesGeraisRoutes");
+
 // Route groups
 router.use("/candidatos", candidatoRoutes);
 router.use("/empresas", empresaRoutes);
@@ -19,6 +21,7 @@ router.use("/tipos-proposta", tipoPropostaRoutes);
 router.use("/propostas", propostaRoutes);
 router.use("/noticias", noticiaRoutes);
 router.use("/notificacoes-personalizadas", notificacoesPersonalizadasRoutes);
+router.use("/notificacoes-gerais", notificacoesGeraisRoutes);
 
 // Test route
 router.get("/test", (req, res) => {

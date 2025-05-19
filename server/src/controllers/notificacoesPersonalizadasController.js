@@ -14,7 +14,6 @@ const notificacoesPersonalizadasController = {
         return res.status(404).json({ message: "Candidato não encontrado" });
       }
 
-      // Use a more direct approach with separate queries instead of deep nesting
       // First, get the notification associations for this candidate
       const notificacoesCandidatos =
         await models.notificacoes_candidatos.findAll({
@@ -34,51 +33,94 @@ const notificacoesPersonalizadasController = {
         (n) => n.id_msg_personalizada
       );
 
-      // Get the actual notifications with their proposal data
+      // Get the actual notifications
       const notifications = await models.notificacoes_personalizadas.findAll({
         where: {
           id_msg_personalizada: { [Op.in]: notificationIds },
         },
-        include: [
-          {
-            model: models.propostas,
-            as: "id_proposta_proposta",
-            attributes: [
-              "id_proposta",
-              "nome_proposta",
-              "descricao_proposta",
-              "id_empresa",
-              "id_tipo_proposta",
-            ],
-          },
-        ],
         order: [["data_hora", "DESC"]],
       });
 
-      // Now enrich the data by fetching related empresa and tipo_proposta
+      // Get empresa table structure
+      const empresaTableInfo = await sequelize.query(
+        "SELECT column_name FROM information_schema.columns WHERE table_name = 'empresas'",
+        { type: sequelize.QueryTypes.SELECT }
+      );
+
+      const empresaColumns = empresaTableInfo.map((c) => c.column_name);
+      console.log("Empresa table columns:", empresaColumns);
+
+      // Get tipo_proposta table structure
+      const tipoTableInfo = await sequelize.query(
+        "SELECT column_name FROM information_schema.columns WHERE table_name = 'tipo_proposta'",
+        { type: sequelize.QueryTypes.SELECT }
+      );
+
+      const tipoColumns = tipoTableInfo.map((c) => c.column_name);
+      console.log("Tipo proposta table columns:", tipoColumns);
+
+      // Now get proposal details separately for each notification
       const enrichedNotifications = await Promise.all(
         notifications.map(async (notification) => {
-          const proposta = notification.id_proposta_proposta;
+          let proposta = null;
           let empresaInfo = null;
           let tipoInfo = null;
 
-          if (proposta) {
-            if (proposta.id_empresa) {
-              empresaInfo = await models.empresas.findByPk(
-                proposta.id_empresa,
-                {
-                  attributes: ["id_empresa", "nome_empresa"],
-                }
-              );
+          // Get proposal if it exists
+          if (notification.id_proposta) {
+            proposta = await models.propostas.findByPk(
+              notification.id_proposta,
+              {
+                attributes: [
+                  "id_proposta",
+                  "nome_proposta",
+                  "descricao_proposta",
+                  "id_empresa",
+                  "id_tipo_proposta",
+                ],
+              }
+            );
+
+            // Get empresa details if available
+            if (proposta && proposta.id_empresa) {
+              // Get empresa with only existing columns
+              empresaInfo = await models.empresas.findByPk(proposta.id_empresa);
+
+              // Convert to plain object for safer handling
+              if (empresaInfo) {
+                empresaInfo = empresaInfo.get({ plain: true });
+
+                // Make sure to only include columns that exist in the database
+                const safeEmpresaInfo = {};
+                Object.keys(empresaInfo).forEach((key) => {
+                  if (empresaColumns.includes(key)) {
+                    safeEmpresaInfo[key] = empresaInfo[key];
+                  }
+                });
+                empresaInfo = safeEmpresaInfo;
+              }
             }
 
-            if (proposta.id_tipo_proposta) {
+            // Get tipo_proposta details if available
+            if (proposta && proposta.id_tipo_proposta) {
+              // Get tipo with only existing columns
               tipoInfo = await models.tipo_proposta.findByPk(
-                proposta.id_tipo_proposta,
-                {
-                  attributes: ["id_tipo_proposta", "nome_tipo"],
-                }
+                proposta.id_tipo_proposta
               );
+
+              // Convert to plain object
+              if (tipoInfo) {
+                tipoInfo = tipoInfo.get({ plain: true });
+
+                // Make sure to only include columns that exist in the database
+                const safeTipoInfo = {};
+                Object.keys(tipoInfo).forEach((key) => {
+                  if (tipoColumns.includes(key)) {
+                    safeTipoInfo[key] = tipoInfo[key];
+                  }
+                });
+                tipoInfo = safeTipoInfo;
+              }
             }
           }
 
