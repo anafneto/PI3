@@ -13,7 +13,7 @@ function Login() {
   return (
     <div className="container-sm mt-3 pb-5 px-5">
       <Breadcrumb />
-      <div className="row justify-content-center mt-5">
+      <div className="row justify-content-center mt-5 border-transperent">
         <LoginFeatures />
         <div className="col-auto d-flex align-items-stretch mx-4">
           <div
