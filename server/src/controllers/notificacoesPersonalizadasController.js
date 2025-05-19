@@ -1,56 +1,63 @@
-const { models, sequelize } = require("../config/db");
-const { Op } = require("sequelize");
+// Controlador de Notificações Personalizadas
+// Este controlador gere as notificações personalizadas para os candidatos
+// baseadas na correspondência entre as suas competências e as competências das propostas
+
+const { models, sequelize } = require("../config/db"); // Importa os modelos e a conexão com a base de dados
+const { Op } = require("sequelize"); // Operadores para consultas mais complexas
 
 const notificacoesPersonalizadasController = {
-  // Get all notifications for a specific candidate
+  // Obter todas as notificações para um candidato específico
+  // Cada notificação inclui dados enriquecidos da proposta associada
   getCandidatoNotifications: async (req, res) => {
     try {
       const nrMecanografico = req.params.nrMecanografico;
-      const limit = req.query.limit ? parseInt(req.query.limit) : null;
+      const limit = req.query.limit ? parseInt(req.query.limit) : null; // Limite opcional de notificações
 
-      // Check if candidate exists
+      // Verifica se o candidato existe
       const candidato = await models.candidatos.findByPk(nrMecanografico);
       if (!candidato) {
         return res.status(404).json({ message: "Candidato não encontrado" });
       }
 
-      // First, get the notification associations for this candidate
+      // Primeiro, obtém as associações de notificações para este candidato
+      // Utilização de uma tabela de junção para relacionar candidatos e notificações
       const notificacoesCandidatos =
         await models.notificacoes_candidatos.findAll({
           where: { nr_mecanografico: nrMecanografico },
-          attributes: ["id_msg_personalizada"],
-          order: [["id_msg_personalizada", "DESC"]],
-          limit: limit,
+          attributes: ["id_msg_personalizada"], // Apenas preciso do ID da notificação
+          order: [["id_msg_personalizada", "DESC"]], // Ordenação decrescente (mais recentes primeiro)
+          limit: limit, // Limite configurável
         });
 
-      // No notifications found
+      // Se não há notificações, devolve um array vazio
       if (notificacoesCandidatos.length === 0) {
         return res.json([]);
       }
 
-      // Extract notification IDs
+      // Extrai os IDs das notificações
       const notificationIds = notificacoesCandidatos.map(
         (n) => n.id_msg_personalizada
       );
 
-      // Get the actual notifications
+      // Obtém as notificações propriamente ditas
       const notifications = await models.notificacoes_personalizadas.findAll({
         where: {
-          id_msg_personalizada: { [Op.in]: notificationIds },
+          id_msg_personalizada: { [Op.in]: notificationIds }, // Operador IN do SQL
         },
-        order: [["data_hora", "DESC"]],
+        order: [["data_hora", "DESC"]], // Ordenação por data
       });
 
-      // Get empresa table structure
+      // Esta parte é uma validação defensiva contra problemas de esquema da base de dados
+      // Obtém a estrutura da tabela 'empresas' para verificar quais colunas realmente existem
       const empresaTableInfo = await sequelize.query(
         "SELECT column_name FROM information_schema.columns WHERE table_name = 'empresas'",
-        { type: sequelize.QueryTypes.SELECT }
+        { type: sequelize.QueryTypes.SELECT } // Query SQL direta
       );
 
       const empresaColumns = empresaTableInfo.map((c) => c.column_name);
       console.log("Empresa table columns:", empresaColumns);
 
-      // Get tipo_proposta table structure
+      // Faz o mesmo para a tabela 'tipo_proposta'
       const tipoTableInfo = await sequelize.query(
         "SELECT column_name FROM information_schema.columns WHERE table_name = 'tipo_proposta'",
         { type: sequelize.QueryTypes.SELECT }
@@ -59,14 +66,15 @@ const notificacoesPersonalizadasController = {
       const tipoColumns = tipoTableInfo.map((c) => c.column_name);
       console.log("Tipo proposta table columns:", tipoColumns);
 
-      // Now get proposal details separately for each notification
+      // Para cada notificação, enriquece os dados com informações da proposta associada
+      // Promise.all permite executar todas estas operações em paralelo
       const enrichedNotifications = await Promise.all(
         notifications.map(async (notification) => {
           let proposta = null;
           let empresaInfo = null;
           let tipoInfo = null;
 
-          // Get proposal if it exists
+          // Obtém a proposta associada, se existir
           if (notification.id_proposta) {
             proposta = await models.propostas.findByPk(
               notification.id_proposta,
@@ -81,16 +89,16 @@ const notificacoesPersonalizadasController = {
               }
             );
 
-            // Get empresa details if available
+            // Se a proposta tiver uma empresa associada, obtém os detalhes da empresa
             if (proposta && proposta.id_empresa) {
-              // Get empresa with only existing columns
               empresaInfo = await models.empresas.findByPk(proposta.id_empresa);
 
-              // Convert to plain object for safer handling
+              // Converte para um objeto básico para manipulação mais segura
               if (empresaInfo) {
                 empresaInfo = empresaInfo.get({ plain: true });
 
-                // Make sure to only include columns that exist in the database
+                // Filtra apenas as colunas que sabemos que existem na base de dados
+                // Isto evita erros se o modelo e a tabela estiverem dessincronizados
                 const safeEmpresaInfo = {};
                 Object.keys(empresaInfo).forEach((key) => {
                   if (empresaColumns.includes(key)) {
@@ -101,18 +109,15 @@ const notificacoesPersonalizadasController = {
               }
             }
 
-            // Get tipo_proposta details if available
+            // Obtém informações do tipo de proposta, se existir
             if (proposta && proposta.id_tipo_proposta) {
-              // Get tipo with only existing columns
               tipoInfo = await models.tipo_proposta.findByPk(
                 proposta.id_tipo_proposta
               );
 
-              // Convert to plain object
+              // Aplica o mesmo processo de segurança para as colunas
               if (tipoInfo) {
                 tipoInfo = tipoInfo.get({ plain: true });
-
-                // Make sure to only include columns that exist in the database
                 const safeTipoInfo = {};
                 Object.keys(tipoInfo).forEach((key) => {
                   if (tipoColumns.includes(key)) {
@@ -124,6 +129,7 @@ const notificacoesPersonalizadasController = {
             }
           }
 
+          // Retorna a notificação enriquecida com todos os dados relacionados
           return {
             id_msg_personalizada: notification.id_msg_personalizada,
             id_proposta: notification.id_proposta,
@@ -144,6 +150,7 @@ const notificacoesPersonalizadasController = {
         })
       );
 
+      // Devolve as notificações enriquecidas como resposta JSON
       res.json(enrichedNotifications);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -151,19 +158,18 @@ const notificacoesPersonalizadasController = {
     }
   },
 
-  // Get count of unread notifications for a candidate
+  // Obter a contagem de notificações não lidas para um candidato
   getUnreadCount: async (req, res) => {
     try {
       const nrMecanografico = req.params.nrMecanografico;
 
-      // Check if candidate exists
+      // Verifica se o candidato existe
       const candidato = await models.candidatos.findByPk(nrMecanografico);
       if (!candidato) {
         return res.status(404).json({ message: "Candidato não encontrado" });
       }
 
-      // Simplified query to avoid table name conflicts
-      // First get notification IDs for this candidate
+      // Primeiro obtém os IDs das notificações deste candidato
       const candidatoNotifs = await models.notificacoes_candidatos.findAll({
         where: { nr_mecanografico: nrMecanografico },
         attributes: ["id_msg_personalizada"],
@@ -171,16 +177,16 @@ const notificacoesPersonalizadasController = {
 
       const notifIds = candidatoNotifs.map((n) => n.id_msg_personalizada);
 
-      // If no notifications exist, return 0
+      // Se não há notificações, retorna 0
       if (notifIds.length === 0) {
         return res.json({ count: 0 });
       }
 
-      // Count unread notifications
+      // Conta apenas as notificações não lidas
       const count = await models.notificacoes_personalizadas.count({
         where: {
           id_msg_personalizada: { [Op.in]: notifIds },
-          lido: false,
+          lido: false, // Apenas as não lidas
         },
       });
 
@@ -191,12 +197,12 @@ const notificacoesPersonalizadasController = {
     }
   },
 
-  // Mark notification as read
+  // Marcar uma notificação como lida
   markAsRead: async (req, res) => {
     try {
       const { nrMecanografico, notificationId } = req.params;
 
-      // Check if notification exists and belongs to this candidate
+      // Verifica se a notificação existe e pertence ao candidato
       const notification = await models.notificacoes_candidatos.findOne({
         where: {
           nr_mecanografico: nrMecanografico,
@@ -208,7 +214,7 @@ const notificacoesPersonalizadasController = {
         return res.status(404).json({ message: "Notificação não encontrada" });
       }
 
-      // Update notification
+      // Atualiza a notificação para lida
       await models.notificacoes_personalizadas.update(
         { lido: true },
         { where: { id_msg_personalizada: notificationId } }
@@ -221,12 +227,12 @@ const notificacoesPersonalizadasController = {
     }
   },
 
-  // Mark all notifications as read for a candidate
+  // Marcar todas as notificações de um candidato como lidas
   markAllAsRead: async (req, res) => {
     try {
       const nrMecanografico = req.params.nrMecanografico;
 
-      // Get all notification IDs for this candidate
+      // Obtém todos os IDs de notificações do candidato
       const candidatoNotifs = await models.notificacoes_candidatos.findAll({
         where: { nr_mecanografico: nrMecanografico },
         attributes: ["id_msg_personalizada"],
@@ -238,7 +244,7 @@ const notificacoesPersonalizadasController = {
         return res.json({ message: "Nenhuma notificação encontrada" });
       }
 
-      // Get unread notifications
+      // Obtém apenas as notificações não lidas
       const unreadNotifs = await models.notificacoes_personalizadas.findAll({
         where: {
           id_msg_personalizada: { [Op.in]: notifIds },
@@ -251,10 +257,10 @@ const notificacoesPersonalizadasController = {
         return res.json({ message: "Nenhuma notificação não lida encontrada" });
       }
 
-      // Get IDs of unread notifications
+      // Extrai os IDs das notificações não lidas
       const unreadIds = unreadNotifs.map((n) => n.id_msg_personalizada);
 
-      // Mark all as read
+      // Marca todas as notificações não lidas como lidas
       await models.notificacoes_personalizadas.update(
         { lido: true },
         { where: { id_msg_personalizada: { [Op.in]: unreadIds } } }
@@ -269,26 +275,28 @@ const notificacoesPersonalizadasController = {
     }
   },
 
-  // Process a new proposal and create notifications for matching candidates
+  // Processar uma nova proposta e criar notificações para candidatos com competências correspondentes
+  // Este método é chamado automaticamente quando uma nova proposta é criada
   processNewProposal: async (propostaId) => {
     try {
       console.log(
         `Processing new proposal ${propostaId} for candidate notifications...`
       );
 
-      // Get the proposal first
+      // Obtém a proposta
       const proposta = await models.propostas.findByPk(propostaId);
       if (!proposta) {
         console.error(`Proposal with id ${propostaId} not found`);
         return;
       }
 
-      // Get the proposal's competencies using separate query
+      // Obtém as competências da proposta
       const propostaCompetencias = await models.proposta_competencias.findAll({
         where: { id_proposta: propostaId },
         attributes: ["id_competencia"],
       });
 
+      // Se a proposta não tiver competências, não há como criar notificações
       if (propostaCompetencias.length === 0) {
         console.log(
           `Proposal ${propostaId} has no competencies, skipping notifications`
@@ -301,29 +309,30 @@ const notificacoesPersonalizadasController = {
       );
       console.log(`Proposal competencias: ${propostaCompIds.join(", ")}`);
 
-      // Get all candidates
+      // Obtém todos os candidatos
       const candidatos = await models.candidatos.findAll({
         attributes: ["nr_mecanografico"],
       });
 
       console.log(`Found ${candidatos.length} candidates to check for matches`);
 
-      // For each candidate, check competency match percentage
+      // Para cada candidato, verifica a correspondência de competências
       const matchingCandidatos = [];
 
       for (const candidato of candidatos) {
-        // Get this candidate's competencies
+        // Obtém as competências deste candidato
         const candidatoCompetencias =
           await models.candidato_competencias.findAll({
             where: { nr_mecanografico: candidato.nr_mecanografico },
             attributes: ["id_competencia"],
           });
 
+        // Ignora candidatos sem competências
         if (candidatoCompetencias.length === 0) {
           console.log(
             `Candidate ${candidato.nr_mecanografico} has no competencies, skipping`
           );
-          continue; // Skip candidates with no competencies
+          continue;
         }
 
         const candidatoCompIds = candidatoCompetencias.map(
@@ -335,8 +344,8 @@ const notificacoesPersonalizadasController = {
           } competencias: ${candidatoCompIds.join(", ")}`
         );
 
-        // Calculate match percentage
-        // Formula: (number of matching competencies / number of competencies in the proposal) * 100
+        // Calcula a percentagem de correspondência
+        // Fórmula: (número de competências correspondentes / número de competências da proposta) * 100
         const matchingCompIds = candidatoCompIds.filter((id) =>
           propostaCompIds.includes(id)
         );
@@ -349,7 +358,7 @@ const notificacoesPersonalizadasController = {
           } match: ${matchPercentage.toFixed(2)}%`
         );
 
-        // If match percentage is at least 80%, add to matching candidates
+        // Se a correspondência for pelo menos 80%, adiciona aos candidatos correspondentes
         if (matchPercentage >= 80) {
           matchingCandidatos.push({
             nrMecanografico: candidato.nr_mecanografico,
@@ -361,6 +370,7 @@ const notificacoesPersonalizadasController = {
         }
       }
 
+      // Se não houver candidatos correspondentes, termina
       if (matchingCandidatos.length === 0) {
         console.log(
           `No candidates match the competencies for proposal ${propostaId}`
@@ -372,7 +382,7 @@ const notificacoesPersonalizadasController = {
         `Found ${matchingCandidatos.length} matching candidates for proposal ${propostaId}`
       );
 
-      // Create the notification
+      // Cria a notificação
       const notification = await models.notificacoes_personalizadas.create({
         id_proposta: propostaId,
         mensagem: `As tuas competencias são adequadas para esta proposta - /propostas/${propostaId}`,
@@ -384,7 +394,7 @@ const notificacoesPersonalizadasController = {
         `Created notification ${notification.id_msg_personalizada} for proposal ${propostaId}`
       );
 
-      // Create associations between the notification and matching candidates
+      // Cria associações entre a notificação e os candidatos correspondentes
       for (const candidato of matchingCandidatos) {
         await models.notificacoes_candidatos.create({
           id_msg_personalizada: notification.id_msg_personalizada,
@@ -402,7 +412,7 @@ const notificacoesPersonalizadasController = {
     }
   },
 
-  // Test endpoint to manually trigger matching logic
+  // Endpoint de teste para iniciar manualmente o processo de correspondência
   testMatching: async (req, res) => {
     try {
       const { propostaId } = req.body;
@@ -433,4 +443,5 @@ const notificacoesPersonalizadasController = {
   },
 };
 
+// Exporta o controlador para ser utilizado por outras partes da aplicação
 module.exports = notificacoesPersonalizadasController;
