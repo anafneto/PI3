@@ -3,6 +3,8 @@ import Homepage from "./Homepage";
 import Login from "./Login";
 import News from "./News";
 import DashboardAdmin from "./DashboardAdmin";
+import DashboardAdminAlterar from "./DashboardAdminAlterar";
+import DashboardAdminCriar from "./DashboardAdminCriar";
 import NewsDetails from "./NewsDetails";
 import PedirCredenciais from "./PedirCredenciais";
 import Navbar from "./components/navbar/Navbar";
@@ -36,6 +38,8 @@ function App() {
             <Route path="/news/:id" element={<NewsDetails />} />
             <Route path="/admin" element={<DashboardAdmin/>} />
             <Route path="/credentials" element={<PedirCredenciais />} />
+            <Route path="/adminalterar" element={<DashboardAdminAlterar/>} />
+            <Route path="/admincriar" element={<DashboardAdminCriar/>} /> 
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>

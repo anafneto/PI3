@@ -3,6 +3,7 @@ import Sidebar from "./components/admin/Sidebar.jsx";
 import SmallBox from "./components/admin/Smallbox.jsx";
 import ValidationTable from "./components/admin/ValidationTable.jsx";
 
+
 const DashboardAdmin = () => {
   const validationData = [
     { id: "#219", user: "Alexander Pierce", date: "11-7-2014", status: "Aprovado", statusColor: "success", description: "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner." },
