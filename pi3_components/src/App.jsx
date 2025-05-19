@@ -4,6 +4,7 @@ import Login from "./Login";
 import News from "./News";
 import DashboardAdmin from "./DashboardAdmin";
 import NewsDetails from "./NewsDetails";
+import NotFoundPage from "./Erro404.jsx";
 import PedirCredenciais from "./PedirCredenciais";
 import Navbar from "./components/navbar/Navbar";
 import logo from "./assets/logo.png";
@@ -19,9 +20,9 @@ const contactInfo = {
 };
 
 const socialLinks = {
-  instagram: "#",
-  facebook: "#",
-  youtube: "#",
+  instagram: "https://www.instagram.com/estgv_ipv/",
+  facebook: "https://www.facebook.com/estgv?locale=pt_PT",
+  youtube: "https://www.youtube.com/@politecnicodeviseu"
 };
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route path="/news/:id" element={<NewsDetails />} />
             <Route path="/admin" element={<DashboardAdmin/>} />
             <Route path="/credentials" element={<PedirCredenciais />} />
+            <Route path="*" element={<NotFoundPage />} /> {/* Rota par ao erro 404 */}
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>

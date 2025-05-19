@@ -13,11 +13,10 @@ const DashboardAdmin = () => {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-md-3 col-lg-2 p-0">
+        <div className="p-0 col-2 col-md-3 col-lg-2">
           <Sidebar />
         </div>
-        <div className="col-md-9 col-lg-10">
-          <div className="container mt-4">
+          <div className="container mt-4 col-7  col-lg-8">
             <div className="small-box-row row">
               <SmallBox
                 color="primary"
@@ -42,7 +41,6 @@ const DashboardAdmin = () => {
               />
             </div>
             <ValidationTable data={validationData} />
-          </div>
         </div>
       </div>
     </div>
