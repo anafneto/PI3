@@ -1,0 +1,50 @@
+@baseUrl = http://localhost:3000/api
+
+### 1. Create a new general notification
+POST {{baseUrl}}/notificacoes-gerais
+Content-Type: application/json
+
+{
+  "mensagem": "Bem-vindos ao novo sistema de gestão de propostas! Por favor, atualizem os vossos perfis com competências para receberem propostas personalizadas."
+}
+
+### 2. Create another general notification
+POST {{baseUrl}}/notificacoes-gerais
+Content-Type: application/json
+
+{
+  "mensagem": "Novas oportunidades de estágio disponíveis para o período de verão. Consulte a secção de propostas."
+}
+
+### 3. Get all general notifications
+GET {{baseUrl}}/notificacoes-gerais
+
+### 4. Get only unread notifications
+GET {{baseUrl}}/notificacoes-gerais?unreadOnly=true
+
+### 5. Get limited number of notifications
+GET {{baseUrl}}/notificacoes-gerais?limit=5
+
+### 6. Get a specific notification by ID
+# Replace {id} with an actual notification ID
+GET {{baseUrl}}/notificacoes-gerais/1
+
+### 7. Mark a notification as read
+# Replace {id} with an actual notification ID
+PUT {{baseUrl}}/notificacoes-gerais/1/read
+
+### 8. Get unread count
+GET {{baseUrl}}/notificacoes-gerais/unread/count
+
+### 9. Mark all notifications as read
+PUT {{baseUrl}}/notificacoes-gerais/read/all
+
+### 10. Verify all are marked as read
+GET {{baseUrl}}/notificacoes-gerais?unreadOnly=true
+
+### 11. Delete a notification
+# Replace {id} with an actual notification ID
+DELETE {{baseUrl}}/notificacoes-gerais/2
+
+### 12. Verify deletion
+GET {{baseUrl}}/notificacoes-gerais
