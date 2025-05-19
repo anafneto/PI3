@@ -1,6 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const multer = require("multer"); // Add this
+const path = require("path"); // Add this
+const fs = require("fs"); // Add this
 const { sequelize } = require("./src/config/db");
 const tipoPropostaController = require("./src/controllers/tipoPropostaController");
 
@@ -15,7 +18,24 @@ const PORT = process.env.PORT;
 // Initialize Express app
 const app = express();
 app.use(express.json());
-app.use(cors());
+
+// CORS configuration - specifically allow requests from frontend
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// Create uploads directory if it doesn't exist
+const uploadsDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Serve static files from the uploads directory
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Database connection
 async function testConnection() {
