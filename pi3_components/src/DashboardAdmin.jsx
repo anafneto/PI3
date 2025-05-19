@@ -1,13 +1,12 @@
 import React from "react";
-import Sidebar from "./components/Sidebar.jsx";
-import SmallBox from "./components/Smallbox.jsx";
-import ValidationTable from "./components/ValidationTable";
+import Sidebar from "./components/admin/Sidebar.jsx";
+import SmallBox from "./components/admin/Smallbox.jsx";
+import ValidationTable from "./components/admin/ValidationTable.jsx";
 
 const DashboardAdmin = () => {
   const validationData = [
     { id: "#219", user: "Alexander Pierce", date: "11-7-2014", status: "Aprovado", statusColor: "success", description: "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner." },
     { id: "#220", user: "John Doe", date: "11-7-2014", status: "Pendente", statusColor: "warning", description: "Bacon ipsum dolor sit amet salami." },
-    { id: "#221", user: "Bob Doe", date: "11-7-2014", status: "Pendente", statusColor: "warning", description: "Bacon ipsum dolor sit amet salami." },
     { id: "#222", user: "Mike Doe", date: "11-7-2014", status: "Denied", statusColor: "danger", description: "Bacon ipsum dolor sit amet salami venison chicken flank fatback doner." },
   ];
 
