@@ -310,7 +310,6 @@ body {
   width: 100%;
   margin-top: 170px;
 }
-  /*-----------------------------------------------------------------------------------*/
 
   /*Admin*/
 
@@ -322,6 +321,59 @@ body {
     margin-bottom: 20px;
   }
 
+.small-box {
+  border-radius: 0.375rem;
+  box-shadow: 0 0 1px rgba(var(--bs-body-color-rgb), 0.125), 0 1px 3px rgba(var(--bs-body-color-rgb), 0.2);
+  position: relative;
+  display: block;
+  margin-bottom: 1.25rem;
+  width: 300px;
+
+}
+
+.small-box>.inner {
+  padding: 10px;
+}
+
+.small-box>.small-box-footer {
+  position: relative;
+  z-index: 10;
+  display: block;
+  padding: 3px 0;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.07);
+}
+
+.small-box>.small-box-footer:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.small-box h3,
+.small-box .h3 {
+  font-size: calc(1.345rem + 1.14vw);
+  margin: 0 0 10px;
+  font-weight: 700;
+  white-space: nowrap;
+  z-index: 5;
+}
+
+.small-box p {
+  font-size: 1rem;
+  z-index: 5;
+}
+
+.small-box .small-box-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 0;
+  height: 70px;
+  font-size: 70px;
+  color: rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s linear;
+}
+
+@media (max-width: 600px) {
   .small-box {
     border-radius: 0.375rem;
     box-shadow: 0 0 1px rgba(var(--bs-body-color-rgb), 0.125), 0 1px 3px rgba(var(--bs-body-color-rgb), 0.2);
@@ -337,60 +389,25 @@ body {
     display: block;
     padding: 3px 0;
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.07);
-  }
-
-  .small-box>.small-box-footer:hover {
-    background: rgba(0, 0, 0, 0.1);
-  }
-
-  .small-box h3,
-  .small-box .h3 {
-    font-size: calc(1.345rem + 1.14vw);
-    margin: 0 0 10px;
-    font-weight: 700;
-    white-space: nowrap;
-    z-index: 5;
-  }
-
-  .small-box p {
-    font-size: 1rem;
-    z-index: 5;
   }
 
   .small-box .small-box-icon {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 0;
-    height: 70px;
-    font-size: 70px;
-    color: rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s linear;
+    display: none;
   }
 
-  @media (max-width: 600px) {
-    .small-box {
-      text-align: center;
-    }
-
-    .small-box .small-box-icon {
-      display: none;
-    }
-
-    .small-box p {
-      font-size: 12px;
-    }
+  .small-box p {
+    font-size: 12px;
   }
+}
 
-  /* Espaço extra abaixo da tabela de validações */
-  .card.mb-5 {
-    margin-bottom: 3rem !important;
-  }
+/* Espaço extra abaixo da tabela de validações */
+.card.mb-5 {
+  margin-bottom: 3rem !important;
+}
 
-  .mt-4 {
-    padding: 1.5rem !important;
-  }
+.mt-4 {
+  padding: 1.5rem !important;
+}
 
   /*Admin SideBar*/
   .sidebar {
@@ -403,43 +420,48 @@ body {
     flex-direction: column;
   }
 
-  .sidebar .nav-link {
-    color: #fff;
-    text-decoration: none;
-    background: transparent;
-    /* remove fundo branco padrão */
-    border-radius: 4px;
-    transition: background 0.2s;
-  }
+.sidebar .nav-link {
+  color: #fff;
+  text-decoration: none;
+  background: transparent;
+  /* remove fundo branco padrão */
+  border-radius: 4px;
+  transition: background 0.2s;
+}
 
-  .sidebar .nav-link:hover,
-  .sidebar .nav-link.active {
-    background-color: #383837 !important;
-    /* apenas um pouco mais escuro */
-    color: #fff;
-    text-decoration: none;
-  }
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background-color: #383837 !important;
+  /* apenas um pouco mais escuro */
+  color: #fff;
+  text-decoration: none;
+}
 
-  .sidebar .logo {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 30px;
-    color: #fff;
-  }
+.sidebar .logo {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #fff;
+}
 
-  .sidebar .search-box {
-    background-color: #646463;
-    border: none;
-    color: #fff;
-  }
+.sidebar .search-box {
+  background-color: #646463;
+  border: none;
+  color: #fff;
+}
 
-  .sidebar .search-box::placeholder {
-    color: #bcbcbc;
-  }
+.sidebar .search-box::placeholder {
+  color: #bcbcbc;
+}
 
-  .sidebar .search-box:focus {
-    background-color: #646463 !important;
-    color: #fff !important;
-    box-shadow: none;
-    outline: none !important;
-  }
+.sidebar .search-box:focus {
+  background-color: #646463 !important;
+  color: #fff !important;
+  box-shadow: none;
+  outline: none !important;
+}
+
+.cardgestor-no-border {
+  border: none !important;
+}
+
