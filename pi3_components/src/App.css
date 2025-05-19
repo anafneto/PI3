@@ -395,10 +395,6 @@ body {
     margin-bottom: 3rem !important;
   }
 
-  .cardAdmin-body {
-    padding: 1.5rem !important;
-  }
-
   .mt-4 {
     padding: 1.5rem !important;
   }
@@ -456,4 +452,3 @@ body {
     box-shadow: none;
     outline: none !important;
   }
-
