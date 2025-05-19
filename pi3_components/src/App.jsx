@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "./Homepage";
 import Login from "./Login";
 import News from "./News";
+import CriarGestor from "./CriarGestor";
 import DashboardAdmin from "./DashboardAdmin";
 import NewsDetails from "./NewsDetails";
 import PedirCredenciais from "./PedirCredenciais";
@@ -36,6 +37,7 @@ function App() {
             <Route path="/news/:id" element={<NewsDetails />} />
             <Route path="/admin" element={<DashboardAdmin/>} />
             <Route path="/credentials" element={<PedirCredenciais />} />
+            <Route path="/gestor" element={<CriarGestor/>} />
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>
