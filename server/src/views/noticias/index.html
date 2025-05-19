@@ -54,6 +54,7 @@
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Imagem</th>
                 <th>Título</th>
                 <th>Data</th>
                 <th>Ações</th>
@@ -62,7 +63,7 @@
             <tbody id="noticias-table-body">
               <!-- Noticias will be loaded here -->
               <tr>
-                <td colspan="4" class="text-center">Carregando...</td>
+                <td colspan="5" class="text-center">Carregando...</td>
               </tr>
             </tbody>
           </table>
@@ -80,7 +81,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form id="create-noticia-form">
+          <form id="create-noticia-form" enctype="multipart/form-data">
             <div class="mb-3">
               <label for="titulo-noticia" class="form-label">Título</label>
               <input type="text" class="form-control" id="titulo-noticia" required>
@@ -88,6 +89,14 @@
             <div class="mb-3">
               <label for="corpo-noticia" class="form-label">Conteúdo</label>
               <textarea class="form-control" id="corpo-noticia" rows="6" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="imagem-noticia" class="form-label">Imagem (opcional)</label>
+              <input type="file" class="form-control" id="imagem-noticia" accept="image/*">
+              <div class="form-text">Formatos aceitos: JPG, PNG, GIF. Tamanho máximo: 5MB.</div>
+              <div class="mt-2">
+                <img id="imagem-preview-create" src="" alt="Preview" style="max-width: 100%; max-height: 200px; display: none;">
+              </div>
             </div>
           </form>
         </div>
@@ -108,7 +117,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form id="edit-noticia-form">
+          <form id="edit-noticia-form" enctype="multipart/form-data">
             <input type="hidden" id="edit-noticia-id">
             <div class="mb-3">
               <label for="edit-titulo-noticia" class="form-label">Título</label>
@@ -121,6 +130,18 @@
             <div class="mb-3">
               <label for="edit-data-noticia" class="form-label">Data</label>
               <input type="date" class="form-control" id="edit-data-noticia" required>
+            </div>
+            <div class="mb-3">
+              <label for="edit-imagem-noticia" class="form-label">Imagem (opcional)</label>
+              <input type="file" class="form-control" id="edit-imagem-noticia" accept="image/*">
+              <div class="form-text">Deixe em branco para manter a imagem atual.</div>
+              <div class="mt-2" id="current-image-container">
+                <p>Imagem atual:</p>
+                <img id="edit-imagem-atual" src="" alt="Imagem atual" style="max-width: 100%; max-height: 200px; display: none;">
+              </div>
+              <div class="mt-2">
+                <img id="imagem-preview-edit" src="" alt="Preview" style="max-width: 100%; max-height: 200px; display: none;">
+              </div>
             </div>
           </form>
         </div>
@@ -141,6 +162,9 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
+          <div id="view-imagem-container" class="text-center mb-3">
+            <img id="view-imagem-noticia" src="" alt="Imagem da notícia" class="img-fluid" style="max-height: 300px; display: none;">
+          </div>
           <p class="text-muted" id="view-data-noticia">Data: 2023-05-13</p>
           <div id="view-corpo-noticia">
             Conteúdo da notícia...
@@ -159,6 +183,9 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <script>
+    // Default image URL for when no image is provided
+    const DEFAULT_IMAGE_URL = '/uploads/noticias/default-news-image.jpg';
+    
     // Bootstrap modals
     const createModal = new bootstrap.Modal(document.getElementById('createNoticiaModal'));
     const editModal = new bootstrap.Modal(document.getElementById('editNoticiaModal'));
@@ -168,27 +195,45 @@
       // Load noticias when page loads
       loadNoticias();
 
+      // Preview image for create form
+      $('#imagem-noticia').change(function() {
+        previewImage(this, '#imagem-preview-create');
+      });
+
+      // Preview image for edit form
+      $('#edit-imagem-noticia').change(function() {
+        previewImage(this, '#imagem-preview-edit');
+      });
+
       // Create noticia handler
       $('#save-noticia-btn').click(function() {
         const titulo = $('#titulo-noticia').val();
         const corpo = $('#corpo-noticia').val();
+        const imagemFile = $('#imagem-noticia')[0].files[0];
         
         if (!titulo || !corpo) {
-          alert('Por favor, preencha todos os campos.');
+          alert('Por favor, preencha todos os campos obrigatórios.');
           return;
+        }
+        
+        // Create FormData object to send file
+        const formData = new FormData();
+        formData.append('TITULO_NOTICIA', titulo);
+        formData.append('CORPO_NOTICIA', corpo);
+        if (imagemFile) {
+          formData.append('imagem', imagemFile);
         }
         
         $.ajax({
           url: '/api/noticias',
           type: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify({
-            TITULO_NOTICIA: titulo,
-            CORPO_NOTICIA: corpo
-          }),
+          data: formData,
+          processData: false, // Important for FormData
+          contentType: false, // Important for FormData
           success: function() {
             createModal.hide();
             $('#create-noticia-form')[0].reset();
+            $('#imagem-preview-create').hide();
             loadNoticias();
           },
           error: function(xhr) {
@@ -203,23 +248,31 @@
         const titulo = $('#edit-titulo-noticia').val();
         const corpo = $('#edit-corpo-noticia').val();
         const data = $('#edit-data-noticia').val();
+        const imagemFile = $('#edit-imagem-noticia')[0].files[0];
         
         if (!titulo || !corpo || !data) {
-          alert('Por favor, preencha todos os campos.');
+          alert('Por favor, preencha todos os campos obrigatórios.');
           return;
+        }
+        
+        // Create FormData object to send file
+        const formData = new FormData();
+        formData.append('TITULO_NOTICIA', titulo);
+        formData.append('CORPO_NOTICIA', corpo);
+        formData.append('DATA_NOTICIA', data);
+        if (imagemFile) {
+          formData.append('imagem', imagemFile);
         }
         
         $.ajax({
           url: `/api/noticias/${id}`,
           type: 'PUT',
-          contentType: 'application/json',
-          data: JSON.stringify({
-            TITULO_NOTICIA: titulo,
-            CORPO_NOTICIA: corpo,
-            DATA_NOTICIA: data
-          }),
+          data: formData,
+          processData: false, // Important for FormData
+          contentType: false, // Important for FormData
           success: function() {
             editModal.hide();
+            $('#imagem-preview-edit').hide();
             loadNoticias();
           },
           error: function(xhr) {
@@ -228,6 +281,20 @@
         });
       });
     });
+
+    function previewImage(input, previewSelector) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          $(previewSelector).attr('src', e.target.result).show();
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        $(previewSelector).hide();
+      }
+    }
 
     function loadNoticias() {
       $.ajax({
@@ -238,14 +305,20 @@
           tableBody.empty();
           
           if (data.length === 0) {
-            tableBody.html('<tr><td colspan="4" class="text-center">Nenhuma notícia encontrada.</td></tr>');
+            tableBody.html('<tr><td colspan="5" class="text-center">Nenhuma notícia encontrada.</td></tr>');
             return;
           }
           
           data.forEach(noticia => {
+            // Use default image if none is provided
+            const imageUrl = noticia.imagem_url || DEFAULT_IMAGE_URL;
+            
             tableBody.append(`
               <tr>
                 <td>${noticia.id_noticia}</td>
+                <td>
+                  <img src="${imageUrl}" alt="Miniatura" class="img-thumbnail" style="height: 50px; width: 50px; object-fit: cover;">
+                </td>
                 <td>${noticia.titulo_noticia}</td>
                 <td>${formatDate(noticia.data_noticia)}</td>
                 <td>
@@ -265,7 +338,7 @@
         },
         error: function(xhr) {
           $('#noticias-table-body').html(
-            '<tr><td colspan="4" class="text-center">Erro ao carregar notícias: ' + xhr.responseText + '</td></tr>'
+            '<tr><td colspan="5" class="text-center">Erro ao carregar notícias: ' + xhr.responseText + '</td></tr>'
           );
         }
       });
@@ -279,6 +352,16 @@
           $('#view-titulo-noticia').text(noticia.titulo_noticia);
           $('#view-data-noticia').text('Data: ' + formatDate(noticia.data_noticia));
           $('#view-corpo-noticia').html(formatContent(noticia.corpo_noticia));
+          
+          const viewImage = $('#view-imagem-noticia');
+          if (noticia.imagem_url) {
+            viewImage.attr('src', noticia.imagem_url).show();
+            $('#view-imagem-container').show();
+          } else {
+            viewImage.attr('src', DEFAULT_IMAGE_URL).show();
+            $('#view-imagem-container').show();
+          }
+          
           viewModal.show();
         },
         error: function(xhr) {
@@ -296,6 +379,20 @@
           $('#edit-titulo-noticia').val(noticia.titulo_noticia);
           $('#edit-corpo-noticia').val(noticia.corpo_noticia);
           $('#edit-data-noticia').val(noticia.data_noticia);
+          
+          // Display current image if exists
+          const currentImage = $('#edit-imagem-atual');
+          if (noticia.imagem_url) {
+            currentImage.attr('src', noticia.imagem_url).show();
+            $('#current-image-container').show();
+          } else {
+            currentImage.hide();
+            $('#current-image-container').hide();
+          }
+          
+          // Hide the preview image initially
+          $('#imagem-preview-edit').hide();
+          
           editModal.show();
         },
         error: function(xhr) {

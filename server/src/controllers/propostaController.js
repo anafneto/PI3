@@ -1,14 +1,21 @@
-const { models } = require("../config/db");
-const notificacoesController = require("./notificacoesPersonalizadasController");
+// Controlador de propostas
+// Este ficheiro gere todas as operações relativas às propostas - CRUD
+
+const { models } = require("../config/db"); // Importa os modelos Sequelize para acesso à base de dados
+const notificacoesController = require("./notificacoesPersonalizadasController"); // Importa o controlador de notificações
 
 const propostasController = {
+  // Método para obter todas as propostas com os seus relacionamentos
+  // Isto permite-nos ter informação completa sobre cada proposta numa única query
   getAllPropostas: async (req, res) => {
     try {
+      // Utilizamos 'findAll' com 'include' para obter os dados relacionados
+      // O parâmetro 'as' tem de corresponder exatamente ao nome definido nas associações do modelo
       const propostas = await models.propostas.findAll({
         include: [
           {
             model: models.empresas,
-            as: "id_empresa_empresa",
+            as: "id_empresa_empresa", // Nome da relação definido no modelo
           },
           {
             model: models.departamentos,
@@ -20,20 +27,25 @@ const propostasController = {
           },
           {
             model: models.competencias,
-            as: "id_competencia_competencias_proposta_competencia",
+            as: "id_competencia_competencias_proposta_competencia", // Relação many-to-many através da tabela de junção
           },
         ],
       });
+      // Devolve o resultado como JSON
       res.json(propostas);
     } catch (error) {
+      // Caso haja um erro, devolve um código 500 (erro interno do servidor)
       res.status(500).json({ message: error.message });
     }
   },
 
+  // Método para obter uma proposta específica pelo seu ID, incluindo todas as relações
   getPropostaById: async (req, res) => {
     try {
+      // O id da proposta vem dos parâmetros da URL
       const proposta = await models.propostas.findByPk(req.params.id, {
         include: [
+          // Incluímos as mesmas relações que em getAllPropostas
           {
             model: models.empresas,
             as: "id_empresa_empresa",
@@ -53,28 +65,33 @@ const propostasController = {
         ],
       });
 
+      // Se a proposta foi encontrada, devolve-a
       if (proposta) {
         res.json(proposta);
       } else {
+        // Se não foi encontrada, devolve um erro 404 (não encontrado)
         res.status(404).json({ message: "Proposal not found" });
       }
     } catch (error) {
+      // Em caso de erro, devolve um código 500
       res.status(500).json({ message: error.message });
     }
   },
 
+  // Método para criar uma nova proposta
   createProposta: async (req, res) => {
     try {
+      // Extrai os campos do body do pedido
       const {
         ID_DEPARTAMENTO,
         ID_TIPO_PROPOSTA,
         ID_EMPRESA,
         DESCRICAO_PROPOSTA,
         NOME_PROPOSTA,
-        competencias,
+        competencias, // Array
       } = req.body;
 
-      // Validate required fields
+      // Valida se todos os campos obrigatórios estão presentes
       if (
         !ID_DEPARTAMENTO ||
         !ID_TIPO_PROPOSTA ||
@@ -82,18 +99,19 @@ const propostasController = {
         !DESCRICAO_PROPOSTA ||
         !NOME_PROPOSTA
       ) {
+        // Se algum campo obrigatório estiver em falta, devolve um erro 400 (bad request)
         return res.status(400).json({
           message: "Missing required fields. All fields are required.",
         });
       }
 
-      // Check if departamento exists
+      // Verifica se o departamento existe na base de dados
       const departamento = await models.departamentos.findByPk(ID_DEPARTAMENTO);
       if (!departamento) {
         return res.status(404).json({ message: "Department not found" });
       }
 
-      // Check if tipo_proposta exists
+      // Verifica se o tipo de proposta existe
       const tipoProposta = await models.tipo_proposta.findByPk(
         ID_TIPO_PROPOSTA
       );
@@ -101,13 +119,13 @@ const propostasController = {
         return res.status(404).json({ message: "Proposal type not found" });
       }
 
-      // Check if empresa exists
+      // Verifica se a empresa existe
       const empresa = await models.empresas.findByPk(ID_EMPRESA);
       if (!empresa) {
         return res.status(404).json({ message: "Company not found" });
       }
 
-      // Create the proposta
+      // Cria a nova proposta na base de dados
       const newProposta = await models.propostas.create({
         id_departamento: ID_DEPARTAMENTO,
         id_tipo_proposta: ID_TIPO_PROPOSTA,
@@ -116,25 +134,30 @@ const propostasController = {
         nome_proposta: NOME_PROPOSTA,
       });
 
-      // Add competencias if provided
+      // Adiciona as competências se forem fornecidas
       if (competencias && competencias.length > 0) {
-        // First verify that all competencias exist
+        // Primeiro verifica se todas as competências existem na base de dados
+        // Extrai apenas os IDs das competências do array
         const competenciaIds = competencias.map((comp) => comp.ID_COMPETENCIA);
+
+        // Procura na base de dados por todas as competências com esses IDs
         const existingCompetencias = await models.competencias.findAll({
           where: {
             id_competencia: competenciaIds,
           },
         });
 
+        // Se o número de competências encontradas for diferente do número de IDs fornecidos,
+        // significa que algumas competências não existem na base de dados
         if (existingCompetencias.length !== competenciaIds.length) {
-          // Some competencias don't exist
-          await newProposta.destroy(); // Rollback the proposal creation
+          // Faz um rollback eliminando a proposta criada
+          await newProposta.destroy();
           return res.status(400).json({
             message: "One or more competencias do not exist in the database",
           });
         }
 
-        // All competencias exist, create associations
+        // Se todas as competências existem, cria as associações na tabela proposta_competencias
         const competenciasPromises = competencias.map(async (comp) => {
           return await models.proposta_competencias.create({
             id_proposta: newProposta.id_proposta,
@@ -142,14 +165,15 @@ const propostasController = {
           });
         });
 
+        // Espera que todas as associações sejam criadas
         await Promise.all(competenciasPromises);
 
-        // Process notifications for matching candidates
-        // This runs asynchronously without waiting for completion
+        // Processa notificações para candidatos que correspondem às competências da proposta
+        // Isto é executado de forma assíncrona sem esperar pela conclusão
         notificacoesController.processNewProposal(newProposta.id_proposta);
       }
 
-      // Fetch the created proposta with all its associations
+      // Busca a proposta criada com todas as suas associações para devolver na resposta
       const createdProposta = await models.propostas.findByPk(
         newProposta.id_proposta,
         {
@@ -174,14 +198,18 @@ const propostasController = {
         }
       );
 
+      // Devolve a proposta criada com código 201 (created)
       res.status(201).json(createdProposta);
     } catch (error) {
+      // Em caso de erro, devolve um código 400 (bad request)
       res.status(400).json({ message: error.message });
     }
   },
 
+  // Método para atualizar uma proposta existente
   updateProposta: async (req, res) => {
     try {
+      // Extrai os campos do body do pedido e o ID da proposta dos parâmetros da URL
       const {
         ID_DEPARTAMENTO,
         ID_TIPO_PROPOSTA,
@@ -192,13 +220,13 @@ const propostasController = {
       } = req.body;
       const propostaId = req.params.id;
 
-      // Check if the proposta exists
+      // Verifica se a proposta existe
       const proposta = await models.propostas.findByPk(propostaId);
       if (!proposta) {
         return res.status(404).json({ message: "Proposal not found" });
       }
 
-      // Validate departamento if provided
+      // Valida o departamento, se fornecido
       if (ID_DEPARTAMENTO) {
         const departamento = await models.departamentos.findByPk(
           ID_DEPARTAMENTO
@@ -208,7 +236,7 @@ const propostasController = {
         }
       }
 
-      // Validate tipo_proposta if provided
+      // Valida o tipo de proposta, se fornecido
       if (ID_TIPO_PROPOSTA) {
         const tipoProposta = await models.tipo_proposta.findByPk(
           ID_TIPO_PROPOSTA
@@ -218,7 +246,7 @@ const propostasController = {
         }
       }
 
-      // Validate empresa if provided
+      // Valida a empresa, se fornecida
       if (ID_EMPRESA) {
         const empresa = await models.empresas.findByPk(ID_EMPRESA);
         if (!empresa) {
@@ -226,7 +254,8 @@ const propostasController = {
         }
       }
 
-      // Update proposta fields
+      // Cria um objeto com os campos a atualizar
+      // Só inclui os campos que foram fornecidos no pedido
       const updateFields = {};
       if (ID_DEPARTAMENTO) updateFields.id_departamento = ID_DEPARTAMENTO;
       if (ID_TIPO_PROPOSTA) updateFields.id_tipo_proposta = ID_TIPO_PROPOSTA;
@@ -235,11 +264,12 @@ const propostasController = {
         updateFields.descricao_proposta = DESCRICAO_PROPOSTA;
       if (NOME_PROPOSTA) updateFields.nome_proposta = NOME_PROPOSTA;
 
+      // Atualiza a proposta com os novos campos
       await proposta.update(updateFields);
 
-      // Update competencias if provided
+      // Atualiza as competências, se fornecidas
       if (competencias && competencias.length > 0) {
-        // First verify that all competencias exist
+        // Verifica se todas as competências existem
         const competenciaIds = competencias.map((comp) => comp.ID_COMPETENCIA);
         const existingCompetencias = await models.competencias.findAll({
           where: {
@@ -253,12 +283,13 @@ const propostasController = {
           });
         }
 
-        // Delete existing associations
+        // Remove todas as associações existentes para esta proposta
+        // Isto permite-nos recriar todas as associações com as novas competências
         await models.proposta_competencias.destroy({
           where: { id_proposta: propostaId },
         });
 
-        // Create new associations
+        // Cria novas associações para cada competência
         const competenciasPromises = competencias.map(async (comp) => {
           return await models.proposta_competencias.create({
             id_proposta: propostaId,
@@ -266,10 +297,11 @@ const propostasController = {
           });
         });
 
+        // Espera que todas as associações sejam criadas
         await Promise.all(competenciasPromises);
       }
 
-      // Fetch the updated proposta with all its associations
+      // Busca a proposta atualizada com todas as suas associações para devolver na resposta
       const updatedProposta = await models.propostas.findByPk(propostaId, {
         include: [
           {
@@ -291,59 +323,66 @@ const propostasController = {
         ],
       });
 
+      // Devolve a proposta atualizada
       res.json(updatedProposta);
     } catch (error) {
+      // Em caso de erro, devolve um código 400
       res.status(400).json({ message: error.message });
     }
   },
 
+  // Método para eliminar uma proposta
   deleteProposta: async (req, res) => {
     try {
       const propostaId = req.params.id;
 
-      // Check if the proposta exists
+      // Verifica se a proposta existe
       const proposta = await models.propostas.findByPk(propostaId);
       if (!proposta) {
         return res.status(404).json({ message: "Proposal not found" });
       }
 
-      // Delete associated competencias first
+      // Primeiro apaga todas as competências associadas a esta proposta
+      // Isto é necessário devido às restrições de chave estrangeira
       await models.proposta_competencias.destroy({
         where: { id_proposta: propostaId },
       });
 
-      // Delete any associated notifications
+      // Apaga todas as notificações associadas a esta proposta
       await models.notificacoes_personalizadas.destroy({
         where: { id_proposta: propostaId },
       });
 
-      // Delete the proposta
+      // Por fim, apaga a própria proposta
       await proposta.destroy();
 
+      // Devolve uma mensagem de sucesso
       res.json({ message: "Proposal deleted successfully" });
     } catch (error) {
+      // Em caso de erro, devolve um código 500
       res.status(500).json({ message: error.message });
     }
   },
 
+  // Método para adicionar uma competência a uma proposta existente
   addCompetencia: async (req, res) => {
     try {
       const propostaId = req.params.id;
       const { ID_COMPETENCIA } = req.body;
 
-      // Check if the proposta exists
+      // Verifica se a proposta existe
       const proposta = await models.propostas.findByPk(propostaId);
       if (!proposta) {
         return res.status(404).json({ message: "Proposal not found" });
       }
 
-      // Check if the competencia exists
+      // Verifica se a competência existe
       const competencia = await models.competencias.findByPk(ID_COMPETENCIA);
       if (!competencia) {
         return res.status(404).json({ message: "Competencia not found" });
       }
 
-      // Check if the association already exists
+      // Verifica se a associação já existe
       const existingAssoc = await models.proposta_competencias.findOne({
         where: {
           id_proposta: propostaId,
@@ -352,18 +391,19 @@ const propostasController = {
       });
 
       if (existingAssoc) {
+        // Se a associação já existe, retorna um erro 400
         return res
           .status(400)
           .json({ message: "Proposal already has this competencia" });
       }
 
-      // Create the association
+      // Cria a associação entre a proposta e a competência
       await models.proposta_competencias.create({
         id_proposta: propostaId,
         id_competencia: ID_COMPETENCIA,
       });
 
-      // Fetch the updated proposta
+      // Busca a proposta atualizada para devolver
       const updatedProposta = await models.propostas.findByPk(propostaId, {
         include: [
           {
@@ -379,12 +419,13 @@ const propostasController = {
     }
   },
 
+  // Método para remover uma competência de uma proposta
   removeCompetencia: async (req, res) => {
     try {
       const propostaId = req.params.id;
       const competenciaId = req.params.competenciaId;
 
-      // Check if the association exists
+      // Verifica se a associação entre proposta e competência existe
       const association = await models.proposta_competencias.findOne({
         where: {
           id_proposta: propostaId,
@@ -393,15 +434,16 @@ const propostasController = {
       });
 
       if (!association) {
+        // Se a associação não existe, retorna um erro 404
         return res
           .status(404)
           .json({ message: "Proposal does not have this competencia" });
       }
 
-      // Remove the association
+      // Remove a associação
       await association.destroy();
 
-      // Fetch the updated proposta
+      // Busca a proposta atualizada para devolver
       const updatedProposta = await models.propostas.findByPk(propostaId, {
         include: [
           {
@@ -417,24 +459,28 @@ const propostasController = {
     }
   },
 
+  // Método para obter todas as propostas que têm uma determinada competência
+  // Útil para filtrar propostas por competência
   getPropostasByCompetencia: async (req, res) => {
     try {
       const competenciaId = req.params.competenciaId;
 
-      // Check if the competencia exists
+      // Verifica se a competência existe
       const competencia = await models.competencias.findByPk(competenciaId);
       if (!competencia) {
         return res.status(404).json({ message: "Competencia not found" });
       }
 
-      // Find all propostas with this competencia
+      // Encontra todas as propostas que têm esta competência
+      // Usamos o 'include' com um 'where' na relação para filtrar as propostas
       const propostas = await models.propostas.findAll({
         include: [
           {
             model: models.competencias,
             as: "id_competencia_competencias_proposta_competencia",
-            where: { id_competencia: competenciaId },
+            where: { id_competencia: competenciaId }, // Filtra pela competência específica
           },
+          // Inclui as outras relações para ter informação completa
           {
             model: models.empresas,
             as: "id_empresa_empresa",
@@ -457,4 +503,5 @@ const propostasController = {
   },
 };
 
+// Exporta o controlador para ser usado por outras partes da aplicação
 module.exports = propostasController;
