@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const ProposalCard = () => {
-  const proposals = Array(8).fill({
+  const proposals = Array(1).fill({
     title: "Front-end Developer",
     company: "Deloitte",
     description:

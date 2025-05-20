@@ -39,12 +39,12 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/noticias" element={<News />} />
             <Route path="/noticias/:id" element={<NewsDetails />} />
-            <Route path="/admin" element={<DashboardAdmin/>} />
             <Route path="/credentials" element={<PedirCredenciais />} />
+            <Route path="/admin" element={<DashboardAdmin/>} />
             <Route path="/admin/alterar-gestor" element={<DashboardAdminAlterar/>} />
             <Route path="/admin/criar-gestor" element={<DashboardAdminCriar/>} /> 
             <Route path="*" element={<NotFoundPage />} /> {/* Rota par ao erro 404 */}
-            <Route path="/Propostas" element={<DashboardPropostas />} />
+            <Route path="admin/propostas" element={<DashboardPropostas />} />
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>
