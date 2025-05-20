@@ -1,45 +1,66 @@
 import React, { useState } from 'react';
 
 const Alterar = ({
-  titulo = "Editar",
-  subtitulo = "Gestor de Departamento",
-  labels = {
-    nomeCompleto: "Nome Completo",
-    departamento: "Departamento",
-    email: "Email",
-    password: "Password",
-    confirmarPassword: "Confirmar Password"
-  },
-  textoRemover = "Remover Gestor de Departamento",
-  textoGuardar = "Guardar alterações",
-  opcoesDepartamento = [],
-  requiredFields = [],
-  mostrarBotaoRemover = true // <-- NOVA PROP
+  titulo,
+  subtitulo,
+  campos,
+  opcoes = {},
+  mostrarBotaoRemover = false,
+  textoGuardar = 'Guardar',
+  textoRemover = 'Remover',
+  onSubmit,
+  onRemover,
 }) => {
-  const [formData, setFormData] = useState({
-    nomeCompleto: '',
-    departamento: '',
-    email: '',
-    password: '',
-    confirmarPassword: '',
-  });
-
+  const initialState = campos.reduce((acc, campo) => {
+    acc[campo.nome] = campo.tipo === 'checkbox' ? false : '';
+    return acc;
+  }, {});
+  const [formData, setFormData] = useState(initialState);
   const [errors, setErrors] = useState({});
+  const [novaCompetencia, setNovaCompetencia] = useState("");
+
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: '' }));
+    const { name, value, type, checked } = e.target;
+    // Suporte para chips de competências
+    if (name === "competencias") {
+      setNovaCompetencia(value);
+      setErrors((prev) => ({ ...prev, competencias: "" }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
-  const isRequired = (field) => requiredFields.includes(field);
+  // Adicionar competência ao array
+  const handleAddCompetencia = (e) => {
+    e.preventDefault();
+    const valor = novaCompetencia.trim();
+    if (valor && !formData.competencias?.includes(valor)) {
+      setFormData((prev) => ({
+        ...prev,
+        competencias: [...(prev.competencias || []), valor],
+      }));
+      setNovaCompetencia("");
+    }
+  };
+
+  const handleRemoveCompetencia = (valor) => {
+    setFormData((prev) => ({
+      ...prev,
+      competencias: prev.competencias.filter((c) => c !== valor),
+    }));
+  };
 
   const validate = () => {
     const newErrors = {};
 
-    requiredFields.forEach((field) => {
-      if (!formData[field]) {
-        newErrors[field] = 'Campo obrigatório';
+    campos.forEach((campo) => {
+      if (campo.obrigatorio && !formData[campo.nome]) {
+        newErrors[campo.nome] = 'Campo obrigatório';
       }
     });
 
@@ -54,109 +75,123 @@ const Alterar = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log('Dados enviados:', formData);
-      alert('Alterações salvas com sucesso!');
+      onSubmit?.(formData);
     }
   };
 
-  const handleRemover = () => {
-    console.log('Gestor removido');
-    alert('Gestor removido!');
-  };
-
   return (
-    <div className="container mt-5" style={{ maxWidth: '500px' }}>
+    <div className="container mt-5" style={{ maxWidth: '600px' }}>
       <h4 className="text-center fw-bold">{titulo}</h4>
-      <p className="text-center text-muted mb-4">{subtitulo}</p>
+      {subtitulo && <p className="text-center text-muted mb-4">{subtitulo}</p>}
+
       <form onSubmit={handleSubmit}>
-        {/* Nome Completo */}
-        <div className="mb-3">
-          <label className="form-label">
-            {labels.nomeCompleto} {isRequired("nomeCompleto") && <span className="text-danger">*</span>}
-          </label>
-          <input
-            type="text"
-            className={`form-control ${errors.nomeCompleto ? 'is-invalid' : ''}`}
-            name="nomeCompleto"
-            value={formData.nomeCompleto}
-            onChange={handleChange}
-          />
-          {errors.nomeCompleto && <div className="invalid-feedback">{errors.nomeCompleto}</div>}
-        </div>
+        {campos.map((campo) => {
+          const erro = errors[campo.nome];
+          const valor = formData[campo.nome];
 
-        {/* Departamento */}
-        <div className="mb-3">
-          <label className="form-label">
-            {labels.departamento} {isRequired("departamento") && <span className="text-danger">*</span>}
-          </label>
-          <select
-            className={`form-select ${errors.departamento ? 'is-invalid' : ''}`}
-            name="departamento"
-            value={formData.departamento}
-            onChange={handleChange}
-          >
-            <option value="">Escolher</option>
-            {opcoesDepartamento.map((opcao, index) => (
-              <option key={index} value={opcao.value}>
-                {opcao.label}
-              </option>
-            ))}
-          </select>
-          {errors.departamento && <div className="invalid-feedback">{errors.departamento}</div>}
-        </div>
+          if (campo.tipo === 'select') {
+            return (
+              <div className="mb-3" key={campo.nome}>
+                <label className="form-label">
+                  {campo.label} {campo.obrigatorio && <span className="text-danger">*</span>}
+                </label>
+                <select
+                  className={`form-select ${erro ? 'is-invalid' : ''}`}
+                  name={campo.nome}
+                  value={valor}
+                  onChange={handleChange}
+                >
+                  {(opcoes[campo.nome] || []).map((opt, i) => (
+                    <option key={i} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+                {erro && <div className="invalid-feedback">{erro}</div>}
+              </div>
+            );
+          }
 
-        {/* Email */}
-        <div className="mb-3">
-          <label className="form-label">
-            {labels.email} {isRequired("email") && <span className="text-danger">*</span>}
-          </label>
-          <input
-            type="email"
-            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-        </div>
+          if (campo.tipo === 'checkbox') {
+            return (
+              <div className="form-check mb-3" key={campo.nome}>
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  name={campo.nome}
+                  checked={valor}
+                  onChange={handleChange}
+                />
+                <label className="form-check-label">{campo.label}</label>
+              </div>
+            );
+          }
 
-        {/* Password */}
-        <div className="mb-3">
-          <label className="form-label">
-            {labels.password} {isRequired("password") && <span className="text-danger">*</span>}
-          </label>
-          <input
-            type="password"
-            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-        </div>
+          // Campo especial para competências (chips)
+          if (campo.nome === "competencias") {
+            return (
+              <div className="mb-3" key={campo.nome}>
+                <label className="form-label">
+                  {campo.label} {campo.obrigatorio && <span className="text-danger">*</span>}
+                </label>
+                <div className="d-flex mb-2">
+                  <input
+                    type="text"
+                    className={`form-control me-2 ${erro ? 'is-invalid' : ''}`}
+                    name="competencias"
+                    value={novaCompetencia}
+                    onChange={handleChange}
+                    placeholder="Adicionar competência"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddCompetencia(e);
+                      }
+                    }}
+                  />
+                  
+                </div>
+                {erro && <div className="invalid-feedback d-block">{erro}</div>}
+                <div className="d-flex flex-wrap gap-2 mt-2">
+                  {(formData.competencias || []).map((comp, idx) => (
+                    <span
+                      key={idx}
+                      className="badge border border-dark text-dark d-flex align-items-center mt-1"
+                      style={{ fontSize: "1rem" }}
+                    >
+                      {comp}
+                      <button
+                        type="button"
+                        className="btn-close btn-close-sm ms-2"
+                        aria-label="Remover"
+                        style={{ fontSize: "0.7em" }}
+                        onClick={() => handleRemoveCompetencia(comp)}
+                      />
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          }
 
-        {/* Confirmar Password */}
-        <div className="mb-4">
-          <label className="form-label">
-            {labels.confirmarPassword} {isRequired("confirmarPassword") && <span className="text-danger">*</span>}
-          </label>
-          <input
-            type="password"
-            className={`form-control ${errors.confirmarPassword ? 'is-invalid' : ''}`}
-            name="confirmarPassword"
-            value={formData.confirmarPassword}
-            onChange={handleChange}
-          />
-          {errors.confirmarPassword && <div className="invalid-feedback">{errors.confirmarPassword}</div>}
-        </div>
+          return (
+            <div className="mb-3" key={campo.nome}>
+              <label className="form-label">
+                {campo.label} {campo.obrigatorio && <span className="text-danger">*</span>}
+              </label>
+              <input
+                type={campo.tipo}
+                className={`form-control ${erro ? 'is-invalid' : ''}`}
+                name={campo.nome}
+                value={valor}
+                onChange={handleChange}
+              />
+              {erro && <div className="invalid-feedback">{erro}</div>}
+            </div>
+          );
+        })}
 
-        <div className={`d-flex ${mostrarBotaoRemover && textoRemover ? 'justify-content-between' : 'justify-content-end'}`}>
-          {mostrarBotaoRemover && textoRemover && (
-            <button
-              type="button"
-              className="btn btn-outline-danger"
-              onClick={handleRemover}
-            >
+        <div className={`d-flex ${mostrarBotaoRemover ? 'justify-content-between' : 'justify-content-end'}`}>
+          {mostrarBotaoRemover && (
+            <button type="button" className="btn btn-outline-danger" onClick={onRemover}>
               {textoRemover}
             </button>
           )}
