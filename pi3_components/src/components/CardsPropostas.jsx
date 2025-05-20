@@ -50,10 +50,10 @@ const ProposalCard = () => {
     </div>
   ))}
 </div>
+<div className="d-flex justify-content-end mt-4">
+  <button className="btn btn-dark">Ver mais</button>
+</div>
 
-      <div className="d-flex justify-content-end mt-4">
-        <button className="btn btn-dark">Ver mais</button>
-      </div>
     </div>
   );
 };
