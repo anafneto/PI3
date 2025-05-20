@@ -45,7 +45,7 @@ const Navbar = ({ logo }) => {
     navigate("/");
   };
   const handleNewsClick = () => {
-    navigate("/news");
+    navigate("/noticias");
   };
   const handleCredentialsClick = () => {
     navigate("/credentials");

@@ -15,6 +15,7 @@ import logo from "./assets/logo.png";
 import Footer from "./components/Footer";
 import "./App.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import DashboardPropostas from "./DashboardPropostas.jsx";
 
 const contactInfo = {
   address:
@@ -37,14 +38,15 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/news/:id" element={<NewsDetails />} />
+            <Route path="/noticias" element={<News />} />
+            <Route path="/noticias/:id" element={<NewsDetails />} />
             <Route path="/admin" element={<DashboardAdmin/>} />
             <Route path="/credentials" element={<PedirCredenciais />} />
-            <Route path="/adminalterar" element={<DashboardAdminAlterar/>} />
-            <Route path="/admincriar" element={<DashboardAdminCriar/>} /> 
             <Route path="/admincriarestudante" element={<DashboardAdminCriarEstudante/>} />
+            <Route path="/admin/alterar-gestor" element={<DashboardAdminAlterar/>} />
+            <Route path="/admin/criar-gestor" element={<DashboardAdminCriar/>} /> 
             <Route path="*" element={<NotFoundPage />} /> {/* Rota par ao erro 404 */}
+            <Route path="/Propostas" element={<DashboardPropostas />} />
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>

@@ -318,7 +318,6 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     flex-wrap: wrap;
-    margin-bottom: 20px;
   }
 
 .small-box {
@@ -327,8 +326,6 @@ body {
   position: relative;
   display: block;
   margin-bottom: 1.25rem;
-  width: 300px;
-
 }
 
 .small-box>.inner {

@@ -8,7 +8,7 @@ function News() {
   const navigate = useNavigate();
 
   const handleCardClick = (id) => {
-    navigate(`/news/${id}`);
+    navigate(`/noticias/${id}`);
   };
   
   return (
