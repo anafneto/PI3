@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "./components/admin/Sidebar.jsx";
 import Breadcrumb from "./components/Breadcrumb";
-import Alterar from "./components/admin/Alterar.jsx";
+import Alterar from "./components/admin/alterar.jsx";
 
 const DashboardAdminCriar = () => {
   const [formData, setFormData] = useState({
@@ -54,9 +54,9 @@ const DashboardAdminCriar = () => {
           <Sidebar />
         </div>
         <div className="col-md-9 col-lg-10">
-          <Breadcrumb />
           <div className="container mt-4">
             <div className="row justify-content-center">
+          <Breadcrumb />
               <Alterar
                 titulo="Criar Novo"
                 subtitulo="Gestor de Departamento"

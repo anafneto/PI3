@@ -14,6 +14,7 @@ const Breadcrumb = () => {
                 {paths.map((path, index) => {
                     const href = `/${paths.slice(0, index + 1).join("/")}`;
                     const isLast = index === paths.length - 1;
+                    const displayPath = path.replace(/-/g, " "); // Substituir "-" por espaço
 
                     return (
                         <li
@@ -22,9 +23,9 @@ const Breadcrumb = () => {
                             aria-current={isLast ? "page" : undefined}
                         >
                             {isLast ? (
-                                path
+                                displayPath
                             ) : (
-                                <Link to={href} className="text-decoration-none">{path}</Link>
+                                <Link to={href} className="text-decoration-none">{displayPath}</Link>
                             )}
                         </li>
                     );

@@ -2,7 +2,7 @@ import React from "react";
 
 const SmallBox = ({ color, value, label, iconPath, link }) => {
   return (
-    <div className={`col-lg mb-4`}>
+    <div className={`col-lg mb-2`}>
       <div className={`small-box text-bg-${color}`}>
         <div className="inner">
           <h3>{value}</h3>

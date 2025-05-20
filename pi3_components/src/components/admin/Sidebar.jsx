@@ -45,11 +45,11 @@ const Sidebar = () => {
           </button>
           {gestoresOpen && (
             <div>
-              <a className="nav-link d-flex align-items-center ps-4" href="/admincriar">
+              <a className="nav-link d-flex align-items-center ps-4" href="/admin/criar-gestor">
                 <span className="me-auto">Criar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
-              <a className="nav-link d-flex align-items-center ps-4" href="/adminalterar">
+              <a className="nav-link d-flex align-items-center ps-4" href="/admin/alterar-gestor">
                 <span className="me-auto" >Alterar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
