@@ -1,50 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import Sidebar from "./components/admin/Sidebar.jsx";
 import Breadcrumb from "./components/Breadcrumb";
 import Alterar from "./components/admin/alterar.jsx";
 
 const DashboardAdminCriar = () => {
-  const [formData, setFormData] = useState({
-    nomeCompleto: "",
-    departamento: "",
-    email: "",
-    password: "",
-    confirmarPassword: ""
-  });
-
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-  };
-
-  const handleSubmit = () => {
-    const newErrors = {};
-    const requiredFields = ["nomeCompleto", "departamento", "email", "password", "confirmarPassword"];
-
-    requiredFields.forEach((field) => {
-      if (!formData[field]) {
-        newErrors[field] = "Campo obrigatório";
-      }
-    });
-
-    if (
-      formData.password &&
-      formData.confirmarPassword &&
-      formData.password !== formData.confirmarPassword
-    ) {
-      newErrors.confirmarPassword = "As senhas não coincidem";
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
+  const handleSubmit = (dados) => {
     alert("Dados salvos com sucesso!");
-    console.log(formData);
+    console.log(dados);
   };
 
   return (
@@ -61,25 +23,24 @@ const DashboardAdminCriar = () => {
                 titulo="Criar Novo"
                 subtitulo="Gestor de Departamento"
                 textoGuardar="Salvar"
-                mostrarBotaoRemover={false} //Botão REMOVER ocultado aqui
-                labels={{
-                  nomeCompleto: "Nome do Responsável",
-                  departamento: "Departamento",
-                  email: "Email",
-                  password: "Inserir Password",
-                  confirmarPassword: "Repetir Password"
-                }}
-                formData={formData}
-                errors={errors}
-                onChange={handleChange}
-                onSubmit={handleSubmit}
-                opcoesDepartamento={[
-                  { value: 'informatica', label: 'Informática' },
-                  { value: 'gestao', label: 'Gestão' },
-                  { value: 'ambiente', label: 'Ambiente' },
-                  { value: 'eletrotecnica', label: 'Eletrotécnica' }
+                mostrarBotaoRemover={false} // não mostra botão "Remover"
+                campos={[
+                  { nome: "nomeCompleto", label: "Nome do Responsável", tipo: "text", obrigatorio: true },
+                  { nome: "departamento", label: "Departamento", tipo: "select", obrigatorio: true },
+                  { nome: "email", label: "Email", tipo: "email", obrigatorio: true },
+                  { nome: "password", label: "Inserir Password", tipo: "password", obrigatorio: true },
+                  { nome: "confirmarPassword", label: "Repetir Password", tipo: "password", obrigatorio: true },
                 ]}
-                requiredFields={["nomeCompleto", "departamento", "email", "password", "confirmarPassword"]}
+                opcoes={{
+                  departamento: [
+                    { value: "", label: "Escolher departamento" },
+                    { value: "informatica", label: "Informática" },
+                    { value: "gestao", label: "Gestão" },
+                    { value: "ambiente", label: "Ambiente" },
+                    { value: "eletrotecnica", label: "Eletrotécnica" },
+                  ]
+                }}
+                onSubmit={handleSubmit}
               />
             </div>
           </div>

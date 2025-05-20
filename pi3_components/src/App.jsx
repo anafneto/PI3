@@ -6,6 +6,7 @@ import CriarGestor from "./CriarGestor";
 import DashboardAdmin from "./DashboardAdmin";
 import DashboardAdminAlterar from "./DashboardAdminAlterar";
 import DashboardAdminCriar from "./DashboardAdminCriar";
+import DashboardAdminCriarEstudante from "./DashboardAdminCriarEstudante.jsx";
 import NewsDetails from "./NewsDetails";
 import NotFoundPage from "./Erro404.jsx";
 import PedirCredenciais from "./PedirCredenciais";
@@ -41,6 +42,7 @@ function App() {
             <Route path="/noticias/:id" element={<NewsDetails />} />
             <Route path="/credentials" element={<PedirCredenciais />} />
             <Route path="/admin" element={<DashboardAdmin/>} />
+            <Route path="/admincriarestudante" element={<DashboardAdminCriarEstudante/>} />
             <Route path="/admin/alterar-gestor" element={<DashboardAdminAlterar/>} />
             <Route path="/admin/criar-gestor" element={<DashboardAdminCriar/>} /> 
             <Route path="*" element={<NotFoundPage />} /> {/* Rota par ao erro 404 */}
