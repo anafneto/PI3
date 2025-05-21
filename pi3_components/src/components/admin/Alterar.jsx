@@ -147,15 +147,21 @@ const Alterar = ({
                       }
                     }}
                   />
-                  
+
                 </div>
                 {erro && <div className="invalid-feedback d-block">{erro}</div>}
                 <div className="d-flex flex-wrap gap-2 mt-2">
                   {(formData.competencias || []).map((comp, idx) => (
                     <span
                       key={idx}
-                      className="badge border border-dark text-dark d-flex align-items-center mt-1"
-                      style={{ fontSize: "1rem" }}
+                      className="badge d-flex align-items-center mt-1"
+                      style={{
+                        fontSize: "1rem",
+                        backgroundColor: "#F5F6F7",
+                        color: "#6c757d",
+                        border: "1px solid #D3D6D8",
+                        fontWeight: "normal",
+                      }}
                     >
                       {comp}
                       <button
@@ -166,6 +172,7 @@ const Alterar = ({
                         onClick={() => handleRemoveCompetencia(comp)}
                       />
                     </span>
+
                   ))}
                 </div>
               </div>
