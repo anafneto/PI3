@@ -30,7 +30,7 @@ const DashboardNoticias = () => {
                 titulo="Empresas Disponíveis"
                 showFilters={false}                 // Mostrar ou não filtros
                 proposals={propostas}               // Lista de propostas
-                editarHref="/admin/alterar-empresa" // Link 
+                editarHref="/dashboard/alterar-empresa" // Link 
               />
             </div>
           </div>

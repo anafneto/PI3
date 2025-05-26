@@ -68,7 +68,7 @@ function App() {
             <Route path="/dashboard/empresas" element={<DashboardEmpresas />} />
             <Route path="/dashboard/gestores" element={<DashboardGestores />} />
             <Route path="*" element={<NotFoundPage />} /> {/* Rota par ao erro 404 */}
-            <Route path="admin/propostas" element={<DashboardPropostas />} />
+            <Route path="dashboard/propostas" element={<DashboardPropostas />} />
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>

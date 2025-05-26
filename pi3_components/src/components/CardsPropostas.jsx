@@ -7,7 +7,7 @@ const ProposalCard = ({
   titulo = "Propostas",
   proposals = [],
   showFilters = true,
-  editarHref = "/admin/alterar-proposta", // <- NOVA PROP
+  editarHref = "/dashboard/alterar-proposta", // <- NOVA PROP
 }) => {
   const navigate = useNavigate();
   const [propostas, setPropostas] = React.useState(proposals);
@@ -66,7 +66,7 @@ const ProposalCard = ({
       <div className="d-flex justify-content-end mt-4">
         <button
           className="btn btn-dark"
-          onClick={() => navigate("/admin/criar-proposta")}
+          onClick={() => navigate("/dashboard/criar-proposta")}
         >
           Criar Proposta
         </button>

@@ -31,7 +31,7 @@ const HistoricoNoticias = () => {
             <Breadcrumb />
             <div className="row justify-content-center">
               <div className="col-10 col-md-9 col-lg-10">
-                <NewsTable data={newsData} editarHref="/admin/alterar-noticia" />
+                <NewsTable data={newsData} editarHref="/dashboard/alterar-noticia" />
               </div>
             </div>
           </div>

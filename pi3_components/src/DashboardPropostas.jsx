@@ -30,7 +30,7 @@ const DashboardAdminPropostas = () => {
                 titulo="Propostas Disponíveis"
                 showFilters={true}                 // Mostrar ou não filtros
                 proposals={propostas}              // Lista de propostas
-                editarHref="/admin/alterar-proposta" // Link 
+                editarHref="/dashboard/alterar-proposta" // Link 
               />
             </div>
           </div>

@@ -19,7 +19,7 @@ const Sidebar = () => {
       />
       <nav className="nav flex-column">
         {/* Dashboard (sem dropdown) */}
-        <a className="nav-link d-flex align-items-center" href="/admin">
+        <a className="nav-link d-flex align-items-center" href="/dashboard">
           <i className="bi bi-grid" style={{ fontSize: 16 }} />
           <span className="ms-2">Dashboard</span>
         </a>
