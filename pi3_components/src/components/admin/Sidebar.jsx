@@ -198,10 +198,7 @@ const Sidebar = () => {
                 <span className="me-auto">Criar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
-              <a className="nav-link d-flex align-items-center ps-4" href="/historico-noticias">
-                <span className="me-auto">Histórico</span>
-                <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
-              </a>
+
             </div>
           )}
         </div>
