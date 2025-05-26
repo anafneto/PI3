@@ -24,9 +24,6 @@ const NewsTable = ({ data, editarHref = "/admin/alterar-noticia" }) => {
 
   return (
     <div className="card">
-      <div className="card-header">
-        <h5 className="card-title">Histórico de Notícias</h5>
-      </div>
       <div className="px-3 py-0">
         <table className="table table-hover">
           <thead className="thead-light">
