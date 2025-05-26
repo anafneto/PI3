@@ -76,7 +76,7 @@ const Sidebar = () => {
           </button>
           {estudantesOpen && (
             <div>
-              <a className="nav-link d-flex align-items-center ps-4" href="/admincriarestudante">
+              <a className="nav-link d-flex align-items-center ps-4" href="/admin/criar-estudante">
                 <span className="me-auto">Criar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
