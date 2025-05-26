@@ -4,6 +4,15 @@ import CardListMobile from "./OportunidadesMobile"; // Importe o componente alte
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 
+const HomeOportunidades = () => {
+  const [isWide, setIsWide] = useState(window.innerWidth > 900);
+  useEffect(() => {
+    const handleResize = () => setIsWide(window.innerWidth > 900);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const cardData = [
   {
       icon: "bi bi-bell",
       title: "Alertas de Novas Oportunidades",
@@ -36,14 +45,6 @@ import "bootstrap-icons/font/bootstrap-icons.css";
     size: "big3"
   }
 ];
-
-const HomeOportunidades = () => {
-  const [isWide, setIsWide] = useState(window.innerWidth > 900);
-  useEffect(() => {
-    const handleResize = () => setIsWide(window.innerWidth > 900);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   return (
     <div className="p-5">
