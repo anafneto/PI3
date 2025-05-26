@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-
-
 const Sidebar = () => {
   const [gestoresOpen, setGestoresOpen] = useState(false);
   const [estudantesOpen, setEstudantesOpen] = useState(false);
@@ -34,7 +32,7 @@ const Sidebar = () => {
             <div
               className="d-flex align-items-center"
               role="button"
-              onClick={() => (window.location.href = "/admin/gestores")}
+              onClick={() => (window.location.href = "/dashboard/gestores")}
               style={{ color: "#fff" }}
             >
               <i className="bi-person-gear" style={{ fontSize: 16 }} />
@@ -54,7 +52,7 @@ const Sidebar = () => {
             <div>
               <a
                 className="nav-link d-flex align-items-center ps-4"
-                href="/admin/criar-empresa"
+                href="/dashboard/criar-empresa"
               >
                 <span className="me-auto">Criar</span>
                 <i
@@ -75,7 +73,7 @@ const Sidebar = () => {
             <div
               className="d-flex align-items-center"
               role="button"
-              onClick={() => (window.location.href = "/admin/estudante")}
+              onClick={() => (window.location.href = "/dashboard/estudante")}
               style={{ color: "#fff" }}
             >
               <i className="bi bi-person" style={{ fontSize: 16 }} />
@@ -93,7 +91,7 @@ const Sidebar = () => {
           </div>
           {estudantesOpen && (
             <div>
-              <a className="nav-link d-flex align-items-center ps-4" href="/admin/criar-estudante">
+              <a className="nav-link d-flex align-items-center ps-4" href="/dashboard/criar-estudante">
                 <span className="me-auto">Criar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
@@ -110,7 +108,7 @@ const Sidebar = () => {
             <div
               className="d-flex align-items-center"
               role="button"
-              onClick={() => (window.location.href = "/admin/empresas")}
+              onClick={() => (window.location.href = "/dashboard/empresas")}
               style={{ color: "#fff" }}
             >
               <i className="bi bi-briefcase" style={{ fontSize: 16 }} />
@@ -128,7 +126,7 @@ const Sidebar = () => {
           </div>
           {empresasOpen && (
             <div>
-              <a className="nav-link d-flex align-items-center ps-4" href="/admin/criar-empresa">
+              <a className="nav-link d-flex align-items-center ps-4" href="/dashboard/criar-empresa">
                 <span className="me-auto">Criar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
@@ -142,7 +140,7 @@ const Sidebar = () => {
             <div
               className="d-flex align-items-center"
               role="button"
-              onClick={() => (window.location.href = "/admin/propostas")}
+              onClick={() => (window.location.href = "/dashboard/propostas")}
               style={{ color: "#fff" }}
             >
               <i className="bi bi-file-earmark-text" style={{ fontSize: 16 }} />
@@ -160,11 +158,11 @@ const Sidebar = () => {
           </div>
           {propostasOpen && (
             <div>
-              <a className="nav-link d-flex align-items-center ps-4" href="/admin/criar-proposta">
+              <a className="nav-link d-flex align-items-center ps-4" href="/dashboard/criar-proposta">
                 <span className="me-auto">Criar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
-              <a className="nav-link d-flex align-items-center ps-4" href="/admin/historico-propostas">
+              <a className="nav-link d-flex align-items-center ps-4" href="/dashboard/historico-propostas">
                 <span className="me-auto">Histórico</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
@@ -178,7 +176,7 @@ const Sidebar = () => {
             <div
               className="d-flex align-items-center"
               role="button"
-              onClick={() => (window.location.href = "/admin/noticias")}
+              onClick={() => (window.location.href = "/dashboard/noticias")}
               style={{ color: "#fff" }}
             >
               <i className="bi bi-calendar" style={{ fontSize: 16 }} />
@@ -196,7 +194,7 @@ const Sidebar = () => {
           </div>
           {noticiasOpen && (
             <div>
-              <a className="nav-link d-flex align-items-center ps-4" href="/admin/criar-noticia">
+              <a className="nav-link d-flex align-items-center ps-4" href="/dashboard/criar-noticia">
                 <span className="me-auto">Criar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
