@@ -8,6 +8,9 @@ import DashboardAdminAlterar from "./DashboardAdminAlterar";
 import DashboardAdminCriar from "./DashboardAdminCriar";
 import DashboardAdminCriarEstudante from "./DashboardAdminCriarEstudante";
 import DashboardAdminCriarNoticia from "./DashboardAdminCriarNoticia.jsx";
+import DashboardAdminCriarEmpresa from "./DashboardAdminCriarEmpresa.jsx";
+import DashboardAdminCriarProposta from "./DashboardAdminCriarProposta.jsx";
+import DashboardAdminAlterarEmpresa from "./DashboardAdminAlterarEmpresa.jsx";
 import NewsDetails from "./NewsDetails";
 import NotFoundPage from "./Erro404.jsx";
 import PedirCredenciais from "./PedirCredenciais";
@@ -47,6 +50,9 @@ function App() {
             <Route path="/admin/alterar-gestor" element={<DashboardAdminAlterar/>} />
             <Route path="/admin/criar-gestor" element={<DashboardAdminCriar/>} /> 
             <Route path="/admin/criar-noticia" element={<DashboardAdminCriarNoticia />} />
+            <Route path="/admin/criar-proposta" element={<DashboardAdminCriarProposta />} />
+            <Route path="/admin/criar-empresa" element={<DashboardAdminCriarEmpresa />} />
+            <Route path="/admin/alterar-empresa" element={<DashboardAdminAlterarEmpresa />} />
             <Route path="*" element={<NotFoundPage />} /> {/* Rota par ao erro 404 */}
             <Route path="admin/propostas" element={<DashboardPropostas />} />
           </Routes>

@@ -9,7 +9,7 @@ const DashboardAdminCriarEstudante = () => {
     numeroEstudante: "",
     curso: "",
     email: "",
-    competencias: [], // ← chips
+    competencias: [],
     password: "",
     confirmarPassword: ""
   });
@@ -56,9 +56,9 @@ const DashboardAdminCriarEstudante = () => {
           <Sidebar />
         </div>
         <div className="col-md-9 col-lg-10">
-          <Breadcrumb />
           <div className="container mt-4">
             <div className="row justify-content-center">
+              <Breadcrumb />
               <Alterar
                 titulo="Criar"
                 subtitulo="Estudante"
@@ -71,7 +71,6 @@ const DashboardAdminCriarEstudante = () => {
                   { nome: "contactoTelefonico", tipo: "text", label: "Contacto Telefónico", obrigatorio: true },
                   { nome: "email", tipo: "email", label: "Email", obrigatorio: true },
                   { nome: "competencias", tipo: "text", label: "Competências", obrigatorio: true },
-                  
                   { nome: "password", tipo: "password", label: "Password", obrigatorio: true },
                   { nome: "confirmarPassword", tipo: "password", label: "Confirmar Password", obrigatorio: true }
                 ]}
@@ -97,4 +96,4 @@ const DashboardAdminCriarEstudante = () => {
   );
 };
 
-export default DashboardAdminCriarEstudante; 
+export default DashboardAdminCriarEstudante;
