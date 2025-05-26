@@ -20,6 +20,7 @@ import Footer from "./components/Footer";
 import "./App.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import DashboardPropostas from "./DashboardPropostas.jsx";
+import HistoricoNoticias from "./HistoricoNoticias.jsx"; 
 
 const contactInfo = {
   address:
@@ -55,6 +56,7 @@ function App() {
             <Route path="/admin/alterar-empresa" element={<DashboardAdminAlterarEmpresa />} />
             <Route path="*" element={<NotFoundPage />} /> {/* Rota par ao erro 404 */}
             <Route path="admin/propostas" element={<DashboardPropostas />} />
+            <Route path="HistoricoNoticias" element={<HistoricoNoticias />} />
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>
