@@ -1,21 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "./components/admin/Sidebar.jsx";
-import NewsTable from "./components/NoticiasHistorico/NoticiasTable.jsx";
+import DashboardGestorTable from "./components/DashboardGestorTable.jsx";
 import Breadcrumb from "./components/Breadcrumb.jsx";
 
-const HistoricoNoticias = () => {
-  const newsData = [
+const DashboardGestores = () => {
+  const [gestores, setGestores] = useState([
     {
-      title: "Notícia 1",
-      date: "2025-05-26",
-      description: "Descrição da notícia 1.",
+      id: 1,
+      nome: "João Silva",
+      status: "Denied",
     },
     {
-      title: "Notícia 2",
-      date: "2025-05-25",
-      description: "Descrição da notícia 2.",
+      id: 2,
+      nome: "Maria Oliveira",
+      status: "Approved",
     },
-  ];
+  ]);
+
+  const handleEdit = (id, updatedData) => {
+    const updatedGestores = gestores.map((gestor) =>
+      gestor.id === id ? { ...gestor, ...updatedData } : gestor
+    );
+    setGestores(updatedGestores);
+  };
+
+  const handleApprove = (id) => {
+    const updatedGestores = gestores.map((gestor) =>
+      gestor.id === id ? { ...gestor, status: "Approved" } : gestor
+    );
+    setGestores(updatedGestores);
+  };
+
+  const handleDeny = (id) => {
+    const updatedGestores = gestores.map((gestor) =>
+      gestor.id === id ? { ...gestor, status: "Denied" } : gestor
+    );
+    setGestores(updatedGestores);
+  };
 
   return (
     <div className="container-fluid">
@@ -31,7 +52,12 @@ const HistoricoNoticias = () => {
             <Breadcrumb />
             <div className="row justify-content-center">
               <div className="col-10 col-md-9 col-lg-10">
-                <NewsTable data={newsData} editarHref="/dashboard/alterar-noticia" />
+                <DashboardGestorTable
+                  managers={gestores} // Dados dos gestores
+                  onEdit={handleEdit} // Função de edição
+                  onApprove={handleApprove} // Função para aprovar gestor
+                  onDeny={handleDeny} // Função para negar gestor
+                />
               </div>
             </div>
           </div>
@@ -41,4 +67,4 @@ const HistoricoNoticias = () => {
   );
 };
 
-export default HistoricoNoticias;
+export default DashboardGestores;
