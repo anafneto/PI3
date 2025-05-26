@@ -15,7 +15,7 @@ const DashboardAdminAlterarEmpresa = () => {
             <div className="row justify-content-center">
               <Breadcrumb />
               <Alterar
-                titulo="Editar"
+                titulo="Alterar"
                 subtitulo="Empresa"
                 textoGuardar="Guardar alterações"
                 mostrarBotaoRemover={true}

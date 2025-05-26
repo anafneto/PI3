@@ -3,39 +3,38 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useNavigate } from "react-router-dom";
 
-const ProposalCard = () => {
+const ProposalCard = ({
+  titulo = "Propostas",
+  proposals = [],
+  showFilters = true,
+  editarHref = "/admin/alterar-proposta", // <- NOVA PROP
+}) => {
   const navigate = useNavigate();
-
-  const proposals = Array(1).fill({
-    title: "Front-end Developer",
-    company: "Deloitte",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.",
-  });
+  const [propostas, setPropostas] = React.useState(proposals);
 
   return (
     <div className="container my-4">
-      <h4 className="fw-bold">Propostas</h4>
+      <h4 className="fw-bold">{titulo}</h4>
 
-      {/* Filtros */}
-      <div className="d-flex gap-2 mb-4">
-        <select className="form-select w-auto">
-          <option>Localização</option>
-        </select>
-        <select className="form-select w-auto">
-          <option>Tipo de Contrato</option>
-        </select>
-        <select className="form-select w-auto">
-          <option>Horário</option>
-        </select>
-      </div>
+      {showFilters && (
+        <div className="d-flex gap-2 mb-4">
+          <select className="form-select w-auto">
+            <option>Localização</option>
+          </select>
+          <select className="form-select w-auto">
+            <option>Tipo de Contrato</option>
+          </select>
+          <select className="form-select w-auto">
+            <option>Horário</option>
+          </select>
+        </div>
+      )}
 
-      {/* Cards */}
       <div className="row g-4">
-        {proposals.map((proposal, index) => (
+        {propostas.map((p, index) => (
           <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={index}>
             <div className="card h-100">
-              <div className="card-body position-relative">
+              <div className="card-body position-relative pe-5">
                 <div
                   className="position-absolute top-0 end-0 p-2"
                   style={{ zIndex: 1 }}
@@ -43,26 +42,27 @@ const ProposalCard = () => {
                   <i
                     className="bi bi-pencil me-2"
                     style={{ cursor: "pointer" }}
-                    onClick={() => navigate("/admin/alterar-proposta")}
+                    onClick={() => navigate(editarHref)}
                   ></i>
                   <i
                     className="bi bi-trash"
                     style={{ cursor: "pointer" }}
-                    onClick={() => window.confirm("Deseja remover esta proposta?") && alert("Proposta removida.")}
+                    onClick={() =>
+                      window.confirm("Deseja remover esta proposta?") &&
+                      alert("Proposta removida.")
+                    }
                   ></i>
                 </div>
-                <h5 className="card-title">{proposal.title}</h5>
-                <h6 className="card-subtitle mb-2 text-muted">
-                  {proposal.company}
-                </h6>
-                <p className="card-text">{proposal.description}</p>
+
+                <h5 className="card-title text-break">{p.title}</h5>
+                <h6 className="card-subtitle mb-2 text-muted">{p.company}</h6>
+                <p className="card-text">{p.description}</p>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Botão ver mais */}
       <div className="d-flex justify-content-end mt-4">
         <button
           className="btn btn-dark"

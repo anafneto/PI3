@@ -3,12 +3,12 @@ import Sidebar from "./components/admin/Sidebar.jsx";
 import Breadcrumb from "./components/Breadcrumb.jsx";
 import ProposalCard from "./components/CardsPropostas.jsx"; 
 
-const DashboardAdminPropostas = () => {
+const DashboardNoticias = () => {
   const propostas = [
     {
-      title: "Frontend Developer",
-      company: "Deloitte",
-      description: "Trabalho remoto com foco em sistemas distribuídos.",
+      title: "empresa1",
+      company: "localização",
+      description: "Descrição da empresa.",
     },
    
   ];
@@ -27,10 +27,10 @@ const DashboardAdminPropostas = () => {
             <div className="row justify-content-center">
               <Breadcrumb />
               <ProposalCard
-                titulo="Propostas Disponíveis"
-                showFilters={true}                 // Mostrar ou não filtros
-                proposals={propostas}              // Lista de propostas
-                editarHref="/admin/alterar-proposta" // Link 
+                titulo="Empresas Disponíveis"
+                showFilters={false}                 // Mostrar ou não filtros
+                proposals={propostas}               // Lista de propostas
+                editarHref="/admin/alterar-empresa" // Link 
               />
             </div>
           </div>
@@ -40,4 +40,4 @@ const DashboardAdminPropostas = () => {
   );
 };
 
-export default DashboardAdminPropostas;
+export default DashboardNoticias;

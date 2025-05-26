@@ -1,6 +1,21 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const NewsTable = ({ data }) => {
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    navigate("/admin/alterar-noticia");
+  };
+
+  const handleDelete = () => {
+    alert("Notícia eliminada (ação simulada).");
+  };
+
+  const handleApprove = () => {
+    alert("Notícia aprovada (ação simulada).");
+  };
+
   return (
     <div className="card">
       <div className="card-header">
@@ -23,21 +38,23 @@ const NewsTable = ({ data }) => {
                 <td>{row.date}</td>
                 <td>{row.description}</td>
                 <td>
-                  {/* Ícones de ações em preto e branco */}
                   <i
                     className="bi bi-pencil text-dark me-3"
                     style={{ cursor: "pointer" }}
                     title="Editar"
+                    onClick={handleEdit}
                   ></i>
                   <i
                     className="bi bi-trash text-dark me-3"
                     style={{ cursor: "pointer" }}
                     title="Excluir"
+                    onClick={handleDelete}
                   ></i>
                   <i
                     className="bi bi-check2 text-dark"
                     style={{ cursor: "pointer" }}
                     title="Aprovar"
+                    onClick={handleApprove}
                   ></i>
                 </td>
               </tr>
