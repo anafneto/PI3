@@ -14,10 +14,12 @@ import DashboardAdminAlterarEmpresa from "./DashboardAdminAlterarEmpresa.jsx";
 import DashboardAdminAlterarNoticia from "./DashboardAdminAlterarNoticia.jsx";
 import DashboardAdminAlterarProposta from "./DashboardAdminAlterarProposta.jsx";
 import DashboardAdminAlterarEstudante from "./DashboardAdminAlterarEstudante.jsx";
+import DashboardAdminCriarNotificacoes from "./DashboardAdminCriarNotificacoes.jsx";
 import DashboardEstudante from "./DashboardEstudante.jsx";
 import DashboardNoticias from "./DashboardNoticias.jsx";
 import DashboardEmpresas from "./DashboardEmpresas.jsx";
 import DashboardGestores from "./DashboardGestores.jsx";
+import DashboardNotificacoes from "./DashboardNotificacoes.jsx";
 import NewsDetails from "./NewsDetails";
 import NotFoundPage from "./Erro404.jsx";
 import PedirCredenciais from "./PedirCredenciais";
@@ -63,10 +65,12 @@ function App() {
             <Route path="/dashboard/alterar-noticia" element={<DashboardAdminAlterarNoticia />} />
             <Route path="/dashboard/alterar-estudante" element={<DashboardAdminAlterarEstudante />} />
             <Route path="/dashboard/alterar-proposta" element={<DashboardAdminAlterarProposta />} />
+            <Route path="/dashboard/criar-notificacoes" element={<DashboardAdminCriarNotificacoes />} />
             <Route path="/dashboard/noticias" element={<DashboardNoticias />} />
             <Route path="/dashboard/estudante" element={<DashboardEstudante />} />
             <Route path="/dashboard/empresas" element={<DashboardEmpresas />} />
             <Route path="/dashboard/gestores" element={<DashboardGestores />} />
+            <Route path="/dashboard/notificacoes" element={<DashboardNotificacoes />} />
             <Route path="*" element={<NotFoundPage />} /> {/* Rota par ao erro 404 */}
             <Route path="dashboard/propostas" element={<DashboardPropostas />} />
           </Routes>

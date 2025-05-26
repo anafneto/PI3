@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 
 const Sidebar = () => {
   const [gestoresOpen, setGestoresOpen] = useState(false);
@@ -8,7 +6,7 @@ const Sidebar = () => {
   const [empresasOpen, setEmpresasOpen] = useState(false);
   const [propostasOpen, setPropostasOpen] = useState(false);
   const [noticiasOpen, setNoticiasOpen] = useState(false);
-
+  const [notificacoesOpen, setNotificacoesOpen] = useState(false);
   return (
     <div className="sidebar d-flex flex-column p-3" style={{ minHeight: "100vh", minWidth: "220px" }}>
       <div className="logo mb-4 fs-4 fw-bold">Admin</div>
@@ -26,50 +24,39 @@ const Sidebar = () => {
 
         {/* Gestores */}
         <div>
-          <div
-            className="nav-link d-flex align-items-center w-100 bg-transparent border-0 justify-content-between"
-          >
+          <div className="nav-link d-flex align-items-center w-100 bg-transparent border-0 justify-content-between">
             <div
               className="d-flex align-items-center"
               role="button"
               onClick={() => (window.location.href = "/dashboard/gestores")}
               style={{ color: "#fff" }}
             >
-              <i className="bi-person-gear" style={{ fontSize: 16 }} />
+              <i className="bi bi-person-gear" style={{ fontSize: 16 }} />
               <span className="ms-2">Gestores</span>
             </div>
             <button
-              onClick={() => setEmpresasOpen((open) => !open)}
+              onClick={() => setGestoresOpen((open) => !open)}
               className="bg-transparent border-0 p-0"
             >
               <i
-                className={`bi bi-chevron-${empresasOpen ? "down" : "right"}`}
+                className={`bi bi-chevron-${gestoresOpen ? "down" : "right"}`}
                 style={{ color: "#bcbcbc", fontSize: 16 }}
               />
             </button>
           </div>
-          {empresasOpen && (
+          {gestoresOpen && (
             <div>
-              <a
-                className="nav-link d-flex align-items-center ps-4"
-                href="/dashboard/criar-empresa"
-              >
+              <a className="nav-link d-flex align-items-center ps-4" href="/dashboard/criar-gestor">
                 <span className="me-auto">Criar</span>
-                <i
-                  className="bi bi-chevron-right"
-                  style={{ color: "#bcbcbc", fontSize: 16 }}
-                />
+                <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
             </div>
           )}
         </div>
 
-
         {/* Estudantes */}
         <div>
-          <div
-            className="nav-link d-flex align-items-center w-100 bg-transparent border-0 justify-content-between"
-          >
+          <div className="nav-link d-flex align-items-center w-100 bg-transparent border-0 justify-content-between">
             <div
               className="d-flex align-items-center"
               role="button"
@@ -99,12 +86,9 @@ const Sidebar = () => {
           )}
         </div>
 
-
         {/* Empresas */}
         <div>
-          <div
-            className="nav-link d-flex align-items-center w-100 bg-transparent border-0 justify-content-between"
-          >
+          <div className="nav-link d-flex align-items-center w-100 bg-transparent border-0 justify-content-between">
             <div
               className="d-flex align-items-center"
               role="button"
@@ -162,10 +146,6 @@ const Sidebar = () => {
                 <span className="me-auto">Criar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
-              <a className="nav-link d-flex align-items-center ps-4" href="/dashboard/historico-propostas">
-                <span className="me-auto">Histórico</span>
-                <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
-              </a>
             </div>
           )}
         </div>
@@ -198,16 +178,44 @@ const Sidebar = () => {
                 <span className="me-auto">Criar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
-
             </div>
           )}
         </div>
-
+        {/* Notificações */}
+        <div>
+          <div className="nav-link d-flex align-items-center w-100 bg-transparent border-0 justify-content-between">
+            <div
+              className="d-flex align-items-center"
+              role="button"
+              onClick={() => (window.location.href = "/dashboard/notificacoes")}
+              style={{ color: "#fff" }}
+            >
+              <i className="bi bi-bell" style={{ fontSize: 16 }} />
+              <span className="ms-2">Notificações</span>
+            </div>
+            <button
+              onClick={() => setNotificacoesOpen((open) => !open)}
+              className="bg-transparent border-0 p-0"
+            >
+              <i
+                className={`bi bi-chevron-${notificacoesOpen ? "down" : "right"}`}
+                style={{ color: "#bcbcbc", fontSize: 16 }}
+              />
+            </button>
+          </div>
+          {notificacoesOpen && (
+            <div>
+              <a className="nav-link d-flex align-items-center ps-4" href="/dashboard/criar-notificacoes">
+                <span className="me-auto">Criar</span>
+                <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
+              </a>
+            </div>
+          )}
+        </div>
 
       </nav>
     </div>
   );
 };
-
 
 export default Sidebar;

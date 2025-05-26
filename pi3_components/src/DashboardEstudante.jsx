@@ -1,15 +1,20 @@
 import React from "react";
 import Sidebar from "./components/admin/Sidebar.jsx";
+import NewsTable from "./components/NoticiasHistorico/NoticiasTable.jsx";
 import Breadcrumb from "./components/Breadcrumb.jsx";
-import ProposalCard from "./components/CardsPropostas.jsx"; 
 
-const DashboardNoticias = () => {
-  const propostas = [
+const HistoricoNoticias = () => {
+  const newsData = [
     {
-      title: "Estudante 1",
-      company: "Curso",
+      title: "Notícia 1",
+      date: "2025-05-26",
+      description: "Descrição da notícia 1.",
     },
-   
+    {
+      title: "Notícia 2",
+      date: "2025-05-25",
+      description: "Descrição da notícia 2.",
+    },
   ];
 
   return (
@@ -23,14 +28,11 @@ const DashboardNoticias = () => {
         {/* Conteúdo */}
         <div className="col-md-9 col-lg-10">
           <div className="container mt-4">
+            <Breadcrumb />
             <div className="row justify-content-center">
-              <Breadcrumb />
-              <ProposalCard
-                titulo="Estudantes"
-                showFilters={false}                 // Mostrar ou não filtros
-                proposals={propostas}               // Lista de propostas
-                editarHref="/dashboard/alterar-estudante" // Link 
-              />
+              <div className="col-10 col-md-9 col-lg-10">
+                <NewsTable data={newsData} editarHref="/dashboard/alterar-noticia" />
+              </div>
             </div>
           </div>
         </div>
@@ -39,4 +41,4 @@ const DashboardNoticias = () => {
   );
 };
 
-export default DashboardNoticias;
+export default HistoricoNoticias;
