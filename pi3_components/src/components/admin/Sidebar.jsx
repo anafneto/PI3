@@ -80,6 +80,10 @@ const Sidebar = () => {
                 <span className="me-auto">Criar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
+              <a className="nav-link d-flex align-items-center ps-4" href="/admin/alterar-estudante">
+                <span className="me-auto">Alterar</span>
+                <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
+              </a>
             </div>
           )}
         </div>
@@ -103,48 +107,54 @@ const Sidebar = () => {
           </button>
           {empresasOpen && (
             <div>
-              <a className="nav-link d-flex align-items-center ps-4" href="/admin/criar-noticia">
+              <a className="nav-link d-flex align-items-center ps-4" href="/admin/criar-empresa">
                 <span className="me-auto">Criar</span>
+                <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
+              </a>
+              <a className="nav-link d-flex align-items-center ps-4" href="/admin/alterar-empresa">
+                <span className="me-auto">Alterar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
             </div>
           )}
         </div>
 
-        {/* Propostas */}
-        <div>
-          <button
-            className="nav-link d-flex align-items-center w-100 bg-transparent border-0"
-            style={{ color: "#fff", textAlign: "left" }}
-            onClick={() => setPropostasOpen((open) => !open)}
-            type="button"
-          >
-            <i className="bi bi-file-earmark-text" style={{ fontSize: 16 }} />
-            <span className="ms-2">Propostas</span>
-            <span className="ms-auto arrow-icon">
-              <i
-                className={`bi bi-chevron-${propostasOpen ? "down" : "right"}`}
-                style={{ color: "#bcbcbc", fontSize: 16 }}
-              />
-            </span>
-          </button>
-          {propostasOpen && (
-            <div>
-              <a className="nav-link d-flex align-items-center ps-4" href="/admin/propostas">
-                <span className="me-auto">Lista</span>
-                <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
-              </a>
-              <a className="nav-link d-flex align-items-center ps-4" href="#">
-                <span className="me-auto">Criar</span>
-                <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
-              </a>
-              <a className="nav-link d-flex align-items-center ps-4" href="#">
-                <span className="me-auto">Histórico</span>
-                <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
-              </a>
-            </div>
-          )}
-        </div>
+   {/* Propostas */}
+<div>
+  <div className="nav-link d-flex align-items-center w-100 bg-transparent border-0 justify-content-between">
+    <div
+      className="d-flex align-items-center"
+      role="button"
+      onClick={() => (window.location.href = "/admin/propostas")}
+      style={{ color: "#fff" }}
+    >
+      <i className="bi bi-file-earmark-text" style={{ fontSize: 16 }} />
+      <span className="ms-2">Propostas</span>
+    </div>
+    <button
+      onClick={() => setPropostasOpen((open) => !open)}
+      className="bg-transparent border-0 p-0"
+    >
+      <i
+        className={`bi bi-chevron-${propostasOpen ? "down" : "right"}`}
+        style={{ color: "#bcbcbc", fontSize: 16 }}
+      />
+    </button>
+  </div>
+  {propostasOpen && (
+    <div>
+      <a className="nav-link d-flex align-items-center ps-4" href="/admin/criar-proposta">
+        <span className="me-auto">Criar</span>
+        <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
+      </a>
+      <a className="nav-link d-flex align-items-center ps-4" href="/admin/historico-propostas">
+        <span className="me-auto">Histórico</span>
+        <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
+      </a>
+    </div>
+  )}
+</div>
+
 
         {/* Noticias */}
         <div>
@@ -165,11 +175,15 @@ const Sidebar = () => {
           </button>
           {noticiasOpen && (
             <div>
-              <a className="nav-link d-flex align-items-center ps-4" href="#">
+              <a className="nav-link d-flex align-items-center ps-4" href="/admin/criar-noticia">
                 <span className="me-auto">Criar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>
-              <a className="nav-link d-flex align-items-center ps-4" href="#">
+              <a className="nav-link d-flex align-items-center ps-4" href="/admin/alterar-noticia">
+                <span className="me-auto">Alterar</span>
+                <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
+              </a>
+              <a className="nav-link d-flex align-items-center ps-4" href="/historico-noticias">
                 <span className="me-auto">Histórico</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>

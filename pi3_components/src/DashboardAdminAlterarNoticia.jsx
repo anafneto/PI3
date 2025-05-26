@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./components/admin/Sidebar.jsx";
 import Breadcrumb from "./components/Breadcrumb.jsx";
 import Alterar from "./components/admin/alterar.jsx";
 
-const DashboardAdminCriarNoticia = () => {
+const DashboardAdminAlterarNoticia = () => {
+  const [noticia, setNoticia] = useState(null);
+
+  // Simula fetch da notícia a ser editada
+  useEffect(() => {
+    // Exemplo de dados simulados
+    const noticiaExistente = {
+      titulo: "Título da Notícia",
+      subtitulo: "Subtítulo informativo",
+      corpo: "Este é o corpo da notícia que está a ser editada.",
+      imagem: null, // Normalmente não se pré-carrega o ficheiro
+      destacar: true,
+    };
+
+    setNoticia(noticiaExistente);
+  }, []);
+
+  if (!noticia) return <div>Carregando...</div>;
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -15,10 +33,11 @@ const DashboardAdminCriarNoticia = () => {
             <div className="row justify-content-center">
               <Breadcrumb />
               <Alterar
-                titulo="Criar nova"
+                titulo="Alterar"
                 subtitulo="Notícia"
-                textoGuardar="Criar nova"
-                mostrarBotaoRemover={false}
+                textoGuardar="Guardar alterações"
+                mostrarBotaoRemover={true}
+                valoresIniciais={noticia}
                 campos={[
                   {
                     nome: "titulo",
@@ -42,7 +61,7 @@ const DashboardAdminCriarNoticia = () => {
                     nome: "imagem",
                     tipo: "file",
                     label: "Imagem",
-                    obrigatorio: true,
+                    obrigatorio: false,
                   },
                   {
                     nome: "destacar",
@@ -52,8 +71,14 @@ const DashboardAdminCriarNoticia = () => {
                   },
                 ]}
                 onSubmit={(data) => {
-                  console.log("Notícia submetida:", data);
-                  alert("Notícia criada com sucesso!");
+                  console.log("Notícia alterada:", data);
+                  alert("Notícia alterada com sucesso!");
+                }}
+                onRemover={() => {
+                  if (window.confirm("Tem a certeza que quer remover esta notícia?")) {
+                    console.log("Notícia removida");
+                    alert("Notícia removida com sucesso!");
+                  }
                 }}
               />
             </div>
@@ -64,4 +89,4 @@ const DashboardAdminCriarNoticia = () => {
   );
 };
 
-export default DashboardAdminCriarNoticia;
+export default DashboardAdminAlterarNoticia;

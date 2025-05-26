@@ -1,20 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./components/admin/Sidebar.jsx";
 import Breadcrumb from "./components/Breadcrumb.jsx";
 import Alterar from "./components/admin/alterar.jsx";
 
-const DashboardAdminCriarEstudante = () => {
+const DashboardAdminAlterarEstudante = () => {
   const [formData, setFormData] = useState({
     nomeCompleto: "",
     numeroEstudante: "",
     curso: "",
+    contactoTelefonico: "",
     email: "",
-    competencias: [],
+    competencias: "",
     password: "",
     confirmarPassword: ""
   });
 
   const [errors, setErrors] = useState({});
+
+  // Simulação de dados existentes (normalmente viriam de uma API)
+  useEffect(() => {
+    const estudanteExistente = {
+      nomeCompleto: "João Silva",
+      numeroEstudante: "123456",
+      curso: "informatica",
+      contactoTelefonico: "912345678",
+      email: "joao@example.com",
+      competencias: "JavaScript, React",
+      password: "",
+      confirmarPassword: ""
+    };
+    setFormData(estudanteExistente);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,7 +40,7 @@ const DashboardAdminCriarEstudante = () => {
 
   const handleSubmit = () => {
     const newErrors = {};
-    const requiredFields = ["nomeCompleto", "numeroEstudante", "curso", "email", "password", "confirmarPassword"];
+    const requiredFields = ["nomeCompleto", "numeroEstudante", "curso", "email"];
 
     requiredFields.forEach((field) => {
       if (!formData[field]) {
@@ -32,12 +48,10 @@ const DashboardAdminCriarEstudante = () => {
       }
     });
 
-    if (
-      formData.password &&
-      formData.confirmarPassword &&
-      formData.password !== formData.confirmarPassword
-    ) {
-      newErrors.confirmarPassword = "As senhas não coincidem";
+    if (formData.password || formData.confirmarPassword) {
+      if (formData.password !== formData.confirmarPassword) {
+        newErrors.confirmarPassword = "As senhas não coincidem";
+      }
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -45,8 +59,16 @@ const DashboardAdminCriarEstudante = () => {
       return;
     }
 
-    alert("Estudante criado com sucesso!");
-    console.log(formData);
+    alert("Estudante atualizado com sucesso!");
+    console.log("Dados atualizados:", formData);
+  };
+
+  const handleRemover = () => {
+    const confirmar = window.confirm("Tens a certeza que queres remover este estudante?");
+    if (confirmar) {
+      alert("Estudante removido com sucesso!");
+      console.log("Estudante removido");
+    }
   };
 
   return (
@@ -60,10 +82,10 @@ const DashboardAdminCriarEstudante = () => {
             <div className="row justify-content-center">
               <Breadcrumb />
               <Alterar
-                titulo="Criar"
+                titulo="Alterar"
                 subtitulo="Estudante"
-                textoGuardar="Criar novo"
-                mostrarBotaoRemover={false}
+                textoGuardar="Guardar alterações"
+                mostrarBotaoRemover={true}
                 campos={[
                   { nome: "nomeCompleto", tipo: "text", label: "Nome Completo", obrigatorio: true },
                   { nome: "numeroEstudante", tipo: "text", label: "Número Mecanográfico", obrigatorio: true },
@@ -71,8 +93,8 @@ const DashboardAdminCriarEstudante = () => {
                   { nome: "contactoTelefonico", tipo: "text", label: "Contacto Telefónico", obrigatorio: true },
                   { nome: "email", tipo: "email", label: "Email", obrigatorio: true },
                   { nome: "competencias", tipo: "text", label: "Competências", obrigatorio: true },
-                  { nome: "password", tipo: "password", label: "Password", obrigatorio: true },
-                  { nome: "confirmarPassword", tipo: "password", label: "Confirmar Password", obrigatorio: true }
+                  { nome: "password", tipo: "password", label: "Nova Password", obrigatorio: false },
+                  { nome: "confirmarPassword", tipo: "password", label: "Confirmar Password", obrigatorio: false }
                 ]}
                 opcoes={{
                   curso: [
@@ -83,10 +105,11 @@ const DashboardAdminCriarEstudante = () => {
                     { value: "eletrotecnica", label: "Eletrotécnica" }
                   ]
                 }}
-                onSubmit={(data) => {
-                  console.log("Dados do Estudante:", data);
-                  alert("Estudante criado com sucesso!");
-                }}
+                valoresIniciais={formData}
+                onChange={handleChange}
+                onSubmit={handleSubmit}
+                onRemover={handleRemover}
+                erros={errors}
               />
             </div>
           </div>
@@ -96,4 +119,4 @@ const DashboardAdminCriarEstudante = () => {
   );
 };
 
-export default DashboardAdminCriarEstudante;
+export default DashboardAdminAlterarEstudante;
