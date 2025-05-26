@@ -15,27 +15,26 @@ const Alterar = ({
     acc[campo.nome] = campo.tipo === 'checkbox' ? false : '';
     return acc;
   }, {});
+
   const [formData, setFormData] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [novaCompetencia, setNovaCompetencia] = useState("");
 
-
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    // Suporte para chips de competências
+    const { name, value, type, checked, files } = e.target;
+
     if (name === "competencias") {
       setNovaCompetencia(value);
       setErrors((prev) => ({ ...prev, competencias: "" }));
     } else {
       setFormData((prev) => ({
         ...prev,
-        [name]: type === 'checkbox' ? checked : value,
+        [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value,
       }));
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
-  // Adicionar competência ao array
   const handleAddCompetencia = (e) => {
     e.preventDefault();
     const valor = novaCompetencia.trim();
@@ -59,7 +58,12 @@ const Alterar = ({
     const newErrors = {};
 
     campos.forEach((campo) => {
-      if (campo.obrigatorio && !formData[campo.nome]) {
+      const valorCampo = formData[campo.nome];
+      const vazio = campo.tipo === 'file'
+        ? !valorCampo
+        : valorCampo === '' || valorCampo === undefined;
+
+      if (campo.obrigatorio && vazio) {
         newErrors[campo.nome] = 'Campo obrigatório';
       }
     });
@@ -125,7 +129,24 @@ const Alterar = ({
             );
           }
 
-          // Campo especial para competências (chips)
+          if (campo.tipo === 'textarea') {
+            return (
+              <div className="mb-3" key={campo.nome}>
+                <label className="form-label">
+                  {campo.label} {campo.obrigatorio && <span className="text-danger">*</span>}
+                </label>
+                <textarea
+                  className={`form-control ${erro ? 'is-invalid' : ''}`}
+                  name={campo.nome}
+                  value={valor}
+                  onChange={handleChange}
+                  rows={6}
+                />
+                {erro && <div className="invalid-feedback">{erro}</div>}
+              </div>
+            );
+          }
+
           if (campo.nome === "competencias") {
             return (
               <div className="mb-3" key={campo.nome}>
@@ -147,15 +168,20 @@ const Alterar = ({
                       }
                     }}
                   />
-                  
                 </div>
                 {erro && <div className="invalid-feedback d-block">{erro}</div>}
                 <div className="d-flex flex-wrap gap-2 mt-2">
                   {(formData.competencias || []).map((comp, idx) => (
                     <span
                       key={idx}
-                      className="badge border border-dark text-dark d-flex align-items-center mt-1"
-                      style={{ fontSize: "1rem" }}
+                      className="badge d-flex align-items-center mt-1"
+                      style={{
+                        fontSize: "1rem",
+                        backgroundColor: "#F5F6F7",
+                        color: "#6c757d",
+                        border: "1px solid #D3D6D8",
+                        fontWeight: "normal",
+                      }}
                     >
                       {comp}
                       <button
@@ -168,6 +194,23 @@ const Alterar = ({
                     </span>
                   ))}
                 </div>
+              </div>
+            );
+          }
+
+          if (campo.tipo === 'file') {
+            return (
+              <div className="mb-3" key={campo.nome}>
+                <label className="form-label">
+                  {campo.label} {campo.obrigatorio && <span className="text-danger">*</span>}
+                </label>
+                <input
+                  type="file"
+                  className={`form-control ${erro ? 'is-invalid' : ''}`}
+                  name={campo.nome}
+                  onChange={handleChange}
+                />
+                {erro && <div className="invalid-feedback">{erro}</div>}
               </div>
             );
           }

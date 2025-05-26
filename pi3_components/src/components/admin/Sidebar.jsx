@@ -103,7 +103,7 @@ const Sidebar = () => {
           </button>
           {empresasOpen && (
             <div>
-              <a className="nav-link d-flex align-items-center ps-4" href="#">
+              <a className="nav-link d-flex align-items-center ps-4" href="/admin/criar-noticia">
                 <span className="me-auto">Criar</span>
                 <i className="bi bi-chevron-right" style={{ color: "#bcbcbc", fontSize: 16 }} />
               </a>

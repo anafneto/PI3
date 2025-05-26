@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "./components/admin/Sidebar.jsx";
-import Breadcrumb from "./components/Breadcrumb";
-import Alterar from "./components/admin/Alterar.jsx";
+import Breadcrumb from "./components/Breadcrumb.jsx";
+import Alterar from "./components/admin/alterar.jsx";
 
 const DashboardAdminCriarEstudante = () => {
   const [formData, setFormData] = useState({
@@ -97,4 +97,4 @@ const DashboardAdminCriarEstudante = () => {
   );
 };
 
-export default DashboardAdminCriarEstudante;
+export default DashboardAdminCriarEstudante; 
