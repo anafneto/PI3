@@ -9,8 +9,11 @@ const DashboardGestorTable = ({ managers, onEdit, onDelete }) => {
   };
 
   return (
-    <table className="table table-hover">
-      <thead>
+        <div className="card">
+      <div className="px-3 py-0">
+        <table className="table table-hover">
+          <thead className="thead-light">
+      
         <tr>
           <th>ID</th>
           <th>Nome</th>
@@ -49,6 +52,8 @@ const DashboardGestorTable = ({ managers, onEdit, onDelete }) => {
         ))}
       </tbody>
     </table>
+    </div>
+      </div>
   );
 };
 
