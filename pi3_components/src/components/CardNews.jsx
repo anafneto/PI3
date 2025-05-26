@@ -1,40 +1,57 @@
-import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../App.css"; // Import App.css for styles
+import "../App.css";
+import { use, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";// Import App.css for styles
 
-export const cardData = [ // Export cardData here
+const cardData = [
   {
-    title: "Projeto Sustentável em Parceria com Empresas",
-    text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    image: "https://cdn.pixabay.com/photo/2016/02/01/00/56/news-1172463_640.jpg",
+    image: "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
+    title: "Projeto Sustentável em Parceria com Empresas Locais",
+    text: "Num esforço para fomentar a sustentabilidade e impulsionar o crescimento econômico local, um novo projeto colaborativo foi lançado em parceria com diversas empresas da região. A iniciativa visa promover práticas ecológicas, incentivar a economia circular e sensibilizar a comunidade para a importância da responsabilidade ambiental.",
   },
   {
-    title: "Programa de Estágios Internacional",
-    text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    image: "https://img.freepik.com/vetores-gratis/fundo-de-estudio-de-noticias-realista_23-2149985612.jpg",
+    image: "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
+    title: "Projeto Sustentável em Parceria com Empresas Locais",
+    text: "Num esforço para fomentar a sustentabilidade e impulsionar o crescimento econômico local, um novo projeto colaborativo foi lançado em parceria com diversas empresas da região. A iniciativa visa promover práticas ecológicas, incentivar a economia circular e sensibilizar a comunidade para a importância da responsabilidade ambiental.",
   },
   {
-    title: "Fórum de Inovação Tecnológica na ESTGV",
-    text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    image: "https://thumbs.dreamstime.com/b/not%C3%ADcias-34802664.jpg",
+    image: "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
+    title: "Projeto Sustentável em Parceria com Empresas Locais",
+    text: "Num esforço para fomentar a sustentabilidade e impulsionar o crescimento econômico local, um novo projeto colaborativo foi lançado em parceria com diversas empresas da região. A iniciativa visa promover práticas ecológicas, incentivar a economia circular e sensibilizar a comunidade para a importância da responsabilidade ambiental.",
   },
   {
-    title: "Projeto de Empreendedorismo da ESTGV Recebe Prêmio Nacional",
-    text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    image: "https://media.istockphoto.com/id/1369150014/pt/vetorial/breaking-news-with-world-map-background-vector.jpg?s=612x612&w=0&k=20&c=w7abuLJ3KY6Xom7dzSRFE1MPZJXc5GKcP3pL1gdYvLU=",
+    image: "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
+    title: "Inovação Tecnológica na Indústria Automotiva",
+    text: "A indústria automotiva está passando por uma revolução tecnológica, com o surgimento de veículos elétricos e autônomos. As empresas estão investindo em pesquisa e desenvolvimento para criar soluções mais eficientes e sustentáveis.",
   },
-  {
-    title: "Projeto de Empreendedorismo da ESTGV Recebe Prêmio Nacional",
-    text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    image: "https://img.freepik.com/vetores-gratis/fundo-de-estudio-de-noticias-realista_23-2149985612.jpg",
-  },
+  // Adicione mais objetos conforme necessário
 ];
+
+function News() {
+  const [noticias, setNoticias] = UseState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get("https://api.example.com/news")
+      .then(response => {
+        setNoticias(response.data);
+      }
+      )
+      .catch(error => {
+        console.error("Erro ao buscar notícias:", error);
+      });
+  }
+    , []);
+}
+
+
 const CardNews = () => {
   return (
     <div className="w-100 mt-5"> {/* Full-width container */}
-      <div className="d-flex overflow-auto" style={{ gap: "8px", padding: "0 48px" }}> {}
+      <div className="d-flex overflow-auto" style={{ gap: "8px", padding: "0 48px" }}> { }
         {cardData.map((card, index) => (
-          <div className="card" style={{ minWidth: "330px", minHeight: "428px" }} key={index}>
+          <div className="card" style={{ minWidth: "330px" }} key={index}>
             <img
               src={card.image}
               alt={card.title}
@@ -42,7 +59,18 @@ const CardNews = () => {
             />
             <div className="card-body">
               <h5 className="card-title">{card.title}</h5>
-              <p className="card-text">{card.text}</p>
+              <p className="card-text" style={{
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                fontSize: "0.8em",
+                lineHeight: "1.4"
+              }}>{card.text}</p>
+              <div>
+                <small className="text-muted">Leia mais »</small>
+              </div>
             </div>
           </div>
         ))}

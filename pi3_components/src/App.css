@@ -124,6 +124,7 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
   word-break: break-all;
+  text-decoration: auto;
 }
 
 .footer-bgcolor .col-6 {
@@ -360,15 +361,15 @@ body {
 }
 
 .small-box .small-box-icon {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  z-index: 0;
-  height: 70px;
-  font-size: 70px;
-  color: rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s linear;
-}
+    position: absolute;
+    top: 15px;
+    right: -10px;
+    z-index: 0;
+    height: 85px;    
+    font-size: 70px;
+    color: rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s linear;
+  }
 
 @media (max-width: 600px) {
   .small-box {

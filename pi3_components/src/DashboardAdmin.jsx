@@ -17,31 +17,31 @@ const DashboardAdmin = () => {
         <div className="p-0 col-2 col-md-3 col-lg-2">
           <Sidebar />
         </div>
-          <div className="container mt-4 col-7  col-lg-8">
-            <div className="small-box-row row">
-              <SmallBox
-                color="primary"
-                value="150"
-                label="New Orders"
-                iconPath="M2.25 2.25a.75.75 0 000 1.5h1.386..."
-                link="#"
-              />
-              <SmallBox
-                color="success"
-                value="53%"
-                label="Bounce Rate"
-                iconPath="M18.375 2.25c-1.035 0-1.875.84-1.875..."
-                link="#"
-              />
-              <SmallBox
-                color="warning"
-                value="44"
-                label="User Registrations"
-                iconPath="M6.25 6.375a4.125 4.125 0 118.25 0..."
-                link="#"
-              />
-            </div>
-            <ValidationTable data={validationData} />
+        <div className="container mt-4 col-7 col-lg-8">
+          <div className="small-box-row row">
+            <SmallBox
+              color="primary"
+              value="0"
+              label="Propostas"
+              iconPath="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1"
+              link="#"
+            />
+            <SmallBox
+              color="success"
+              value="0"
+              label="Empresas"
+              iconPath="M3 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3v-3.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V16h3a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1zm1 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5M4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"
+              link="#"
+            />
+            <SmallBox
+              color="warning"
+              value="0"
+              label="Estudantes"
+              iconPath="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m-1 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0m-3 4c2.623 0 4.146.826 5 1.755V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-1.245C3.854 11.825 5.377 11 8 11"
+              link="#"
+            />
+          </div>
+          <ValidationTable data={validationData} />
         </div>
       </div>
     </div>
