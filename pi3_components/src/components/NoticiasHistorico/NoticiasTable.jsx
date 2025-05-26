@@ -39,21 +39,21 @@ const NewsTable = ({ data }) => {
                 <td>{row.description}</td>
                 <td>
                   <i
-                    className="bi bi-pencil text-dark me-3"
-                    style={{ cursor: "pointer" }}
-                    title="Editar"
-                    onClick={handleEdit}
-                  ></i>
-                  <i
-                    className="bi bi-trash text-dark me-3"
-                    style={{ cursor: "pointer" }}
-                    title="Excluir"
-                    onClick={handleDelete}
-                  ></i>
-                  <i
-                    className="bi bi-check2 text-dark"
+                    className="bi bi-check2 text-dark me-2"
                     style={{ cursor: "pointer" }}
                     title="Aprovar"
+                    onClick={handleEdit}
+                  ></i>
+                    <i
+                      className="bi bi-trash text-dark me-2"
+                      style={{ cursor: "pointer" }}
+                      title="Excluir"
+                      onClick={handleDelete}
+                  ></i>
+                  <i
+                    className="bi bi-pencil text-dark me-2"
+                    style={{ cursor: "pointer" }}
+                    title="Editar"
                     onClick={handleApprove}
                   ></i>
                 </td>
