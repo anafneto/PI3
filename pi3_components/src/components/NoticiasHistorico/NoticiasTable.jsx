@@ -25,19 +25,19 @@ const NewsTable = ({ data }) => {
                 <td>
                   {/* Ícones de ações em preto e branco */}
                   <i
-                    className="bi bi-pencil text-dark me-3"
-                    style={{ cursor: "pointer" }}
-                    title="Editar"
-                  ></i>
-                  <i
-                    className="bi bi-trash text-dark me-3"
-                    style={{ cursor: "pointer" }}
-                    title="Excluir"
-                  ></i>
-                  <i
-                    className="bi bi-check2 text-dark"
+                    className="bi bi-check2 text-dark me-2"
                     style={{ cursor: "pointer" }}
                     title="Aprovar"
+                  ></i>
+                    <i
+                      className="bi bi-trash text-dark me-2"
+                      style={{ cursor: "pointer" }}
+                      title="Excluir"
+                    ></i>
+                  <i
+                    className="bi bi-pencil text-dark me-2"
+                    style={{ cursor: "pointer" }}
+                    title="Editar"
                   ></i>
                 </td>
               </tr>
