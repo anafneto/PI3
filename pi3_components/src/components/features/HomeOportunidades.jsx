@@ -1,7 +1,26 @@
-import React, { useState, useEffect } from "react";
 import CardList from "./oportunidades";
 import CardListMobile from "./OportunidadesMobile"; // Importe o componente alternativo
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { use, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";// Import App.css for styles
+
+function News() {
+  const [noticias, setNoticias] = UseState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get("https://api.example.com/news")
+      .then(response => {
+        setNoticias(response.data);
+      }
+      )
+      .catch(error => {
+        console.error("Erro ao buscar notícias:", error);
+      });
+  }
+    , []);
+}
 
 
 const HomeOportunidades = () => {

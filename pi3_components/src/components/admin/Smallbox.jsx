@@ -5,8 +5,8 @@ const SmallBox = ({ color, value, label, iconPath, link }) => {
     <div className={`col-lg mb-2`}>
       <div className={`small-box text-bg-${color}`}>
         <div className="inner">
-          <h3>{value}</h3>
-          <p>{label}</p>
+          <h3 className="mb-0">{value}</h3>
+          <p className="mb-0">{label}</p>
         </div>
         <svg
           className="small-box-icon"
