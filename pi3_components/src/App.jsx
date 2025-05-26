@@ -44,7 +44,7 @@ function App() {
             <Route path="/noticias/:id" element={<NewsDetails />} />
             <Route path="/credentials" element={<PedirCredenciais />} />
             <Route path="/admin" element={<DashboardAdmin/>} />
-            <Route path="/admincriarestudante" element={<DashboardAdminCriarEstudante/>} />
+            <Route path="/admin/criar-estudante" element={<DashboardAdminCriarEstudante/>} />
             <Route path="/admin/alterar-gestor" element={<DashboardAdminAlterar/>} />
             <Route path="/admin/criar-gestor" element={<DashboardAdminCriar/>} /> 
             <Route path="/admin/criar-noticia" element={<DashboardAdminCriarNoticia />} />
