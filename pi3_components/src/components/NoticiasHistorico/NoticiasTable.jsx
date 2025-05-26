@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const NewsTable = ({ data, editarHref = "/admin/alterar-noticia" }) => {
+const NewsTable = ({ data, editarHref = "/dashboard/alterar-noticia" }) => {
   const navigate = useNavigate();
   const [newsList, setNewsList] = useState(data);
 

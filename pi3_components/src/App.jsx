@@ -52,23 +52,23 @@ function App() {
             <Route path="/noticias" element={<News />} />
             <Route path="/noticias/:id" element={<NewsDetails />} />
             <Route path="/credentials" element={<PedirCredenciais />} />
-            <Route path="/admin" element={<DashboardAdmin/>} />
-            <Route path="/admin/criar-estudante" element={<DashboardAdminCriarEstudante/>} />
-            <Route path="/admin/alterar-gestor" element={<DashboardAdminAlterar/>} />
-            <Route path="/admin/criar-gestor" element={<DashboardAdminCriar/>} /> 
-            <Route path="/admin/criar-noticia" element={<DashboardAdminCriarNoticia />} />
-            <Route path="/admin/criar-proposta" element={<DashboardAdminCriarProposta />} />
-            <Route path="/admin/criar-empresa" element={<DashboardAdminCriarEmpresa />} />
-            <Route path="/admin/alterar-empresa" element={<DashboardAdminAlterarEmpresa />} />
-            <Route path="/admin/alterar-noticia" element={<DashboardAdminAlterarNoticia />} />
-            <Route path="/admin/alterar-estudante" element={<DashboardAdminAlterarEstudante />} />
-            <Route path="/admin/alterar-proposta" element={<DashboardAdminAlterarProposta />} />
-            <Route path="/admin/noticias" element={<DashboardNoticias />} />
-            <Route path="/admin/estudante" element={<DashboardEstudante />} />
-            <Route path="/admin/empresas" element={<DashboardEmpresas />} />
-            <Route path="/admin/gestores" element={<DashboardGestores />} />
+            <Route path="/dashboard" element={<DashboardAdmin/>} />
+            <Route path="/dashboard/criar-estudante" element={<DashboardAdminCriarEstudante/>} />
+            <Route path="/dashboard/alterar-gestor" element={<DashboardAdminAlterar/>} />
+            <Route path="/dashboard/criar-gestor" element={<DashboardAdminCriar/>} /> 
+            <Route path="/dashboard/criar-noticia" element={<DashboardAdminCriarNoticia />} />
+            <Route path="/dashboard/criar-proposta" element={<DashboardAdminCriarProposta />} />
+            <Route path="/dashboard/criar-empresa" element={<DashboardAdminCriarEmpresa />} />
+            <Route path="/dashboard/alterar-empresa" element={<DashboardAdminAlterarEmpresa />} />
+            <Route path="/dashboard/alterar-noticia" element={<DashboardAdminAlterarNoticia />} />
+            <Route path="/dashboard/alterar-estudante" element={<DashboardAdminAlterarEstudante />} />
+            <Route path="/dashboard/alterar-proposta" element={<DashboardAdminAlterarProposta />} />
+            <Route path="/dashboard/noticias" element={<DashboardNoticias />} />
+            <Route path="/dashboard/estudante" element={<DashboardEstudante />} />
+            <Route path="/dashboard/empresas" element={<DashboardEmpresas />} />
+            <Route path="/dashboard/gestores" element={<DashboardGestores />} />
             <Route path="*" element={<NotFoundPage />} /> {/* Rota par ao erro 404 */}
-            <Route path="admin/propostas" element={<DashboardPropostas />} />
+            <Route path="dashboard/propostas" element={<DashboardPropostas />} />
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>

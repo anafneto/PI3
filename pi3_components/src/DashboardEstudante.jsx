@@ -29,7 +29,7 @@ const DashboardNoticias = () => {
                 titulo="Estudantes"
                 showFilters={false}                 // Mostrar ou não filtros
                 proposals={propostas}               // Lista de propostas
-                editarHref="/admin/alterar-estudante" // Link 
+                editarHref="/dashboard/alterar-estudante" // Link 
               />
             </div>
           </div>
