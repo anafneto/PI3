@@ -463,3 +463,23 @@ body {
   border: none !important;
 }
 
+
+
+
+
+/*MOBILE TABLE VALIDATION*/
+/* Ajusta o tamanho da fonte e o alinhamento da data */
+.table td {
+  vertical-align: middle; /* Garante alinhamento vertical */
+}
+
+/* Adaptação para telas menores */
+@media (max-width: 768px) {
+  .table td {
+    font-size: 0.85rem; /* Reduz o tamanho da fonte */
+  }
+
+  .table td:nth-child(3) { /* Alinha a coluna da data */
+    text-align: center;
+  }
+}
