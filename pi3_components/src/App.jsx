@@ -29,6 +29,7 @@ import Footer from "./components/Footer";
 import "./App.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import DashboardPropostas from "./DashboardPropostas.jsx";
+import DashboardAdminEstudante from "./DashboardAdminEstudante.jsx";
 
 const contactInfo = {
   address:
@@ -73,6 +74,7 @@ function App() {
             <Route path="/dashboard/notificacoes" element={<DashboardNotificacoes />} />
             <Route path="*" element={<NotFoundPage />} /> {/* Rota par ao erro 404 */}
             <Route path="dashboard/propostas" element={<DashboardPropostas />} />
+            <Route path="/dashboard/estudantes" element={<DashboardAdminEstudante />} />  
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>
