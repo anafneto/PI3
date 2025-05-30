@@ -42,7 +42,7 @@ const Sidebar = () => {
             <div
               className="d-flex align-items-center"
               role="button"
-              onClick={() => (window.location.href = "/dashboard/empresas-estudantes")}
+              onClick={() => (window.location.href = "/dashboard/estudantes/empresas")}
               style={{ color: "#fff" }}
             >
               <i className="bi bi-briefcase" style={{ fontSize: 16 }} />
