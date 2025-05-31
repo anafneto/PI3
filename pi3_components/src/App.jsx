@@ -32,6 +32,7 @@ import DashboardPropostas from "./DashboardPropostas.jsx";
 import DashboardAdminEstudante from "./DashboardAdminEstudante.jsx";
 import DashboardAdminEstudanteEmpresas from "./DashboardAdminEstudanteEmpresas.jsx";
 import DashboardAdminEstudantePropostas from "./DashboardAdminEstudantePropostas.jsx";
+import DashboardAdminEstudanteAlterar from "./DashboardAdminEstudantesAlterar.jsx";
 
 const contactInfo = {
   address:
@@ -79,6 +80,7 @@ function App() {
             <Route path="/dashboard/estudantes" element={<DashboardAdminEstudante />} /> 
             <Route path="/dashboard/estudantes/empresas" element={<DashboardAdminEstudanteEmpresas />} /> 
             <Route path="/dashboard/estudantes/propostas" element={<DashboardAdminEstudantePropostas />} />
+            <Route path="/dashboard/estudantes/alterar-dados-pessoais" element={<DashboardAdminEstudanteAlterar />} /> 
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>
