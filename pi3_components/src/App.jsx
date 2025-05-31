@@ -31,6 +31,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import DashboardPropostas from "./DashboardPropostas.jsx";
 import DashboardAdminEstudante from "./DashboardAdminEstudante.jsx";
 import DashboardAdminEstudanteEmpresas from "./DashboardAdminEstudanteEmpresas.jsx";
+import DashboardAdminEstudantePropostas from "./DashboardAdminEstudantePropostas.jsx";
 
 const contactInfo = {
   address:
@@ -77,6 +78,7 @@ function App() {
             <Route path="dashboard/propostas" element={<DashboardPropostas />} />
             <Route path="/dashboard/estudantes" element={<DashboardAdminEstudante />} /> 
             <Route path="/dashboard/estudantes/empresas" element={<DashboardAdminEstudanteEmpresas />} /> 
+            <Route path="/dashboard/estudantes/propostas" element={<DashboardAdminEstudantePropostas />} />
           </Routes>
         <Footer contactInfo={contactInfo} socialLinks={socialLinks} />
       </Router>

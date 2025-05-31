@@ -8,14 +8,20 @@ const DashboardEmpresas = () => {
     {
       name: "Google",
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.\nLorem Ipsum has been the industry's standard dummy.",
     },
     {
       name: "Apple",
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.\nLorem Ipsum has been the industry's standard dummy.",
     },
+    // … adicione mais empresas conforme precisar
   ];
+
+  const handleVerMais = () => {
+    // aqui você pode abrir uma rota nova, chamar uma API, etc.
+    alert("Você clicou em Ver mais!");
+  };
 
   return (
     <div className="container-fluid">
@@ -28,16 +34,15 @@ const DashboardEmpresas = () => {
         {/* Área principal */}
         <div className="col-10 col-md-9 col-lg-10 mt-4">
           <div className="container">
-            {/* Breadcrumb fixo no topo da área principal */}
+            {/* Breadcrumb fixo no topo */}
             <Breadcrumb caminho={["Dashboard", "Empresas"]} />
 
-            {/* Tabela dentro de card, centralizada e mais estreita */}
+            {/* Tabela centralizada */}
             <div className="d-flex justify-content-center mt-3">
-              <div className="card shadow-sm rounded w-100" style={{ maxWidth: "800px" }}>
-                <div className="card-body">
-                  <TabelaEmpresas companies={companiesData} />
-                </div>
-              </div>
+              <TabelaEmpresas
+                companies={companiesData}
+                onVerMais={handleVerMais}
+              />
             </div>
           </div>
         </div>
